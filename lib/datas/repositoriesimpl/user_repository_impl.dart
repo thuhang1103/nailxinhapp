@@ -1,12 +1,7 @@
 import 'package:nailxinh/datas/datasources/user_data.dart';
 import 'package:nailxinh/domain/repositories/user_repository.dart';
-
-
-
 // data/repositories/user_repository_impl.dart
 import '../../domain/entities/user.dart';
-import '../../domain/repositories/user_repository.dart';
-
 
 class UserRepositoryImpl implements UserRepository {
   final UserData DataSource;
@@ -14,5 +9,23 @@ class UserRepositoryImpl implements UserRepository {
   @override
   Future<List<User>> getUsers() async {
     return await DataSource.fetchUsers();
+  }
+
+  @override
+  Future<User> createUser({
+    required String username,
+    required String email,
+    required String password,
+    required String role,
+    required String phone,
+  }) async {
+    final user = await DataSource.addUser(
+      userName: username,
+      email: email,
+      password: password,
+      role: role,
+      phone: phone,
+    );
+    return user;
   }
 }
