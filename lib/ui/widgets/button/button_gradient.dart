@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
 
 class ButtonGradient extends StatelessWidget {
-  final VoidCallback onPressed;
+  final VoidCallback? onPressed;
   final String text;
   final double width;
   final double height;
-  final Gradient gradient;
+  final Gradient? gradient;
   final double borderRadius;
   final TextStyle? textStyle;
 
@@ -16,18 +16,19 @@ class ButtonGradient extends StatelessWidget {
     required this.text,
     this.width = double.infinity,
     this.height = 40,
-    this.gradient = MyColor.mainGradient,
+    this.gradient,
     this.borderRadius = 20,
     this.textStyle,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final Gradient usedGradient = gradient ?? MyColor.mainGradient;
     return Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
-        gradient: gradient,
+        gradient: usedGradient,
         borderRadius: BorderRadius.circular(borderRadius),
       ),
       child: ElevatedButton(

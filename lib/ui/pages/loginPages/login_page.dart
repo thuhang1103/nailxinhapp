@@ -8,8 +8,14 @@ import 'package:nailxinh/ui/pages/customerPages/myhome_page.dart';
 import 'package:nailxinh/ui/pages/employeePages/employee_page.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
 import 'package:nailxinh/ui/widgets/textfill/customTextFormFill.dart';
-import 'package:nailxinh/ui/widgets/button /button_gradient.dart';
+import 'package:nailxinh/ui/widgets/button/button_gradient.dart';
 import './register_page.dart';
+import '../../../blocs/bloc/register_bloc.dart';
+import '../../../blocs/evens/register_event.dart';
+import '../../../blocs/states/register_state.dart';
+import '../../../domain/usecases/register_user.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:nailxinh/ui/pages/loginPages/resetPass_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -34,7 +40,10 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios), // Đổi icon
           onPressed: () {
-            Navigator.pop(context); // Hành động khi bấm
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (_) => MyHomePage()),
+            );
           },
         ),
         backgroundColor: Colors.transparent, // Nền trong suốt
@@ -74,7 +83,14 @@ class _LoginPageState extends State<LoginPage> {
         },
         builder: (context, state) {
           if (state is AuthLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return Container(
+              decoration: BoxDecoration(gradient: MyColor.colorbackground),
+              alignment: Alignment.center,
+              child: const SpinKitFadingCircle(
+                color: Color.fromARGB(255, 83, 81, 81),
+                size: 40.0,
+              ),
+            );
           }
           return Container(
             decoration: BoxDecoration(gradient: MyColor.colorbackground),
@@ -110,7 +126,17 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     onPressed: () {
-                      // TODO: Xử lý quên mật khẩu
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BlocProvider(
+                            create: (_) => RegisterBloc(
+                              registerUser: context.read<RegisterUser>(),
+                            ),
+                            child: const ResetPassPage(),
+                          ),
+                        ),
+                      );
                     },
                     child: const Text(
                       'Quên mật khẩu?',
@@ -153,9 +179,16 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.pushReplacement(
+                        Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (_) => RegisterPage()),
+                          MaterialPageRoute(
+                            builder: (_) => BlocProvider(
+                              create: (_) => RegisterBloc(
+                                registerUser: context.read<RegisterUser>(),
+                              ),
+                              child: const RegisterPage(),
+                            ),
+                          ),
                         );
                       },
                       child: const Text(

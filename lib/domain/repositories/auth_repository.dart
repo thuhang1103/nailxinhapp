@@ -16,4 +16,9 @@ abstract class AuthRepository {
     required String username,
     required String registrationToken,
   });
+  Future<String> resetpass({
+    required String email,
+    required String password,
+    required String resetpassToken,
+  });
 }

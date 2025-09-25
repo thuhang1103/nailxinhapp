@@ -10,4 +10,6 @@ abstract class UserRepository {
     required String role,
     required String phone,
   });
+  Future<bool> isEmailExists({required String email});
+  Future<bool> isUsernameExists({required String username});
 }

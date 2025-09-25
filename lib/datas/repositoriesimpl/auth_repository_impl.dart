@@ -101,4 +101,17 @@ class AuthRepositoryImpl implements AuthRepository {
       registrationToken: registrationToken,
     );
   }
+
+  @override
+  Future<String> resetpass({
+    required String email,
+    required String password,
+    required String resetpassToken,
+  }) {
+    return registerData.resetpass(
+      email: email,
+      password: password,
+      resetpassToken: resetpassToken,
+    );
+  }
 }

@@ -28,4 +28,14 @@ class UserRepositoryImpl implements UserRepository {
     );
     return user;
   }
+
+  @override
+  Future<bool> isEmailExists({required String email}) async {
+    return await DataSource.isEmailExists(email: email);
+  }
+
+  @override
+  Future<bool> isUsernameExists({required String username}) async {
+    return await DataSource.isUsernameExists(username: username);
+  }
 }

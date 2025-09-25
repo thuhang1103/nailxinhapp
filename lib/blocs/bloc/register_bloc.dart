@@ -10,7 +10,9 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
     on<SendOtpEvent>((event, emit) async {
       emit(SendOtpLoading());
       try {
+        print('vào bloc sent otp');
         await registerUser.sendOtp(event.email);
+        print('send otp thành công');
         emit(const SendOtpSuccess('OTP sent'));
       } catch (e) {
         emit(SendOtpFailure(e.toString()));
@@ -20,8 +22,10 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(VerifyOtpLoading());
       try {
         final token = await registerUser.verifyOtp(event.email, event.otp);
+        print('verify otp thành công trong bloc: $token');
         emit(VerifyOtpSuccess('OTP verified', token: token));
       } catch (e) {
+        print('verify otp thất bại: $e');
         emit(VerifyOtpFailure(e.toString()));
       }
     });
@@ -31,13 +35,26 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       try {
         final userId = await registerUser.registerCustomer(
           email: event.email,
-          password: event.password,
           username: event.username,
+          password: event.password,
           registrationToken: event.registrationToken,
         );
         emit(RegisterSuccess('Customer registered', data: userId));
       } catch (e) {
         emit(RegisterFailure(e.toString()));
+      }
+    });
+    on<ResetPassEvent>((event, emit) async {
+      emit(ResetPassLoading());
+      try {
+        final userName = await registerUser.resetpass(
+          email: event.email,
+          password: event.password,
+          resetpassToken: event.resetpassToken,
+        );
+        emit(ResetPassSuccess('đổi mật khẩu thành công ', data: userName));
+      } catch (e) {
+        emit(ResetPassFailure(e.toString()));
       }
     });
   }

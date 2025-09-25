@@ -12,12 +12,44 @@ abstract class UserData {
     required String role,
     required String phone,
   });
+  Future<bool> isEmailExists({required String email});
+  Future<bool> isUsernameExists({required String username});
 }
 
 class UserDataImpl implements UserData {
   final http.Client client;
 
   UserDataImpl(this.client);
+
+  @override
+  Future<bool> isUsernameExists({required String username}) async {
+    final response = await client.post(
+      Uri.parse('http://192.168.15.105:5000/api/users/checkUsername'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'username': username}),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['exists'] == true;
+    } else {
+      throw Exception('Kiểm tra username thất bại (${response.statusCode})');
+    }
+  }
+
+  @override
+  Future<bool> isEmailExists({required String email}) async {
+    final response = await client.post(
+      Uri.parse('http://192.168.15.105:5000/api/users/checkEmail'),
+      headers: {'Content-Type': 'application/json'},
+      body: jsonEncode({'email': email}),
+    );
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return data['exists'] == true;
+    } else {
+      throw Exception('Kiểm tra email thất bại (${response.statusCode})');
+    }
+  }
 
   @override
   Future<List<User>> fetchUsers() async {

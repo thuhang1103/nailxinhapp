@@ -44,3 +44,18 @@ class VerifyOtpFailure extends RegisterState {
   final String error;
   const VerifyOtpFailure(this.error);
 }
+
+//resetPass
+class ResetPassLoading extends RegisterState {}
+
+class ResetPassSuccess extends RegisterState {
+  final String message;
+  final dynamic data;
+
+  const ResetPassSuccess(this.message, {this.data});
+}
+
+class ResetPassFailure extends RegisterState {
+  final String error;
+  const ResetPassFailure(this.error);
+}

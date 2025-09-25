@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class CustomTextFormField extends StatelessWidget {
+class TextFillResetPass extends StatelessWidget {
   final String label;
   final TextEditingController controller;
   final bool obscureText;
@@ -9,7 +9,7 @@ class CustomTextFormField extends StatelessWidget {
   final ValueChanged<String>? onChanged;
   final String? errorText;
 
-  const CustomTextFormField({
+  const TextFillResetPass({
     Key? key,
     required this.label,
     required this.controller,
@@ -31,30 +31,27 @@ class CustomTextFormField extends StatelessWidget {
         labelText: label,
         errorText: errorText,
         filled: true,
-        fillColor: Colors.white,
-        contentPadding: const EdgeInsets.symmetric(
-          vertical: 8,
-          horizontal: 12,
-        ), // 👈 giảm chiều cao
+        fillColor: const Color.fromARGB(255, 211, 134, 198),
+        contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide(
-            color: const Color.fromARGB(255, 142, 138, 138),
-            width: 1,
+            color: const Color.fromARGB(255, 245, 172, 212),
+            width: 2,
           ),
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide(
-            color: const Color.fromARGB(255, 142, 138, 138),
-            width: 1,
+            color: const Color.fromARGB(255, 245, 172, 212),
+            width: 2,
           ), // Không viền
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(20),
           borderSide: BorderSide(
-            color: const Color.fromARGB(255, 142, 138, 138),
-            width: 1,
+            color: const Color.fromARGB(255, 245, 172, 212),
+            width: 2,
           ),
         ),
       ),

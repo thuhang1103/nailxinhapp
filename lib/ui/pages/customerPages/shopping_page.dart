@@ -3,7 +3,6 @@ import 'package:nailxinh/ui/widgets/searchbox.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
 import '../../widgets/categorybutton.dart';
 import '../../widgets/product_item.dart';
-import '../../widgets/text_header.dart';
 // import '../../blocs/bloc/user_bloc.dart';
 // import '../../blocs/states/user_state.dart';
 // import '../widgets/categorybutton.dart';

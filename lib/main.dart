@@ -29,6 +29,7 @@ import 'ui/pages/adminPages/admin_page.dart';
 import 'ui/pages/EmployeePages/employee_page.dart';
 import 'ui/pages/loginPages/login_page.dart';
 import 'domain/usecases/logout_usecase.dart';
+import 'domain/usecases/check_user.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -72,6 +73,9 @@ class MyApp extends StatelessWidget {
         RepositoryProvider<RegisterUser>(
           create: (ctx) => RegisterUser(ctx.read<AuthRepository>()),
         ),
+        RepositoryProvider<CheckUserExistsUseCase>(
+          create: (ctx) => CheckUserExistsUseCase(ctx.read<UserRepository>()),
+        ),
         RepositoryProvider<LoginUsecase>(
           create: (ctx) => LoginUsecase(ctx.read<AuthRepository>()),
         ),
@@ -87,10 +91,6 @@ class MyApp extends StatelessWidget {
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider<RegisterBloc>(
-            create: (context) =>
-                RegisterBloc(registerUser: context.read<RegisterUser>()),
-          ),
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(getUsers: context.read<GetUsers>()),
           ),

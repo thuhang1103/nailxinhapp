@@ -1,9 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nailxinh/blocs/bloc/register_bloc.dart';
-import 'package:nailxinh/blocs/evens/register_event.dart';
-import 'package:nailxinh/blocs/states/register_state.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
+import 'package:nailxinh/ui/pages/loginPages/otp_page.dart';
+import 'package:nailxinh/ui/widgets/button/button_gradient.dart';
+import '../../../blocs/bloc/register_bloc.dart';
+import '../../../blocs/evens/register_event.dart';
+import '../../../blocs/states/register_state.dart';
+import '../../widgets/textfill/customTextFormFill.dart';
+import '../../../domain/usecases/check_user.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -14,11 +20,25 @@ class RegisterPage extends StatefulWidget {
 
 class _RegisterPageState extends State<RegisterPage> {
   final emailCtrl = TextEditingController();
-  final otpCtrl = TextEditingController();
+  final repasswordCtrl = TextEditingController();
   final usernameCtrl = TextEditingController();
   final passwordCtrl = TextEditingController();
 
-  String? registrationToken;
+  bool isFormValid = false;
+  String? emailError;
+  String? usernameError;
+  String? passwordError;
+  String? repasswordError;
+
+  void _validateForm() {
+    setState(() {
+      isFormValid =
+          (emailError == null &&
+          passwordError == null &&
+          usernameError == null &&
+          repasswordError == null);
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,146 +63,185 @@ class _RegisterPageState extends State<RegisterPage> {
       // Thêm vào Scaffold:
       extendBodyBehindAppBar: true,
       body: BlocConsumer<RegisterBloc, RegisterState>(
-        listener: (context, state) async {
+        listener: (context, state) {
           if (state is SendOtpSuccess) {
-            ScaffoldMessenger.of(
+            print('đã gửi otp thành công, chuyển trang');
+            Navigator.push(
               context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-            // Hiện popup nhập OTP
-            await showDialog(
-              context: context,
-              barrierDismissible: false,
-              builder: (ctx) {
-                return AlertDialog(
-                  title: const Text("Nhập mã OTP"),
-                  content: TextField(
-                    controller: otpCtrl,
-                    keyboardType: TextInputType.number,
-                    maxLength: 6,
-                    decoration: const InputDecoration(
-                      labelText: "OTP",
-                      counterText: "",
-                    ),
+              MaterialPageRoute(
+                builder: (_) => BlocProvider.value(
+                  value: context.read<RegisterBloc>(),
+                  child: OtpPage(
+                    email: emailCtrl.text,
+                    username: usernameCtrl.text,
+                    password: passwordCtrl.text,
                   ),
-                  actions: [
-                    BlocBuilder<RegisterBloc, RegisterState>(
-                      builder: (context, state) {
-                        return ElevatedButton(
-                          onPressed: state is VerifyOtpLoading
+                ),
+              ),
+            );
+          } else if (state is SendOtpFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                content: Text(
+                  "email không tồn tại, gửi mã thất bại: ${state.error}",
+                ),
+              ),
+            );
+          } else {}
+        },
+
+        builder: (context, state) {
+          final isLoading = state is SendOtpLoading;
+          if (isLoading) {
+            return Container(
+              decoration: BoxDecoration(gradient: MyColor.colorbackground),
+              alignment: Alignment.center,
+              child: const SpinKitFadingCircle(
+                color: Color.fromARGB(255, 83, 81, 81), // hoặc màu bạn muốn
+                size: 40.0,
+              ),
+            );
+          } else {
+            return Container(
+              decoration: const BoxDecoration(
+                gradient: MyColor.colorbackground,
+              ),
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: SingleChildScrollView(
+                child: ConstrainedBox(
+                  //chiều cao tôi thiểu để tránh bị overflow khi bàn phím hiện
+                  constraints: BoxConstraints(
+                    minHeight: MediaQuery.of(context).size.height,
+                  ),
+                  child: IntrinsicHeight(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        const SizedBox(height: 220),
+                        CustomTextFormField(
+                          label: "Email",
+                          errorText: emailError,
+                          controller: emailCtrl,
+                          keyboardType: TextInputType.emailAddress,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                emailError = "Vui lòng nhập email";
+                              } else if (!RegExp(
+                                r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$',
+                              ).hasMatch(value)) {
+                                emailError = "Email không hợp lệ";
+                              } else {
+                                emailError = null;
+                              }
+                              _validateForm();
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextFormField(
+                          label: "Tên đăng nhập",
+                          errorText: usernameError,
+                          controller: usernameCtrl,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                usernameError = "Vui lòng nhập tên đăng nhập";
+                              } else if (value.length < 4) {
+                                usernameError = "Tên đăng nhập phải từ 4 ký tự";
+                              } else {
+                                usernameError = null;
+                              }
+                              _validateForm();
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
+                        CustomTextFormField(
+                          label: "Mật khẩu",
+                          errorText: passwordError,
+                          controller: passwordCtrl,
+                          obscureText: true,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                passwordError = "Vui lòng nhập mật khẩu";
+                              } else if (value.length < 6) {
+                                passwordError = "Mật khẩu phải từ 6 ký tự";
+                              } else {
+                                passwordError = null;
+                              }
+                              _validateForm();
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 16),
+
+                        CustomTextFormField(
+                          label: "Nhập lại mật khẩu",
+                          errorText: repasswordError,
+                          controller: repasswordCtrl,
+                          obscureText: true,
+                          onChanged: (value) {
+                            setState(() {
+                              if (value.isEmpty) {
+                                repasswordError = "Vui lòng nhập lại mật khẩu";
+                              } else if (value != passwordCtrl.text) {
+                                repasswordError = "Mật khẩu không khớp";
+                              } else {
+                                repasswordError = null;
+                              }
+                              _validateForm();
+                            });
+                          },
+                        ),
+
+                        const SizedBox(height: 32),
+                        ButtonGradient(
+                          text: "Tiếp tục",
+                          height: 48,
+                          onPressed: (!isFormValid || isLoading)
                               ? null
-                              : () {
+                              : () async {
+                                  print('vào dược button ');
+                                  final checkUserExists = context
+                                      .read<CheckUserExistsUseCase>();
+                                  final emailExists = await checkUserExists
+                                      .email(emailCtrl.text);
+                                  if (emailExists) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text("Email đã tồn tại!"),
+                                      ),
+                                    );
+                                    return;
+                                  }
+
+                                  // Kiểm tra username tồn tại
+                                  final usernameExists = await checkUserExists
+                                      .username(usernameCtrl.text);
+                                  if (usernameExists) {
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          "Tên đăng nhập đã tồn tại!",
+                                        ),
+                                      ),
+                                    );
+                                    return;
+                                  }
                                   context.read<RegisterBloc>().add(
-                                    VerifyOtpEvent(
-                                      emailCtrl.text,
-                                      otpCtrl.text,
-                                    ),
+                                    SendOtpEvent(emailCtrl.text),
                                   );
                                 },
-                          child: state is VerifyOtpLoading
-                              ? const SizedBox(
-                                  width: 16,
-                                  height: 16,
-                                  child: CircularProgressIndicator(
-                                    strokeWidth: 2,
-                                  ),
-                                )
-                              : const Text("Xác nhận"),
-                        );
-                      },
+                        ),
+                      ],
                     ),
-                  ],
-                );
-              },
-            );
-          } else if (state is VerifyOtpSuccess) {
-            registrationToken = state.token;
-            Navigator.of(context).pop(); // Tắt popup OTP
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-          } else if (state is RegisterSuccess) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
-            Navigator.pop(context, true);
-          } else if (state is SendOtpFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error)));
-          } else if (state is VerifyOtpFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error)));
-          } else if (state is RegisterFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error)));
-          }
-        },
-        builder: (context, state) {
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: ListView(
-              children: [
-                TextField(
-                  controller: emailCtrl,
-                  decoration: const InputDecoration(labelText: "Email"),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: usernameCtrl,
-                  decoration: const InputDecoration(labelText: "Tên đăng nhập"),
-                ),
-                const SizedBox(height: 12),
-                TextField(
-                  controller: passwordCtrl,
-                  obscureText: true,
-                  decoration: const InputDecoration(labelText: "Mật khẩu"),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: state is SendOtpLoading
-                      ? null
-                      : () {
-                          context.read<RegisterBloc>().add(
-                            SendOtpEvent(emailCtrl.text),
-                          );
-                        },
-                  child: state is SendOtpLoading
-                      ? const SizedBox(
-                          width: 16,
-                          height: 16,
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        )
-                      : const Text("Tiếp tục"),
-                ),
-                const SizedBox(height: 20),
-                // Chỉ hiện nút đăng ký khi đã verify OTP thành công
-                if (registrationToken != null)
-                  ElevatedButton(
-                    onPressed: state is RegisterLoading
-                        ? null
-                        : () {
-                            context.read<RegisterBloc>().add(
-                              RegisterCustomerEvent(
-                                email: emailCtrl.text,
-                                password: passwordCtrl.text,
-                                username: usernameCtrl.text,
-                                registrationToken: registrationToken!,
-                              ),
-                            );
-                          },
-                    child: state is RegisterLoading
-                        ? const SizedBox(
-                            width: 16,
-                            height: 16,
-                            child: CircularProgressIndicator(strokeWidth: 2),
-                          )
-                        : const Text("Đăng ký"),
                   ),
-              ],
-            ),
-          );
+                ),
+              ),
+            );
+          }
         },
       ),
     );

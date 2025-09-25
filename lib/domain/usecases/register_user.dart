@@ -26,4 +26,16 @@ class RegisterUser {
       registrationToken: registrationToken,
     );
   }
+
+  Future<String> resetpass({
+    required String email,
+    required String password,
+    required String resetpassToken,
+  }) {
+    return repository.resetpass(
+      email: email,
+      password: password,
+      resetpassToken: resetpassToken,
+    );
+  }
 }
