@@ -34,7 +34,6 @@ class AuthDataImpl implements AuthData {
     String accessToken,
   ) async {
     print('Đang retry request với accessToken mới: $accessToken');
-    // Clone lại request cũ để tránh ảnh hưởng trực tiếp tới opts gốc
     final newOptions = Options(
       method: opts.method,
       headers: {

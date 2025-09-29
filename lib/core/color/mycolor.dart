@@ -14,7 +14,7 @@ class MyColor {
   static const Color startColor1 = Color(0xFFebd6e3); // Màu xanh
   static const Color endColor2 = Color(0xFFd291bc); // Màu tím
   static const Color colorbackround2 = Color(0xFFD291BC);
-  static const Color colorappbar = Color.fromARGB(255, 212, 198, 208);
+  static const Color colorappbar = Color.fromARGB(255, 233, 166, 214);
 
   // 🎨 Màu chữ phụ (nếu cần)
   static const LinearGradient colorbackground = LinearGradient(

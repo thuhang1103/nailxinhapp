@@ -65,7 +65,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
       final role = await getRoleUseCase.call();
       emit(Authenticated(role));
     } catch (e) {
-      print("lỗi tại bloc: $e");
       emit(AuthFailure(e.toString()));
     }
   }

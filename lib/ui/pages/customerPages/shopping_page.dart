@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:nailxinh/ui/widgets/searchbox.dart';
+
 import 'package:nailxinh/core/color/mycolor.dart';
 import '../../widgets/categorybutton.dart';
 import '../../widgets/product_item.dart';
+import '../../widgets/searchBox/searchButton.dart';
+import '../search_pages/search_page.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../blocs/bloc/storage_search_history/storage_search_history_bloc.dart';
+import '../../../blocs/bloc/storage_search_history/suggestion_history_bloc.dart';
+import '../../../domain/usecases/search_usecases/search_suggestion_usecase.dart';
+import '../../../domain/usecases/search_usecases/add_keyword.dart';
+import '../../../domain/usecases/search_usecases/clear_history_search.dart';
+import '../../../domain/usecases/search_usecases/getHistoryUsecase.dart';
 // import '../../blocs/bloc/user_bloc.dart';
 // import '../../blocs/states/user_state.dart';
 // import '../widgets/categorybutton.dart';
@@ -15,18 +24,10 @@ class Shopping extends StatefulWidget {
 }
 
 class _ShoppingState extends State<Shopping> {
-  final TextEditingController _searchController = TextEditingController();
-
-  void _handleSearch() {
-    final query = _searchController.text;
-    print("Tìm kiếm: $query");
-    // Xử lý logic tìm kiếm ở đây
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyColor.colorbackround2,
+      backgroundColor: const Color.fromARGB(255, 222, 218, 218),
       appBar: AppBar(
         backgroundColor: MyColor.colorappbar,
         titleSpacing: 0, // bỏ padding mặc định
@@ -37,9 +38,31 @@ class _ShoppingState extends State<Shopping> {
             top: 10,
             bottom: 10,
           ),
-          child: SearchBox(
-            controller: _searchController,
-            onSearch: _handleSearch,
+          child: SearchButton(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => MultiBlocProvider(
+                    providers: [
+                      BlocProvider(
+                        create: (context) => StorageSearchHistoryBloc(
+                          clear: context.read<ClearHistorySearch>(),
+                          addKeywordUsecase: context.read<AddKeyword>(),
+                          getHistoryUsecase: context.read<GetSearchHistory>(),
+                        ),
+                      ),
+                      BlocProvider(
+                        create: (context) => SuggestionHistoryBloc(
+                          context.read<SearchSuggestionUseCase>(),
+                        ),
+                      ),
+                    ],
+                    child: SearchPage(),
+                  ),
+                ),
+              );
+            },
           ),
         ),
         actions: [
@@ -72,7 +95,7 @@ class _ShoppingState extends State<Shopping> {
         child: Stack(
           children: [
             Container(
-              height: 280,
+              height: 185,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: MyColor.colorappbar,
@@ -147,6 +170,13 @@ class _ShoppingState extends State<Shopping> {
                       ],
                     ),
                   ),
+                  SizedBox(height: 8),
+                  SizedBox(
+                    height: 3,
+                    width: 40,
+                    child: Container(color: MyColor.textColor),
+                  ),
+                  SizedBox(height: 8),
 
                   // Danh sách sản phẩm
                   Padding(
@@ -155,47 +185,68 @@ class _ShoppingState extends State<Shopping> {
                       shrinkWrap: true,
                       physics: NeverScrollableScrollPhysics(),
                       crossAxisCount: 2,
-                      childAspectRatio: 1,
-                      crossAxisSpacing: 2,
-                      mainAxisSpacing: 2,
+                      childAspectRatio: 0.62,
+                      crossAxisSpacing: 9,
+                      mainAxisSpacing: 9,
                       children: [
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Sơn gel hồng pastel',
                           price: '₫120,000',
+                          soldCount: 10,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Bộ cọ vẽ móng',
                           price: '₫85,000',
+                          soldCount: 5,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Sơn gel hồng pastel',
                           price: '₫120,000',
+                          soldCount: 10,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Bộ cọ vẽ móng',
                           price: '₫85,000',
+                          soldCount: 5,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Sơn gel hồng pastel',
                           price: '₫120,000',
+                          soldCount: 10,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
-                          name: 'Bộ cọ vẽ móng',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
+                          name:
+                              'Bộ cọ vẽ móng aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                           price: '₫85,000',
+                          soldCount: 5,
+                          address: 'TP.Hồ Chí Minh',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Sơn gel hồng pastel',
                           price: '₫120,000',
                         ),
                         ProductItem(
-                          imagePath: 'assets/images/image1.PNG',
+                          imagePath:
+                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
                           name: 'Bộ cọ vẽ móng',
                           price: '₫85,000',
                         ),

@@ -14,7 +14,4 @@ class User {
     this.phone,
     this.avatarImage,
   });
-
-
-
 }

@@ -30,6 +30,20 @@ import 'ui/pages/EmployeePages/employee_page.dart';
 import 'ui/pages/loginPages/login_page.dart';
 import 'domain/usecases/logout_usecase.dart';
 import 'domain/usecases/check_user.dart';
+import 'domain/usecases/search_usecases/add_keyword.dart';
+import 'domain/usecases/search_usecases/clear_history_search.dart';
+import 'domain/usecases/search_usecases/getHistoryUsecase.dart';
+import 'domain/usecases/search_usecases/search_suggestion_usecase.dart';
+import 'datas/repositoriesimpl/product_repository_impl/search_suggestion_reposirory_impl.dart';
+import 'domain/repositories/product_repository/search_suggestion_repository.dart';
+import 'domain/repositories/search_repository.dart';
+import 'datas/repositoriesimpl/search_repository_impl.dart';
+import 'datas/local/search_history_storage.dart';
+import 'datas/datasources/product_data/search_suggestion_data.dart';
+import 'domain/usecases/product_usecase/search_product_usecase.dart';
+import 'datas/repositoriesimpl/product_repository_impl/search_product_repository_impl.dart';
+import 'domain/repositories/product_repository/search_product_repository.dart';
+import 'datas/datasources/product_data/search_products.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -44,6 +58,29 @@ class MyApp extends StatelessWidget {
       providers: [
         RepositoryProvider<UserRepository>(
           create: (_) => UserRepositoryImpl(UserDataImpl(http.Client())),
+        ),
+        RepositoryProvider<SearchHistoryRepository>(
+          create: (_) => SearchHistoryRepositoryImpl(SearchHistoryStorage()),
+        ),
+        RepositoryProvider<SearchProductRepository>(
+          create: (context) {
+            final storage = const FlutterSecureStorage();
+            late AuthRepositoryImpl authRepository;
+            final authInterceptor = AuthInterceptor(
+              storage: storage,
+              getAuthRepository: () => authRepository,
+            );
+            final dio = DioClient.create(authInterceptor);
+
+            authRepository = AuthRepositoryImpl(
+              LoginDataImpl(dio),
+              storage,
+              AuthDataImpl(dio),
+              RegisterDataImpl(dio),
+            );
+
+            return SearchProductRepositoryImpl(SearchProductDataImpl(dio));
+          },
         ),
 
         RepositoryProvider<GetUsers>(
@@ -70,6 +107,30 @@ class MyApp extends StatelessWidget {
             return authRepository;
           },
         ),
+        RepositoryProvider<SearchSuggestionRepository>(
+          create: (context) {
+            final storage = const FlutterSecureStorage();
+            late AuthRepositoryImpl authRepository;
+            final authInterceptor = AuthInterceptor(
+              storage: storage,
+              getAuthRepository: () => authRepository,
+            );
+            final dio = DioClient.create(authInterceptor);
+
+            authRepository = AuthRepositoryImpl(
+              LoginDataImpl(dio),
+              storage,
+              AuthDataImpl(dio),
+              RegisterDataImpl(dio),
+            );
+
+            return SearchSuggestionRepositoryImpl(
+              SearchSuggestionDataImpl(dio),
+            );
+          },
+        ),
+
+        // Repository usecase
         RepositoryProvider<RegisterUser>(
           create: (ctx) => RegisterUser(ctx.read<AuthRepository>()),
         ),
@@ -87,6 +148,25 @@ class MyApp extends StatelessWidget {
         ),
         RepositoryProvider<RefreshTokenUseCase>(
           create: (ctx) => RefreshTokenUseCase(ctx.read<AuthRepository>()),
+        ),
+        RepositoryProvider<SearchSuggestionUseCase>(
+          create: (ctx) =>
+              SearchSuggestionUseCase(ctx.read<SearchSuggestionRepository>()),
+        ),
+        RepositoryProvider<AddKeyword>(
+          create: (ctx) => AddKeyword(ctx.read<SearchHistoryRepository>()),
+        ),
+        RepositoryProvider<ClearHistorySearch>(
+          create: (ctx) =>
+              ClearHistorySearch(ctx.read<SearchHistoryRepository>()),
+        ),
+        RepositoryProvider<GetSearchHistory>(
+          create: (ctx) =>
+              GetSearchHistory(ctx.read<SearchHistoryRepository>()),
+        ),
+        RepositoryProvider<SearchProductUseCase>(
+          create: (ctx) =>
+              SearchProductUseCase(ctx.read<SearchProductRepository>()),
         ),
       ],
       child: MultiBlocProvider(
