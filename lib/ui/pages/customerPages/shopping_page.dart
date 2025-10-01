@@ -1,22 +1,24 @@
 import 'package:flutter/material.dart';
-
 import 'package:nailxinh/core/color/mycolor.dart';
 import '../../widgets/categorybutton.dart';
 import '../../widgets/product_item.dart';
 import '../../widgets/searchBox/searchButton.dart';
 import '../search_pages/search_page.dart';
+import '../productPages/nail_page.dart';
+import '../productPages/nailbox_page.dart';
+import '../productPages/device_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/bloc/storage_search_history/storage_search_history_bloc.dart';
 import '../../../blocs/bloc/storage_search_history/suggestion_history_bloc.dart';
+import '../../../blocs/bloc/product_bloc/search_product_category_bloc.dart';
 import '../../../domain/usecases/search_usecases/search_suggestion_usecase.dart';
 import '../../../domain/usecases/search_usecases/add_keyword.dart';
 import '../../../domain/usecases/search_usecases/clear_history_search.dart';
 import '../../../domain/usecases/search_usecases/getHistoryUsecase.dart';
-// import '../../blocs/bloc/user_bloc.dart';
-// import '../../blocs/states/user_state.dart';
-// import '../widgets/categorybutton.dart';
-// import '../widgets/product_item.dart';
-// import '../widgets/text_header.dart';
+import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
+import '../../../blocs/bloc/product_bloc/search_all.dart';
+import '../../../blocs/evens/product_event/search_product_event.dart';
+import '../../../blocs/states/product_state/search_all_state.dart';
 
 class Shopping extends StatefulWidget {
   @override
@@ -24,6 +26,62 @@ class Shopping extends StatefulWidget {
 }
 
 class _ShoppingState extends State<Shopping> {
+  void onTichDiemPressed() {
+    // Xử lý sự kiện tích điểm
+  }
+
+  void onMauNailPressed() {
+    // Xử lý sự kiện mẫu nail
+  }
+  void onNailPressed() {
+    final categoryProduct = 2;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) =>
+              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
+          child: NailPage(category: categoryProduct),
+        ),
+      ),
+    ); // Xử lý sự kiện nail
+  }
+
+  void onThietBiNailPressed() {
+    final categoryProduct = 1;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) =>
+              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
+          child: DevicePage(category: categoryProduct),
+        ),
+      ),
+    ); //
+    // Xử lý sự kiện thiết bị nail
+  }
+
+  void onNailBoxPressed() {
+    final categoryProduct = 3;
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider(
+          create: (context) =>
+              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
+          child: NailBoxPage(category: categoryProduct),
+        ),
+      ),
+    ); //
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    context.read<SearchProductAllBloc>().add(GetAllProductsEvent());
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -95,10 +153,10 @@ class _ShoppingState extends State<Shopping> {
         child: Stack(
           children: [
             Container(
-              height: 185,
+              height: 165,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: MyColor.colorappbar,
+                color: MyColor.pinkColor,
                 borderRadius: BorderRadius.vertical(
                   bottom: Radius.circular(25),
                 ),
@@ -134,38 +192,28 @@ class _ShoppingState extends State<Shopping> {
                       children: [
                         CategoryButton(
                           onPressed: () {},
-                          child: Image.network(
-                            'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                            width: 30,
-                            height: 30,
-                          ),
+                          imageUrl: 'assets/icons/Abstract Shape (7).png',
+                          text: 'Tích điểm',
                         ),
                         CategoryButton(
                           onPressed: () {},
-                          child: Image.asset(
-                            'assets/images/image1.PNG',
-                            width: 30,
-                            height: 30,
-                          ),
+                          imageUrl: 'assets/icons/11.png',
+                          text: 'Mẫu nail',
                         ),
                         CategoryButton(
-                          onPressed: () {},
-                          child: Text(
-                            'A',
-                            style: TextStyle(fontSize: 20, color: Colors.white),
-                          ),
+                          onPressed: onNailPressed,
+                          imageUrl: 'assets/icons/8.png',
+                          text: 'Nail',
                         ),
                         CategoryButton(
-                          onPressed: () {},
-                          child: Icon(Icons.star, color: Colors.white),
+                          onPressed: onThietBiNailPressed,
+                          imageUrl: 'assets/icons/12.png',
+                          text: 'Thiết bị nail',
                         ),
                         CategoryButton(
-                          onPressed: () {},
-                          child: Image.asset(
-                            'assets/images/image1.PNG',
-                            width: 30,
-                            height: 30,
-                          ),
+                          onPressed: onNailBoxPressed,
+                          imageUrl: 'assets/icons/9.png',
+                          text: 'Nail Box',
                         ),
                       ],
                     ),
@@ -181,77 +229,44 @@ class _ShoppingState extends State<Shopping> {
                   // Danh sách sản phẩm
                   Padding(
                     padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: GridView.count(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      crossAxisCount: 2,
-                      childAspectRatio: 0.62,
-                      crossAxisSpacing: 9,
-                      mainAxisSpacing: 9,
-                      children: [
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Sơn gel hồng pastel',
-                          price: '₫120,000',
-                          soldCount: 10,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Bộ cọ vẽ móng',
-                          price: '₫85,000',
-                          soldCount: 5,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Sơn gel hồng pastel',
-                          price: '₫120,000',
-                          soldCount: 10,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Bộ cọ vẽ móng',
-                          price: '₫85,000',
-                          soldCount: 5,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Sơn gel hồng pastel',
-                          price: '₫120,000',
-                          soldCount: 10,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name:
-                              'Bộ cọ vẽ móng aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
-                          price: '₫85,000',
-                          soldCount: 5,
-                          address: 'TP.Hồ Chí Minh',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Sơn gel hồng pastel',
-                          price: '₫120,000',
-                        ),
-                        ProductItem(
-                          imagePath:
-                              'https://mnxhotcwxdmhsazwtdac.supabase.co/storage/v1/object/public/products/anh2.jpg',
-                          name: 'Bộ cọ vẽ móng',
-                          price: '₫85,000',
-                        ),
-                        // ... thêm sản phẩm khác
-                      ],
+                    child: BlocBuilder<SearchProductAllBloc, SearchProductAllState>(
+                      builder: (context, state) {
+                        if (state is SearchProductAllLoading) {
+                          return CircularProgressIndicator();
+                        }
+                        if (state is SearchProductAllSuccess) {
+                          final listProduct = state.products;
+                          if (listProduct.isEmpty) {
+                            return const Center(
+                              child: Text('Không có dữ liệu sản phẩm'),
+                            );
+                          }
+                          return GridView.builder(
+                            padding: const EdgeInsets.all(8),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2, // 2 sản phẩm mỗi hàng
+                                  childAspectRatio: 0.62,
+                                  crossAxisSpacing: 9,
+                                  mainAxisSpacing: 9,
+                                ),
+                            itemCount: listProduct.length,
+                            itemBuilder: (context, index) {
+                              final product = listProduct[index];
+                              return ProductItem(
+                                imagePath: product.imagePath ?? '',
+                                name: product.productName,
+                                price: '${product.price}đ',
+                                soldCount: product.soldQuantity,
+                              );
+                            },
+                          );
+                        }
+                        if (state is SearchProductAllFailure) {
+                          return Center(child: Text('Lỗi: ${state.error}'));
+                        }
+                        return SizedBox.shrink();
+                      },
                     ),
                   ),
                 ],

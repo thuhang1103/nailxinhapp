@@ -14,9 +14,7 @@ class SuggestionHistoryBloc
     on<GetSuggestionListEvent>((event, emit) async {
       emit(SuggestionHistoryLoading());
       try {
-        print("vào bloc lấy gợi ý tìm kiếm: ${event.name}");
         final suggestions = await useCase.execute(event.name);
-        print("Gợi ý tìm kiếm: $suggestions");
         emit(SuggestionHistoryLoaded(suggestions));
       } catch (e) {
         emit(SuggestionHistoryFailure(e.toString()));

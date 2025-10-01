@@ -19,10 +19,8 @@ class StorageSearchHistoryBloc
     on<LoadSearchHistoryEvent>((event, emit) async {
       emit(StorageSearchHistoryLoading());
       try {
-        print("vào bloc lấy lịch sử tìm kiếm ");
         final history = await getHistoryUsecase.execute();
         emit(StorageSearchHistoryLoaded(history));
-        print("Lịch sử tìm kiếm: $history");
       } catch (e) {
         emit(StorageSearchHistoryFailure(e.toString()));
       }
@@ -31,10 +29,8 @@ class StorageSearchHistoryBloc
     on<AddSearchKeywordEvent>((event, emit) async {
       emit(StorageSearchHistoryLoading());
       try {
-        print("vào bloc thêm từ khóa tìm kiếm: ${event.keyword}");
         await addKeywordUsecase.execute(event.keyword);
         final history = await getHistoryUsecase.execute();
-        print("Lịch sử tìm kiếm sau khi thêm: $history");
         emit(StorageSearchHistoryLoaded(history));
       } catch (e) {
         emit(StorageSearchHistoryFailure(e.toString()));

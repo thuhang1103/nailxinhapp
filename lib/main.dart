@@ -44,6 +44,8 @@ import 'domain/usecases/product_usecase/search_product_usecase.dart';
 import 'datas/repositoriesimpl/product_repository_impl/search_product_repository_impl.dart';
 import 'domain/repositories/product_repository/search_product_repository.dart';
 import 'datas/datasources/product_data/search_products.dart';
+import 'blocs/bloc/product_bloc/search_all.dart';
+import 'ui/pages/customerPages/shopping_page.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -187,6 +189,11 @@ class MyApp extends StatelessWidget {
           BlocProvider<RoleBloc>(
             create: (context) =>
                 RoleBloc(getRoleUseCase: context.read<GetRoleUseCase>()),
+          ),
+          BlocProvider(
+            create: (context) =>
+                SearchProductAllBloc(context.read<SearchProductUseCase>()),
+            child: Shopping(),
           ),
         ],
         child: MaterialApp(

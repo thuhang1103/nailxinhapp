@@ -33,14 +33,14 @@ class ProductModel {
       productId: json['ProductID'] as int,
       productName: json['ProductName'],
       description: json['Description'],
-      price: (json['Price'] as num).toDouble(),
+      price: double.parse(json['Price'].toString()),
       categoryId: json['CategoryID'],
       stockQuantity: json['StockQuantity'] ?? 0,
       soldQuantity: json['SoldQuantity'] ?? 0,
       imagePath: json['ImagePath'],
       createdAt: DateTime.parse(json['CreatedAt']),
       updatedAt: DateTime.parse(json['UpdatedAt']),
-      statusProduct: json['status_Product'] ?? 0,
+      statusProduct: json['Status_Product'] ?? 0,
     );
   }
 
@@ -55,7 +55,7 @@ class ProductModel {
     'ImagePath': imagePath,
     'CreatedAt': createdAt.toIso8601String(),
     'UpdatedAt': updatedAt.toIso8601String(),
-    'status_Product': statusProduct,
+    'Status_Product': statusProduct,
   };
   Product toEntity() {
     return Product(

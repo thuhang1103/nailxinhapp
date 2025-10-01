@@ -13,7 +13,7 @@ import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
 import '../../../blocs/bloc/product_bloc/search_product_name_bloc.dart';
 
 class SearchPage extends StatefulWidget {
-  final TextEditingController? searchController;
+  final String? searchController;
   const SearchPage({Key? key, this.searchController}) : super(key: key);
 
   @override
@@ -21,18 +21,18 @@ class SearchPage extends StatefulWidget {
 }
 
 class _SearchPageState extends State<SearchPage> {
-  late final TextEditingController _searchController;
+  final TextEditingController _searchController = TextEditingController();
   FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    _searchController = widget.searchController ?? TextEditingController();
-    context.read<StorageSearchHistoryBloc>().add(LoadSearchHistoryEvent());
+    _searchController.addListener(_onSearchChanged);
+    _searchController.text = widget.searchController ?? '';
+    // context.read<StorageSearchHistoryBloc>().add(LoadSearchHistoryEvent());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.requestFocus();
     });
-    _searchController.addListener(_onSearchChanged);
   }
 
   @override
@@ -46,7 +46,6 @@ class _SearchPageState extends State<SearchPage> {
     setState(() {});
     final query = _searchController.text.trim();
     if (query.isEmpty) {
-      print('Query is empty');
       context.read<StorageSearchHistoryBloc>().add(LoadSearchHistoryEvent());
     } else {
       print('Query: $query'); // Thêm log để kiểm tra
@@ -62,8 +61,6 @@ class _SearchPageState extends State<SearchPage> {
     context.read<SuggestionHistoryBloc>().add(
       AddSuggestionEvent(keyWord: keyword),
     );
-
-    _searchController.text = keyword;
 
     // TODO: chuyển sang trang kết quả tìm kiếm
     print("Searching for: $keyword");
@@ -105,7 +102,6 @@ class _SearchPageState extends State<SearchPage> {
               child: CustomSearchBox(
                 controller: _searchController,
                 focusNode: _focusNode,
-                onChanged: (_) => _onSearchChanged(),
                 onSearch: () =>
                     _onKeywordSelected(_searchController.text.trim()),
               ),
@@ -144,22 +140,34 @@ class _SearchPageState extends State<SearchPage> {
                                 itemCount: state.history.length,
                                 itemBuilder: (context, index) {
                                   final keyword = state.history[index];
-                                  return Column(
-                                    children: [
-                                      SizedBox(
-                                        height: 32,
-                                        child: TextButton(
-                                          style: TextButton.styleFrom(
-                                            backgroundColor: Colors.pink[100],
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(20),
+                                  return IntrinsicWidth(
+                                    child: Column(
+                                      children: [
+                                        SizedBox(
+                                          height: 32,
+                                          child: TextButton(
+                                            style: TextButton.styleFrom(
+                                              backgroundColor: Colors.pink[100],
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(20),
+                                              ),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 16,
+                                                    vertical: 8,
+                                                  ),
                                             ),
-                                            padding: EdgeInsets.zero,
-                                          ),
-                                          onPressed: () =>
-                                              _onKeywordSelected(keyword),
-                                          child: Center(
+                                            onPressed: () {
+                                              _searchController.removeListener(
+                                                _onSearchChanged,
+                                              );
+                                              _searchController.text = keyword;
+                                              _searchController.addListener(
+                                                _onSearchChanged,
+                                              );
+                                              _onKeywordSelected(keyword);
+                                            },
                                             child: Text(
                                               keyword,
                                               style: const TextStyle(
@@ -168,11 +176,11 @@ class _SearchPageState extends State<SearchPage> {
                                             ),
                                           ),
                                         ),
-                                      ),
-                                      const SizedBox(
-                                        height: 8,
-                                      ), // khoảng cách giữa các item
-                                    ],
+                                        const SizedBox(
+                                          height: 8,
+                                        ), // khoảng cách giữa các item
+                                      ],
+                                    ),
                                   );
                                 },
                               ),
@@ -184,12 +192,17 @@ class _SearchPageState extends State<SearchPage> {
                                   _searchController.text = '';
                                 },
                                 style: TextButton.styleFrom(
-                                  backgroundColor: Colors.pink[100], // màu nền
+                                  backgroundColor: const Color.fromARGB(
+                                    255,
+                                    243,
+                                    191,
+                                    209,
+                                  ), // màu nền
                                   foregroundColor: const Color.fromARGB(
                                     255,
-                                    49,
-                                    48,
-                                    50,
+                                    90,
+                                    89,
+                                    91,
                                   ), // màu chữ
                                 ),
                                 child: Center(
@@ -251,7 +264,14 @@ class _SearchPageState extends State<SearchPage> {
                           ),
                           child: ListTile(
                             title: Text(keyword),
-                            onTap: () => _onKeywordSelected(keyword),
+                            onTap: () {
+                              _searchController.removeListener(
+                                _onSearchChanged,
+                              );
+                              _searchController.text = keyword;
+                              _searchController.addListener(_onSearchChanged);
+                              _onKeywordSelected(keyword);
+                            },
                           ),
                         );
                       },

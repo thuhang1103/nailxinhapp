@@ -23,3 +23,5 @@ class SearchProductByStatusEvent extends SearchProductEvent {
 
   SearchProductByStatusEvent(this.status);
 }
+
+class GetAllProductsEvent extends SearchProductEvent {}

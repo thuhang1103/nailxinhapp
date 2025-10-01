@@ -26,4 +26,9 @@ class SearchProductRepositoryImpl implements SearchProductRepository {
   Future<List<Product>> getByStatus(int status) {
     return productData.getByStatus(status);
   }
+
+  @override
+  Future<List<Product>> getAll() {
+    return productData.getAll();
+  }
 }

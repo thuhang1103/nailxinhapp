@@ -64,6 +64,7 @@ class AuthDataImpl implements AuthData {
       // AuthInterceptor sẽ tự động gắn access token vào header
       return response.data["role"];
     } catch (e) {
+      print("Lỗi getRole: $e");
       throw Exception("Không thể lấy role: $e");
     }
   }

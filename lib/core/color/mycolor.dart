@@ -3,7 +3,8 @@ import 'package:flutter/material.dart';
 
 class MyColor {
   static const Color startColor = Color(0xFFE60585); // Màu xanh
-  static const Color endColor = Color(0xFF00D0DD); // Màu tím
+  static const Color endColor = Color(0xFF00D0DD); // Màu t
+  static const Color pinkColor = Color(0xFFf9dcef);
 
   static const LinearGradient mainGradient = LinearGradient(
     colors: [startColor, endColor],

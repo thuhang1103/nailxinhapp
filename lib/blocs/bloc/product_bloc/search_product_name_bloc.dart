@@ -15,6 +15,7 @@ class SearchProductNameBloc
         final products = await useCase.searchByName(event.name);
         emit(SearchProductNameSuccess(products));
       } catch (e) {
+        print("Lỗi khi tìm kiếm sản phẩm: $e");
         emit(SearchProductNameFailure(e.toString()));
       }
     });

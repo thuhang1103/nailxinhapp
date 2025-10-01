@@ -21,4 +21,8 @@ class SearchProductUseCase {
   Future<List<Product>> searchByStatus(int status) {
     return repository.getByStatus(status);
   }
+
+  Future<List<Product>> getAllProducts() {
+    return repository.getAll();
+  }
 }

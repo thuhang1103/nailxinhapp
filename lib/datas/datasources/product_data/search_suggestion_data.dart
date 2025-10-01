@@ -29,12 +29,14 @@ class SearchSuggestionDataImpl implements SearchSuggestionData {
     required String keyWord,
   }) async {
     try {
+      print("vào data source thêm gợi ý tìm kiếm: $keyWord");
       final data = {'keyWord': keyWord};
       if (refreshToken != null) {
         data['refreshToken'] = refreshToken;
       }
       await dio.post('/suggestions/add', data: data);
     } catch (e) {
+      print("Lỗi khi thêm từ khóa gợi ý: $e");
       throw Exception('Lỗi khi thêm từ khóa gợi ý: $e');
     }
   }
