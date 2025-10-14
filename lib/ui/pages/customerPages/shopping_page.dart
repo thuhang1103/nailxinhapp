@@ -227,47 +227,46 @@ class _ShoppingState extends State<Shopping> {
                   SizedBox(height: 8),
 
                   // Danh sách sản phẩm
-                  Padding(
-                    padding: const EdgeInsets.symmetric(vertical: 5.0),
-                    child: BlocBuilder<SearchProductAllBloc, SearchProductAllState>(
-                      builder: (context, state) {
-                        if (state is SearchProductAllLoading) {
-                          return CircularProgressIndicator();
-                        }
-                        if (state is SearchProductAllSuccess) {
-                          final listProduct = state.products;
-                          if (listProduct.isEmpty) {
-                            return const Center(
-                              child: Text('Không có dữ liệu sản phẩm'),
-                            );
-                          }
-                          return GridView.builder(
-                            padding: const EdgeInsets.all(8),
-                            gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 2, // 2 sản phẩm mỗi hàng
-                                  childAspectRatio: 0.62,
-                                  crossAxisSpacing: 9,
-                                  mainAxisSpacing: 9,
-                                ),
-                            itemCount: listProduct.length,
-                            itemBuilder: (context, index) {
-                              final product = listProduct[index];
-                              return ProductItem(
-                                imagePath: product.imagePath ?? '',
-                                name: product.productName,
-                                price: '${product.price}đ',
-                                soldCount: product.soldQuantity,
-                              );
-                            },
+                  BlocBuilder<SearchProductAllBloc, SearchProductAllState>(
+                    builder: (context, state) {
+                      if (state is SearchProductAllLoading) {
+                        return CircularProgressIndicator();
+                      }
+                      if (state is SearchProductAllSuccess) {
+                        final listProduct = state.products;
+                        if (listProduct.isEmpty) {
+                          return const Center(
+                            child: Text('Không có dữ liệu sản phẩm'),
                           );
                         }
-                        if (state is SearchProductAllFailure) {
-                          return Center(child: Text('Lỗi: ${state.error}'));
-                        }
-                        return SizedBox.shrink();
-                      },
-                    ),
+                        return GridView.builder(
+                          padding: const EdgeInsets.all(8),
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2, // 2 sản phẩm mỗi hàng
+                                childAspectRatio: 0.62,
+                                crossAxisSpacing: 9,
+                                mainAxisSpacing: 9,
+                              ),
+                          itemCount: listProduct.length,
+                          itemBuilder: (context, index) {
+                            final product = listProduct[index];
+                            return ProductItem(
+                              imagePath: product.imagePath ?? '',
+                              name: product.productName,
+                              price: '${product.price}đ',
+                              soldCount: product.soldQuantity,
+                            );
+                          },
+                        );
+                      }
+                      if (state is SearchProductAllFailure) {
+                        return Center(child: Text('Lỗi: ${state.error}'));
+                      }
+                      return SizedBox.shrink();
+                    },
                   ),
                 ],
               ),

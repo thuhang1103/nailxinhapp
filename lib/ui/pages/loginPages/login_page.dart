@@ -16,6 +16,9 @@ import '../../../blocs/states/register_state.dart';
 import '../../../domain/usecases/register_user.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:nailxinh/ui/pages/loginPages/resetPass_page.dart';
+import 'package:nailxinh/presentation/login/login_cubit.dart';
+import 'package:nailxinh/presentation/login/login_state.dart';
+import 'package:nailxinh/presentation/login/common_state.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -52,9 +55,40 @@ class _LoginPageState extends State<LoginPage> {
           color: MyColor.textColor,
         ), // Màu icon (nếu có)
       ),
-      body: BlocConsumer<AuthBloc, AuthState>(
+      // body: BlocConsumer<AuthBloc, AuthState>(
+      //   listener: (context, state) {
+      //     if (state is Authenticated) {
+      //       switch (state.role) {
+      //         case "Admin":
+      //           Navigator.pushReplacement(
+      //             context,
+      //             MaterialPageRoute(builder: (_) => AdminPage()),
+      //           );
+      //           break;
+      //         case "Staff":
+      //           Navigator.pushReplacement(
+      //             context,
+      //             MaterialPageRoute(builder: (_) => EmployeePage()),
+      //           );
+      //           break;
+      //         case "Customer":
+      //           Navigator.pushReplacement(
+      //             context,
+      //             MaterialPageRoute(builder: (_) => MyHomePage()),
+      //           );
+      //           break;
+      //       }
+      //     } else if (state is AuthFailure) {
+      //       ScaffoldMessenger.of(
+      //         context,
+      //       ).showSnackBar(SnackBar(content: Text(state.error)));
+      //     }
+      //   },
+      body: BlocConsumer<LoginCubit, LoginState>(
         listener: (context, state) {
-          if (state is Authenticated) {
+          final loginState = state.loginState;
+          if (loginState is Success) {
+            // Giả sử bạn truyền role vào LoginState
             switch (state.role) {
               case "Admin":
                 Navigator.pushReplacement(
@@ -75,14 +109,15 @@ class _LoginPageState extends State<LoginPage> {
                 );
                 break;
             }
-          } else if (state is AuthFailure) {
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.error)));
+          } else if (loginState is Error) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text(loginState.failure.toString())),
+            );
           }
         },
         builder: (context, state) {
-          if (state is AuthLoading) {
+          final loginState = state.loginState;
+          if (loginState is Loading) {
             return Container(
               decoration: BoxDecoration(gradient: MyColor.colorbackground),
               alignment: Alignment.center,
@@ -111,14 +146,21 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 ButtonGradient(
                   text: 'Đăng nhập',
+                  // onPressed: () {
+                  //   final username = _usernameController.text;
+                  //   final password = _passwordController.text;
+                  //   context.read<AuthBloc>().add(
+                  //     LoginRequested(username, password),
+                  //   );
+                  //   // Xử lý đăng nhập
+                  // },
                   onPressed: () {
-                    final username = _usernameController.text;
-                    final password = _passwordController.text;
-                    context.read<AuthBloc>().add(
-                      LoginRequested(username, password),
+                    context.read<LoginCubit>().signin(
+                      username: _usernameController.text,
+                      password: _passwordController.text,
                     );
-                    // Xử lý đăng nhập
                   },
+                  //child: const Text('Đăng nhập'),
                   width: double.infinity,
                   height: 48,
                 ),

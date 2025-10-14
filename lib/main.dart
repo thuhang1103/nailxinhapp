@@ -46,6 +46,9 @@ import 'domain/repositories/product_repository/search_product_repository.dart';
 import 'datas/datasources/product_data/search_products.dart';
 import 'blocs/bloc/product_bloc/search_all.dart';
 import 'ui/pages/customerPages/shopping_page.dart';
+import 'presentation/login/login_cubit.dart';
+import 'domain/usecases/login_usecase.dart';
+import 'domain/usecases/get_role.dart';
 
 Future<void> main() async {
   runApp(MyApp());
@@ -175,6 +178,12 @@ class MyApp extends StatelessWidget {
         providers: [
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(getUsers: context.read<GetUsers>()),
+          ),
+          BlocProvider<LoginCubit>(
+            create: (context) => LoginCubit(
+              useCase: context.read<LoginUsecase>(),
+              getRoleUseCase: context.read<GetRoleUseCase>(),
+            ),
           ),
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
