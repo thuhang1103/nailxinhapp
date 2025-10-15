@@ -49,8 +49,11 @@ import 'ui/pages/customerPages/shopping_page.dart';
 import 'presentation/login/login_cubit.dart';
 import 'domain/usecases/login_usecase.dart';
 import 'domain/usecases/get_role.dart';
+import 'package:nailxinh/routers/router.dart';
+import 'package:nailxinh/core/dependency_injection/service_locator.dart';
 
 Future<void> main() async {
+  await initDependencies();
   runApp(MyApp());
 }
 
@@ -205,18 +208,18 @@ class MyApp extends StatelessWidget {
             child: Shopping(),
           ),
         ],
-        child: MaterialApp(
+        child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
           title: 'User Demo',
           theme: ThemeData(primarySwatch: Colors.blue),
-          routes: {
-            '/customer': (context) => MyHomePage(),
-            '/admin': (context) => AdminPage(),
-            '/staff': (context) => EmployeePage(),
-            '/login': (context) => LoginPage(),
-            // các route khác
-          },
-          home: StartPage(),
+          // routes: {
+          //   '/customer': (context) => MyHomePage(),
+          //   '/admin': (context) => AdminPage(),
+          //   '/staff': (context) => EmployeePage(),
+          //   '/login': (context) => LoginPage(),
+          //   // các route khác
+          // },
+          routerConfig: router,
         ),
       ),
     );

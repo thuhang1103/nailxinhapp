@@ -88,7 +88,6 @@ class _LoginPageState extends State<LoginPage> {
         listener: (context, state) {
           final loginState = state.loginState;
           if (loginState is Success) {
-            // Giả sử bạn truyền role vào LoginState
             switch (state.role) {
               case "Admin":
                 Navigator.pushReplacement(
