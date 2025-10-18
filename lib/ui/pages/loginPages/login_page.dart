@@ -16,9 +16,11 @@ import '../../../blocs/states/register_state.dart';
 import '../../../domain/usecases/register_user.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:nailxinh/ui/pages/loginPages/resetPass_page.dart';
-import 'package:nailxinh/presentation/login/login_cubit.dart';
-import 'package:nailxinh/presentation/login/login_state.dart';
-import 'package:nailxinh/presentation/login/common_state.dart';
+// import 'package:nailxinh/presentation/login/login_cubit.dart';
+// import 'package:nailxinh/presentation/login/login_state.dart';
+// import 'package:nailxinh/presentation/login/common_state.dart';
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -43,10 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios), // Đổi icon
           onPressed: () {
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => MyHomePage()),
-            );
+            Navigator.pop(context);
           },
         ),
         backgroundColor: Colors.transparent, // Nền trong suốt
@@ -55,68 +54,58 @@ class _LoginPageState extends State<LoginPage> {
           color: MyColor.textColor,
         ), // Màu icon (nếu có)
       ),
-      // body: BlocConsumer<AuthBloc, AuthState>(
-      //   listener: (context, state) {
-      //     if (state is Authenticated) {
-      //       switch (state.role) {
-      //         case "Admin":
-      //           Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute(builder: (_) => AdminPage()),
-      //           );
-      //           break;
-      //         case "Staff":
-      //           Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute(builder: (_) => EmployeePage()),
-      //           );
-      //           break;
-      //         case "Customer":
-      //           Navigator.pushReplacement(
-      //             context,
-      //             MaterialPageRoute(builder: (_) => MyHomePage()),
-      //           );
-      //           break;
-      //       }
-      //     } else if (state is AuthFailure) {
-      //       ScaffoldMessenger.of(
-      //         context,
-      //       ).showSnackBar(SnackBar(content: Text(state.error)));
-      //     }
-      //   },
-      body: BlocConsumer<LoginCubit, LoginState>(
+      body: BlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
-          final loginState = state.loginState;
-          if (loginState is Success) {
+          if (state is Authenticated) {
             switch (state.role) {
               case "Admin":
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => AdminPage()),
-                );
+                context.go(RoutePaths.admin);
                 break;
               case "Staff":
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => EmployeePage()),
-                );
+                context.go(RoutePaths.employee);
                 break;
               case "Customer":
-                Navigator.pushReplacement(
-                  context,
-                  MaterialPageRoute(builder: (_) => MyHomePage()),
-                );
+                context.go(RoutePaths.home);
                 break;
             }
-          } else if (loginState is Error) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text(loginState.failure.toString())),
-            );
+          } else if (state is AuthFailure) {
+            ScaffoldMessenger.of(
+              context,
+            ).showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
+        // body: BlocConsumer<LoginCubit, LoginState>(
+        //   listener: (context, state) {
+        //     final loginState = state.loginState;
+        //     if (loginState is Success) {
+        //       switch (state.role) {
+        //         case "Admin":
+        //           Navigator.pushReplacement(
+        //             context,
+        //             MaterialPageRoute(builder: (_) => AdminPage()),
+        //           );
+        //           break;
+        //         case "Staff":
+        //           Navigator.pushReplacement(
+        //             context,
+        //             MaterialPageRoute(builder: (_) => EmployeePage()),
+        //           );
+        //           break;
+        //         case "Customer":
+        //           Navigator.pushReplacement(
+        //             context,
+        //             MaterialPageRoute(builder: (_) => MyHomePage()),
+        //           );
+        //           break;
+        //       }
+        //     } else if (loginState is Error) {
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         SnackBar(content: Text(loginState.failure.toString())),
+        //       );
+        //     }
+        //   },
         builder: (context, state) {
-          final loginState = state.loginState;
-          if (loginState is Loading) {
+          if (state is AuthLoading) {
             return Container(
               decoration: BoxDecoration(gradient: MyColor.colorbackground),
               alignment: Alignment.center,
@@ -145,21 +134,21 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(height: 20),
                 ButtonGradient(
                   text: 'Đăng nhập',
-                  // onPressed: () {
-                  //   final username = _usernameController.text;
-                  //   final password = _passwordController.text;
-                  //   context.read<AuthBloc>().add(
-                  //     LoginRequested(username, password),
-                  //   );
-                  //   // Xử lý đăng nhập
-                  // },
                   onPressed: () {
-                    context.read<LoginCubit>().signin(
-                      username: _usernameController.text,
-                      password: _passwordController.text,
+                    final username = _usernameController.text;
+                    final password = _passwordController.text;
+                    context.read<AuthBloc>().add(
+                      LoginRequested(username, password),
                     );
+                    // Xử lý đăng nhập
                   },
-                  //child: const Text('Đăng nhập'),
+                  // onPressed: () {
+                  //   context.read<LoginCubit>().signin(
+                  //     username: _usernameController.text,
+                  //     password: _passwordController.text,
+                  //   );
+                  // },
+                  // child: const Text('Đăng nhập'),
                   width: double.infinity,
                   height: 48,
                 ),

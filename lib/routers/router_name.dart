@@ -50,4 +50,8 @@ class RouteNames {
 
   //employee
   static const String employee = 'employee';
+  //product detail
+  static const String productDetail = 'productDetail';
+  //cartpage
+  static const String cartPage = 'cartPage';
 }

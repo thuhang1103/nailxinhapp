@@ -50,4 +50,8 @@ class RoutePaths {
 
   //employee
   static const String employee = '/employee';
+  //product detail
+  static const String productDetail = '/product-detail';
+  //cartpage
+  static const String cartPage = '/cart-page';
 }

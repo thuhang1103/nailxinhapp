@@ -3,6 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../blocs/bloc/auth_bloc.dart';
 import '../../blocs/states/auth_state.dart';
 import '../../blocs/evens/auth_event.dart';
+import 'package:go_router/go_router.dart';
+import '../../routers/router.dart';
+import '../../routers/router_name.dart';
+import '../../routers/router_path.dart';
 
 class StartPage extends StatefulWidget {
   @override
@@ -23,17 +27,18 @@ class _StartPageState extends State<StartPage> {
         if (state is Authenticated) {
           // Điều hướng theo role
           if (state.role == 'Admin') {
-            Navigator.pushReplacementNamed(context, '/admin');
+            context.go(RoutePaths.admin);
           } else if (state.role == 'Staff') {
-            Navigator.pushReplacementNamed(context, '/staff');
+            context.go(RoutePaths.employee);
           } else if (state.role == 'Customer') {
-            Navigator.pushReplacementNamed(context, '/customer');
+            print('Navigating to home for Customer');
+            context.go(RoutePaths.home);
           }
         } else if (state is Unauthenticated) {
-          // Trang customer chưa đăng nhậpflu
-          Navigator.pushReplacementNamed(context, '/customer');
+          // Trang customer chưa đăng nhập
+          context.go(RoutePaths.home);
         } else if (state is TokenExpired) {
-          Navigator.pushReplacementNamed(context, '/login');
+          context.go(RoutePaths.login);
         }
       },
       child: Scaffold(body: Center(child: CircularProgressIndicator())),

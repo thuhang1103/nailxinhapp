@@ -32,13 +32,18 @@ class SearchProductDataImpl implements SearchProductData {
   }
 
   Future<Product> getById(int id) async {
+    print("vào data lấy chi tiết sản phẩm với id: $id");
     final res = await dio.get('/products/id/$id');
-    return ProductModel.fromJson(res.data).toEntity();
+    print("lấy đc chi tiết sản phẩm: ${res.data}");
+    final productJson = (res.data as List).first as Map<String, dynamic>;
+
+    return ProductModel.fromJson(productJson).toEntity();
   }
 
   Future<List<Product>> getByStatus(int status) async {
     final res = await dio.get('/products/status/$status');
     final List data = res.data as List;
+
     return data.map((json) => ProductModel.fromJson(json).toEntity()).toList();
   }
 

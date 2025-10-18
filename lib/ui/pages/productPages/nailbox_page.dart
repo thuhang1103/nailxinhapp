@@ -8,6 +8,11 @@ import '../../../blocs/evens/product_event/search_product_event.dart';
 import '../../../blocs/states/product_state/search_product_category_state.dart';
 import '../../../domain/entities/products.dart';
 import '../../../ui/widgets/product_item.dart';
+//router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router.dart';
+import '../../../routers/router_name.dart';
+import '../../../routers/router_path.dart';
 
 class NailBoxPage extends StatefulWidget {
   final int category;
@@ -177,6 +182,12 @@ class _NailBoxPageState extends State<NailBoxPage>
                         itemBuilder: (context, index) {
                           final product = sortedProducts[index];
                           return ProductItem(
+                            onTap: () {
+                              context.pushNamed(
+                                RouteNames.productDetail,
+                                extra: product,
+                              );
+                            },
                             imagePath: product.imagePath ?? '',
                             name: product.productName,
                             price: '${product.price}đ',

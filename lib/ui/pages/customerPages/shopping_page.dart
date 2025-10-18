@@ -19,6 +19,11 @@ import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
 import '../../../blocs/bloc/product_bloc/search_all.dart';
 import '../../../blocs/evens/product_event/search_product_event.dart';
 import '../../../blocs/states/product_state/search_all_state.dart';
+//router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router.dart';
+import '../../../routers/router_name.dart';
+import '../../../routers/router_path.dart';
 
 class Shopping extends StatefulWidget {
   @override
@@ -254,6 +259,12 @@ class _ShoppingState extends State<Shopping> {
                           itemBuilder: (context, index) {
                             final product = listProduct[index];
                             return ProductItem(
+                              onTap: () {
+                                context.pushNamed(
+                                  RouteNames.productDetail,
+                                  extra: product,
+                                );
+                              },
                               imagePath: product.imagePath ?? '',
                               name: product.productName,
                               price: '${product.price}đ',

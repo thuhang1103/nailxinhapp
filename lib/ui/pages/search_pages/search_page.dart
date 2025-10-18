@@ -11,6 +11,7 @@ import '../../../blocs/states/storage_search_history/suggestion_history_state.da
 import 'search_results_page.dart';
 import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
 import '../../../blocs/bloc/product_bloc/search_product_name_bloc.dart';
+import 'package:go_router/go_router.dart';
 
 class SearchPage extends StatefulWidget {
   final String? searchController;
@@ -94,7 +95,7 @@ class _SearchPageState extends State<SearchPage> {
                   Icons.arrow_back_ios,
                   color: MyColor.textColor,
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 iconSize: 19,
               ),
             ),

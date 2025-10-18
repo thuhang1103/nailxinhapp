@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/bloc/auth_bloc.dart';
 import '../../../blocs/evens/auth_event.dart';
 import '../../../blocs/states/auth_state.dart';
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class UserDetail extends StatelessWidget {
   const UserDetail({super.key});
@@ -11,12 +13,8 @@ class UserDetail extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
-        if (state is Unauthenticated) {
-          Navigator.pushNamedAndRemoveUntil(
-            context,
-            '/customer',
-            (route) => false,
-          );
+        if (state is! Authenticated) {
+          context.go(RoutePaths.login);
         }
       },
       child: Scaffold(

@@ -8,6 +8,11 @@ import 'order_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/bloc/auth_bloc.dart';
 import '../../../blocs/states/auth_state.dart';
+//go router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
+import '../../../routers/router_name.dart';
+import '../../../routers/router.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -28,9 +33,10 @@ class _MyHomePageState extends State<MyHomePage> {
   void _onItemTapped(int index) {
     if (index == 4 || index == 2) {
       final authState = context.read<AuthBloc>().state;
-      if (authState is! Authenticated) {
+      if (authState is Unauthenticated) {
+        print('User not authenticated, redirecting to login');
         // Nếu chưa đăng nhập, điều hướng sang trang login
-        Navigator.pushNamed(context, '/login');
+        context.go(RoutePaths.login);
         return;
       }
     }

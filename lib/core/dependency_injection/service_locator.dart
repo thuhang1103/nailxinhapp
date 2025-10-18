@@ -2,6 +2,9 @@ import 'package:get_it/get_it.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:dio/dio.dart';
+//dioclient
+import 'package:nailxinh/core/network/dio_client.dart';
+import 'package:nailxinh/core/network/auth_interceptor.dart';
 import 'package:nailxinh/datas/datasources/user_data.dart';
 import 'package:nailxinh/datas/repositoriesimpl/user_repository_impl.dart';
 import 'package:nailxinh/domain/repositories/user_repository.dart';
@@ -53,16 +56,34 @@ Future<void> initDependencies() async {
   );
 
   //GetRoleUseCase
-  sl.registerLazySingleton<Dio>(() => Dio());
+  sl.registerLazySingleton<FlutterSecureStorage>(
+    () => const FlutterSecureStorage(),
+  );
+
+  final storage = sl<FlutterSecureStorage>();
+  late AuthRepositoryImpl authRepository;
+
+  final authInterceptor = AuthInterceptor(
+    storage: storage,
+    getAuthRepository: () => authRepository,
+  );
+
+  // create a Dio that has the auth interceptor and same baseUrl
+  final dio = DioClient.create(authInterceptor);
+  sl.registerLazySingleton<Dio>(() => dio);
+
   sl.registerLazySingleton<AuthData>(() => AuthDataImpl(sl<Dio>()));
-  sl.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(
+  sl.registerLazySingleton<LoginData>(() => LoginDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<RegisterData>(() => RegisterDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<AuthRepository>(() {
+    authRepository = AuthRepositoryImpl(
       sl<LoginData>(),
-      const FlutterSecureStorage(),
+      sl<FlutterSecureStorage>(),
       sl<AuthData>(),
       sl<RegisterData>(),
-    ),
-  );
+    );
+    return authRepository;
+  });
   sl.registerLazySingleton<GetRoleUseCase>(() => GetRoleUseCase(sl()));
   //registerUser
   sl.registerLazySingleton<RegisterUser>(() => RegisterUser(sl()));
