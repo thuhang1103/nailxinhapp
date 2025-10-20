@@ -92,42 +92,36 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
       body: BlocBuilder<ProductDetailBloc, FetchProductState>(
         builder: (context, state) {
           final cs = state.state;
-
-          // loading
-          if (cs is Loading) {
-            return const Center(child: CircularProgressIndicator());
-          }
-
-          // success
-          if (cs is Success) {
-            final product = state.product ?? widget.product;
-            return _productContent(product);
-          }
-
-          // error
-          if (cs is Error) {
-            final message = cs.failure.toString();
-            return Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Text('Lỗi: $message'),
-                  const SizedBox(height: 12),
-                  ElevatedButton(
-                    onPressed: () {
-                      context.read<ProductDetailBloc>().add(
-                        FetchProductDetail(),
-                      );
-                    },
-                    child: const Text('Thử lại'),
-                  ),
-                ],
-              ),
-            );
-          }
-
-          // fallback (initial / other)
-          return _productContent(state.product ?? widget.product);
+          return cs.maybeWhen<Widget>(
+            loading: () => const Center(child: CircularProgressIndicator()),
+            success: (data) {
+              final product = state.product ?? widget.product;
+              return _productContent(product);
+            },
+            error: (failure) {
+              final message = failure.toString();
+              return Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text('Lỗi: $message'),
+                    const SizedBox(height: 12),
+                    ElevatedButton(
+                      onPressed: () {
+                        context.read<ProductDetailBloc>().add(
+                          FetchProductDetail(
+                            productId: widget.product.productId,
+                          ),
+                        );
+                      },
+                      child: const Text('Thử lại'),
+                    ),
+                  ],
+                ),
+              );
+            },
+            orElse: () => _productContent(state.product ?? widget.product),
+          );
         },
       ),
 

@@ -3,7 +3,16 @@ abstract class CartEvent {
 }
 // ...existing code...
 
-class AddProductToCart extends CartEvent {
-  final int? productId;
-  const AddProductToCart({this.productId});
+class AddProductToCartEvent extends CartEvent {
+  final int cartId;
+  final int productId;
+  final int quantity;
+  final double price;
+
+  const AddProductToCartEvent({
+    required this.cartId,
+    required this.productId,
+    required this.quantity,
+    required this.price,
+  });
 }

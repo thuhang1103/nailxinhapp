@@ -16,7 +16,7 @@ final _privateConstructorUsedError = UnsupportedError(
 );
 
 /// @nodoc
-mixin _$CommonState1 {
+mixin _$CommonState {
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
@@ -64,24 +64,24 @@ mixin _$CommonState1 {
 }
 
 /// @nodoc
-abstract class $CommonState1CopyWith<$Res> {
-  factory $CommonState1CopyWith(
-    CommonState1 value,
-    $Res Function(CommonState1) then,
-  ) = _$CommonState1CopyWithImpl<$Res, CommonState1>;
+abstract class $CommonStateCopyWith<$Res> {
+  factory $CommonStateCopyWith(
+    CommonState value,
+    $Res Function(CommonState) then,
+  ) = _$CommonStateCopyWithImpl<$Res, CommonState>;
 }
 
 /// @nodoc
-class _$CommonState1CopyWithImpl<$Res, $Val extends CommonState1>
-    implements $CommonState1CopyWith<$Res> {
-  _$CommonState1CopyWithImpl(this._value, this._then);
+class _$CommonStateCopyWithImpl<$Res, $Val extends CommonState>
+    implements $CommonStateCopyWith<$Res> {
+  _$CommonStateCopyWithImpl(this._value, this._then);
 
   // ignore: unused_field
   final $Val _value;
   // ignore: unused_field
   final $Res Function($Val) _then;
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -95,14 +95,14 @@ abstract class _$$InitialImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$InitialImplCopyWithImpl<$Res>
-    extends _$CommonState1CopyWithImpl<$Res, _$InitialImpl>
+    extends _$CommonStateCopyWithImpl<$Res, _$InitialImpl>
     implements _$$InitialImplCopyWith<$Res> {
   __$$InitialImplCopyWithImpl(
     _$InitialImpl _value,
     $Res Function(_$InitialImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -113,7 +113,7 @@ class _$InitialImpl implements Initial {
 
   @override
   String toString() {
-    return 'CommonState1.initial()';
+    return 'CommonState.initial()';
   }
 
   @override
@@ -200,7 +200,7 @@ class _$InitialImpl implements Initial {
   }
 }
 
-abstract class Initial implements CommonState1 {
+abstract class Initial implements CommonState {
   const factory Initial() = _$InitialImpl;
 }
 
@@ -214,14 +214,14 @@ abstract class _$$LoadingImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$LoadingImplCopyWithImpl<$Res>
-    extends _$CommonState1CopyWithImpl<$Res, _$LoadingImpl>
+    extends _$CommonStateCopyWithImpl<$Res, _$LoadingImpl>
     implements _$$LoadingImplCopyWith<$Res> {
   __$$LoadingImplCopyWithImpl(
     _$LoadingImpl _value,
     $Res Function(_$LoadingImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
 }
 
@@ -232,7 +232,7 @@ class _$LoadingImpl implements Loading {
 
   @override
   String toString() {
-    return 'CommonState1.loading()';
+    return 'CommonState.loading()';
   }
 
   @override
@@ -319,7 +319,7 @@ class _$LoadingImpl implements Loading {
   }
 }
 
-abstract class Loading implements CommonState1 {
+abstract class Loading implements CommonState {
   const factory Loading() = _$LoadingImpl;
 }
 
@@ -335,14 +335,14 @@ abstract class _$$SuccessImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$SuccessImplCopyWithImpl<$Res>
-    extends _$CommonState1CopyWithImpl<$Res, _$SuccessImpl>
+    extends _$CommonStateCopyWithImpl<$Res, _$SuccessImpl>
     implements _$$SuccessImplCopyWith<$Res> {
   __$$SuccessImplCopyWithImpl(
     _$SuccessImpl _value,
     $Res Function(_$SuccessImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -368,7 +368,7 @@ class _$SuccessImpl implements Success {
 
   @override
   String toString() {
-    return 'CommonState1.success(data: $data)';
+    return 'CommonState.success(data: $data)';
   }
 
   @override
@@ -383,7 +383,7 @@ class _$SuccessImpl implements Success {
   int get hashCode =>
       Object.hash(runtimeType, const DeepCollectionEquality().hash(data));
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -466,12 +466,12 @@ class _$SuccessImpl implements Success {
   }
 }
 
-abstract class Success implements CommonState1 {
+abstract class Success implements CommonState {
   const factory Success({final dynamic data}) = _$SuccessImpl;
 
   dynamic get data;
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$SuccessImplCopyWith<_$SuccessImpl> get copyWith =>
@@ -490,14 +490,14 @@ abstract class _$$ErrorImplCopyWith<$Res> {
 
 /// @nodoc
 class __$$ErrorImplCopyWithImpl<$Res>
-    extends _$CommonState1CopyWithImpl<$Res, _$ErrorImpl>
+    extends _$CommonStateCopyWithImpl<$Res, _$ErrorImpl>
     implements _$$ErrorImplCopyWith<$Res> {
   __$$ErrorImplCopyWithImpl(
     _$ErrorImpl _value,
     $Res Function(_$ErrorImpl) _then,
   ) : super(_value, _then);
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
@@ -523,7 +523,7 @@ class _$ErrorImpl implements Error {
 
   @override
   String toString() {
-    return 'CommonState1.error(failure: $failure)';
+    return 'CommonState.error(failure: $failure)';
   }
 
   @override
@@ -537,7 +537,7 @@ class _$ErrorImpl implements Error {
   @override
   int get hashCode => Object.hash(runtimeType, failure);
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   @override
@@ -620,12 +620,12 @@ class _$ErrorImpl implements Error {
   }
 }
 
-abstract class Error implements CommonState1 {
+abstract class Error implements CommonState {
   const factory Error(final Exception failure) = _$ErrorImpl;
 
   Exception get failure;
 
-  /// Create a copy of CommonState1
+  /// Create a copy of CommonState
   /// with the given fields replaced by the non-null parameter values.
   @JsonKey(includeFromJson: false, includeToJson: false)
   _$$ErrorImplCopyWith<_$ErrorImpl> get copyWith =>

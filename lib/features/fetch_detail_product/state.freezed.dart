@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$FetchProductState {
-  CommonState1 get state => throw _privateConstructorUsedError;
+  CommonState get state => throw _privateConstructorUsedError;
   Product? get product => throw _privateConstructorUsedError;
 
   /// Create a copy of FetchProductState
@@ -34,9 +34,9 @@ abstract class $FetchProductStateCopyWith<$Res> {
     $Res Function(FetchProductState) then,
   ) = _$FetchProductStateCopyWithImpl<$Res, FetchProductState>;
   @useResult
-  $Res call({CommonState1 state, Product? product});
+  $Res call({CommonState state, Product? product});
 
-  $CommonState1CopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
@@ -59,7 +59,7 @@ class _$FetchProductStateCopyWithImpl<$Res, $Val extends FetchProductState>
             state: null == state
                 ? _value.state
                 : state // ignore: cast_nullable_to_non_nullable
-                      as CommonState1,
+                      as CommonState,
             product: freezed == product
                 ? _value.product
                 : product // ignore: cast_nullable_to_non_nullable
@@ -73,8 +73,8 @@ class _$FetchProductStateCopyWithImpl<$Res, $Val extends FetchProductState>
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CommonState1CopyWith<$Res> get state {
-    return $CommonState1CopyWith<$Res>(_value.state, (value) {
+  $CommonStateCopyWith<$Res> get state {
+    return $CommonStateCopyWith<$Res>(_value.state, (value) {
       return _then(_value.copyWith(state: value) as $Val);
     });
   }
@@ -89,10 +89,10 @@ abstract class _$$FetchProductStateImplCopyWith<$Res>
   ) = __$$FetchProductStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({CommonState1 state, Product? product});
+  $Res call({CommonState state, Product? product});
 
   @override
-  $CommonState1CopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
@@ -114,7 +114,7 @@ class __$$FetchProductStateImplCopyWithImpl<$Res>
         state: null == state
             ? _value.state
             : state // ignore: cast_nullable_to_non_nullable
-                  as CommonState1,
+                  as CommonState,
         product: freezed == product
             ? _value.product
             : product // ignore: cast_nullable_to_non_nullable
@@ -128,13 +128,13 @@ class __$$FetchProductStateImplCopyWithImpl<$Res>
 
 class _$FetchProductStateImpl implements _FetchProductState {
   const _$FetchProductStateImpl({
-    this.state = const CommonState1.initial(),
+    this.state = const CommonState.initial(),
     this.product,
   });
 
   @override
   @JsonKey()
-  final CommonState1 state;
+  final CommonState state;
   @override
   final Product? product;
 
@@ -169,12 +169,12 @@ class _$FetchProductStateImpl implements _FetchProductState {
 
 abstract class _FetchProductState implements FetchProductState {
   const factory _FetchProductState({
-    final CommonState1 state,
+    final CommonState state,
     final Product? product,
   }) = _$FetchProductStateImpl;
 
   @override
-  CommonState1 get state;
+  CommonState get state;
   @override
   Product? get product;
 

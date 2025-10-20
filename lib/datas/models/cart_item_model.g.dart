@@ -9,17 +9,16 @@ part of 'cart_item_model.dart';
 _$CartItemModelImpl _$$CartItemModelImplFromJson(Map<String, dynamic> json) =>
     _$CartItemModelImpl(
       cartItemId: (json['CartItemID'] as num?)?.toInt(),
-      cartId: (json['CartID'] as num).toInt(),
-      productId: (json['ProductID'] as num).toInt(),
+      cartId: (json['CartID'] as num?)?.toInt(),
+      productId: (json['ProductID'] as num?)?.toInt(),
+      productName: json['ProductName'] as String?,
+      imagePath: json['ImagePath'] as String?,
       quantity: (json['Quantity'] as num?)?.toInt() ?? 1,
-      price: _doubleFromJson(json['Price']),
+      price: (json['Price'] as num?)?.toDouble() ?? 0.0,
+      total: (json['Total'] as num?)?.toDouble() ?? 0.0,
       isSelected: json['is_selected'] as bool? ?? false,
-      createdAt: json['CreatedAt'] == null
-          ? null
-          : DateTime.parse(json['CreatedAt'] as String),
-      updatedAt: json['UpdatedAt'] == null
-          ? null
-          : DateTime.parse(json['UpdatedAt'] as String),
+      createdAt: json['CreatedAt'] as String?,
+      updatedAt: json['UpdatedAt'] as String?,
     );
 
 Map<String, dynamic> _$$CartItemModelImplToJson(_$CartItemModelImpl instance) =>
@@ -27,9 +26,12 @@ Map<String, dynamic> _$$CartItemModelImplToJson(_$CartItemModelImpl instance) =>
       'CartItemID': instance.cartItemId,
       'CartID': instance.cartId,
       'ProductID': instance.productId,
+      'ProductName': instance.productName,
+      'ImagePath': instance.imagePath,
       'Quantity': instance.quantity,
-      'Price': _doubleToJson(instance.price),
+      'Price': instance.price,
+      'Total': instance.total,
       'is_selected': instance.isSelected,
-      'CreatedAt': instance.createdAt?.toIso8601String(),
-      'UpdatedAt': instance.updatedAt?.toIso8601String(),
+      'CreatedAt': instance.createdAt,
+      'UpdatedAt': instance.updatedAt,
     };

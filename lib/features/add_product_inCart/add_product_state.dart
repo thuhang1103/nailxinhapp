@@ -8,7 +8,7 @@ part 'add_product_state.freezed.dart';
 @freezed
 class AddProductToCartState with _$AddProductToCartState {
   const factory AddProductToCartState({
-    @Default(CommonState1.initial()) CommonState1 state,
+    @Default(CommonState.initial()) CommonState state,
     Product? product,
   }) = _AddProductToCartState;
 }

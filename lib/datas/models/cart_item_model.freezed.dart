@@ -24,19 +24,25 @@ mixin _$CartItemModel {
   @JsonKey(name: 'CartItemID')
   int? get cartItemId => throw _privateConstructorUsedError;
   @JsonKey(name: 'CartID')
-  int get cartId => throw _privateConstructorUsedError;
+  int? get cartId => throw _privateConstructorUsedError;
   @JsonKey(name: 'ProductID')
-  int get productId => throw _privateConstructorUsedError;
+  int? get productId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ProductName')
+  String? get productName => throw _privateConstructorUsedError;
+  @JsonKey(name: 'ImagePath')
+  String? get imagePath => throw _privateConstructorUsedError;
   @JsonKey(name: 'Quantity')
   int get quantity => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-  double get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Price')
+  double get price => throw _privateConstructorUsedError; //total
+  @JsonKey(name: 'Total')
+  double get total => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_selected')
   bool get isSelected => throw _privateConstructorUsedError;
   @JsonKey(name: 'CreatedAt')
-  DateTime? get createdAt => throw _privateConstructorUsedError;
+  String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'UpdatedAt')
-  DateTime? get updatedAt => throw _privateConstructorUsedError;
+  String? get updatedAt => throw _privateConstructorUsedError;
 
   /// Serializes this CartItemModel to a JSON map.
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
@@ -57,14 +63,16 @@ abstract class $CartItemModelCopyWith<$Res> {
   @useResult
   $Res call({
     @JsonKey(name: 'CartItemID') int? cartItemId,
-    @JsonKey(name: 'CartID') int cartId,
-    @JsonKey(name: 'ProductID') int productId,
+    @JsonKey(name: 'CartID') int? cartId,
+    @JsonKey(name: 'ProductID') int? productId,
+    @JsonKey(name: 'ProductName') String? productName,
+    @JsonKey(name: 'ImagePath') String? imagePath,
     @JsonKey(name: 'Quantity') int quantity,
-    @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-    double price,
+    @JsonKey(name: 'Price') double price,
+    @JsonKey(name: 'Total') double total,
     @JsonKey(name: 'is_selected') bool isSelected,
-    @JsonKey(name: 'CreatedAt') DateTime? createdAt,
-    @JsonKey(name: 'UpdatedAt') DateTime? updatedAt,
+    @JsonKey(name: 'CreatedAt') String? createdAt,
+    @JsonKey(name: 'UpdatedAt') String? updatedAt,
   });
 }
 
@@ -84,10 +92,13 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
   @override
   $Res call({
     Object? cartItemId = freezed,
-    Object? cartId = null,
-    Object? productId = null,
+    Object? cartId = freezed,
+    Object? productId = freezed,
+    Object? productName = freezed,
+    Object? imagePath = freezed,
     Object? quantity = null,
     Object? price = null,
+    Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -98,14 +109,22 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
                 ? _value.cartItemId
                 : cartItemId // ignore: cast_nullable_to_non_nullable
                       as int?,
-            cartId: null == cartId
+            cartId: freezed == cartId
                 ? _value.cartId
                 : cartId // ignore: cast_nullable_to_non_nullable
-                      as int,
-            productId: null == productId
+                      as int?,
+            productId: freezed == productId
                 ? _value.productId
                 : productId // ignore: cast_nullable_to_non_nullable
-                      as int,
+                      as int?,
+            productName: freezed == productName
+                ? _value.productName
+                : productName // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            imagePath: freezed == imagePath
+                ? _value.imagePath
+                : imagePath // ignore: cast_nullable_to_non_nullable
+                      as String?,
             quantity: null == quantity
                 ? _value.quantity
                 : quantity // ignore: cast_nullable_to_non_nullable
@@ -114,6 +133,10 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
                 ? _value.price
                 : price // ignore: cast_nullable_to_non_nullable
                       as double,
+            total: null == total
+                ? _value.total
+                : total // ignore: cast_nullable_to_non_nullable
+                      as double,
             isSelected: null == isSelected
                 ? _value.isSelected
                 : isSelected // ignore: cast_nullable_to_non_nullable
@@ -121,11 +144,11 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
             createdAt: freezed == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
+                      as String?,
             updatedAt: freezed == updatedAt
                 ? _value.updatedAt
                 : updatedAt // ignore: cast_nullable_to_non_nullable
-                      as DateTime?,
+                      as String?,
           )
           as $Val,
     );
@@ -143,14 +166,16 @@ abstract class _$$CartItemModelImplCopyWith<$Res>
   @useResult
   $Res call({
     @JsonKey(name: 'CartItemID') int? cartItemId,
-    @JsonKey(name: 'CartID') int cartId,
-    @JsonKey(name: 'ProductID') int productId,
+    @JsonKey(name: 'CartID') int? cartId,
+    @JsonKey(name: 'ProductID') int? productId,
+    @JsonKey(name: 'ProductName') String? productName,
+    @JsonKey(name: 'ImagePath') String? imagePath,
     @JsonKey(name: 'Quantity') int quantity,
-    @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-    double price,
+    @JsonKey(name: 'Price') double price,
+    @JsonKey(name: 'Total') double total,
     @JsonKey(name: 'is_selected') bool isSelected,
-    @JsonKey(name: 'CreatedAt') DateTime? createdAt,
-    @JsonKey(name: 'UpdatedAt') DateTime? updatedAt,
+    @JsonKey(name: 'CreatedAt') String? createdAt,
+    @JsonKey(name: 'UpdatedAt') String? updatedAt,
   });
 }
 
@@ -169,10 +194,13 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
   @override
   $Res call({
     Object? cartItemId = freezed,
-    Object? cartId = null,
-    Object? productId = null,
+    Object? cartId = freezed,
+    Object? productId = freezed,
+    Object? productName = freezed,
+    Object? imagePath = freezed,
     Object? quantity = null,
     Object? price = null,
+    Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -183,14 +211,22 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
             ? _value.cartItemId
             : cartItemId // ignore: cast_nullable_to_non_nullable
                   as int?,
-        cartId: null == cartId
+        cartId: freezed == cartId
             ? _value.cartId
             : cartId // ignore: cast_nullable_to_non_nullable
-                  as int,
-        productId: null == productId
+                  as int?,
+        productId: freezed == productId
             ? _value.productId
             : productId // ignore: cast_nullable_to_non_nullable
-                  as int,
+                  as int?,
+        productName: freezed == productName
+            ? _value.productName
+            : productName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        imagePath: freezed == imagePath
+            ? _value.imagePath
+            : imagePath // ignore: cast_nullable_to_non_nullable
+                  as String?,
         quantity: null == quantity
             ? _value.quantity
             : quantity // ignore: cast_nullable_to_non_nullable
@@ -199,6 +235,10 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
             ? _value.price
             : price // ignore: cast_nullable_to_non_nullable
                   as double,
+        total: null == total
+            ? _value.total
+            : total // ignore: cast_nullable_to_non_nullable
+                  as double,
         isSelected: null == isSelected
             ? _value.isSelected
             : isSelected // ignore: cast_nullable_to_non_nullable
@@ -206,11 +246,11 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
         createdAt: freezed == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
+                  as String?,
         updatedAt: freezed == updatedAt
             ? _value.updatedAt
             : updatedAt // ignore: cast_nullable_to_non_nullable
-                  as DateTime?,
+                  as String?,
       ),
     );
   }
@@ -221,11 +261,13 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
 class _$CartItemModelImpl extends _CartItemModel {
   const _$CartItemModelImpl({
     @JsonKey(name: 'CartItemID') this.cartItemId,
-    @JsonKey(name: 'CartID') required this.cartId,
-    @JsonKey(name: 'ProductID') required this.productId,
+    @JsonKey(name: 'CartID') this.cartId,
+    @JsonKey(name: 'ProductID') this.productId,
+    @JsonKey(name: 'ProductName') this.productName,
+    @JsonKey(name: 'ImagePath') this.imagePath,
     @JsonKey(name: 'Quantity') this.quantity = 1,
-    @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-    required this.price,
+    @JsonKey(name: 'Price') this.price = 0.0,
+    @JsonKey(name: 'Total') this.total = 0.0,
     @JsonKey(name: 'is_selected') this.isSelected = false,
     @JsonKey(name: 'CreatedAt') this.createdAt,
     @JsonKey(name: 'UpdatedAt') this.updatedAt,
@@ -239,29 +281,39 @@ class _$CartItemModelImpl extends _CartItemModel {
   final int? cartItemId;
   @override
   @JsonKey(name: 'CartID')
-  final int cartId;
+  final int? cartId;
   @override
   @JsonKey(name: 'ProductID')
-  final int productId;
+  final int? productId;
+  @override
+  @JsonKey(name: 'ProductName')
+  final String? productName;
+  @override
+  @JsonKey(name: 'ImagePath')
+  final String? imagePath;
   @override
   @JsonKey(name: 'Quantity')
   final int quantity;
   @override
-  @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
+  @JsonKey(name: 'Price')
   final double price;
+  //total
+  @override
+  @JsonKey(name: 'Total')
+  final double total;
   @override
   @JsonKey(name: 'is_selected')
   final bool isSelected;
   @override
   @JsonKey(name: 'CreatedAt')
-  final DateTime? createdAt;
+  final String? createdAt;
   @override
   @JsonKey(name: 'UpdatedAt')
-  final DateTime? updatedAt;
+  final String? updatedAt;
 
   @override
   String toString() {
-    return 'CartItemModel(cartItemId: $cartItemId, cartId: $cartId, productId: $productId, quantity: $quantity, price: $price, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CartItemModel(cartItemId: $cartItemId, cartId: $cartId, productId: $productId, productName: $productName, imagePath: $imagePath, quantity: $quantity, price: $price, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -274,9 +326,14 @@ class _$CartItemModelImpl extends _CartItemModel {
             (identical(other.cartId, cartId) || other.cartId == cartId) &&
             (identical(other.productId, productId) ||
                 other.productId == productId) &&
+            (identical(other.productName, productName) ||
+                other.productName == productName) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.total, total) || other.total == total) &&
             (identical(other.isSelected, isSelected) ||
                 other.isSelected == isSelected) &&
             (identical(other.createdAt, createdAt) ||
@@ -292,8 +349,11 @@ class _$CartItemModelImpl extends _CartItemModel {
     cartItemId,
     cartId,
     productId,
+    productName,
+    imagePath,
     quantity,
     price,
+    total,
     isSelected,
     createdAt,
     updatedAt,
@@ -316,14 +376,16 @@ class _$CartItemModelImpl extends _CartItemModel {
 abstract class _CartItemModel extends CartItemModel {
   const factory _CartItemModel({
     @JsonKey(name: 'CartItemID') final int? cartItemId,
-    @JsonKey(name: 'CartID') required final int cartId,
-    @JsonKey(name: 'ProductID') required final int productId,
+    @JsonKey(name: 'CartID') final int? cartId,
+    @JsonKey(name: 'ProductID') final int? productId,
+    @JsonKey(name: 'ProductName') final String? productName,
+    @JsonKey(name: 'ImagePath') final String? imagePath,
     @JsonKey(name: 'Quantity') final int quantity,
-    @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-    required final double price,
+    @JsonKey(name: 'Price') final double price,
+    @JsonKey(name: 'Total') final double total,
     @JsonKey(name: 'is_selected') final bool isSelected,
-    @JsonKey(name: 'CreatedAt') final DateTime? createdAt,
-    @JsonKey(name: 'UpdatedAt') final DateTime? updatedAt,
+    @JsonKey(name: 'CreatedAt') final String? createdAt,
+    @JsonKey(name: 'UpdatedAt') final String? updatedAt,
   }) = _$CartItemModelImpl;
   const _CartItemModel._() : super._();
 
@@ -335,25 +397,34 @@ abstract class _CartItemModel extends CartItemModel {
   int? get cartItemId;
   @override
   @JsonKey(name: 'CartID')
-  int get cartId;
+  int? get cartId;
   @override
   @JsonKey(name: 'ProductID')
-  int get productId;
+  int? get productId;
+  @override
+  @JsonKey(name: 'ProductName')
+  String? get productName;
+  @override
+  @JsonKey(name: 'ImagePath')
+  String? get imagePath;
   @override
   @JsonKey(name: 'Quantity')
   int get quantity;
   @override
-  @JsonKey(name: 'Price', fromJson: _doubleFromJson, toJson: _doubleToJson)
-  double get price;
+  @JsonKey(name: 'Price')
+  double get price; //total
+  @override
+  @JsonKey(name: 'Total')
+  double get total;
   @override
   @JsonKey(name: 'is_selected')
   bool get isSelected;
   @override
   @JsonKey(name: 'CreatedAt')
-  DateTime? get createdAt;
+  String? get createdAt;
   @override
   @JsonKey(name: 'UpdatedAt')
-  DateTime? get updatedAt;
+  String? get updatedAt;
 
   /// Create a copy of CartItemModel
   /// with the given fields replaced by the non-null parameter values.

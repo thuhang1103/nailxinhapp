@@ -4,12 +4,10 @@ import 'package:nailxinh/datas/datasources/register_data.dart';
 import 'package:nailxinh/domain/usecases/get_user.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:nailxinh/domain/usecases/register_user.dart';
-import 'blocs/bloc/register_bloc.dart';
 import 'blocs/bloc/user_bloc.dart';
 import 'datas/datasources/user_data.dart';
 import 'datas/repositoriesimpl/user_repository_impl.dart';
 import 'domain/repositories/user_repository.dart';
-import 'domain/usecases/register_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'datas/repositoriesimpl/auth_repository_impl.dart';
 import 'domain/repositories/auth_repository.dart';
@@ -18,16 +16,10 @@ import 'blocs/bloc/auth_bloc.dart';
 import 'datas/datasources/login_data.dart';
 import 'blocs/bloc/role_bloc.dart';
 import 'domain/usecases/get_role.dart';
-import 'package:dio/dio.dart';
 import 'datas/datasources/auth_data.dart';
 import 'core/network/dio_client.dart';
 import 'domain/usecases/refreshToken_usecase.dart';
 import 'core/network/auth_interceptor.dart';
-import 'ui/pages/startPage.dart';
-import 'ui/pages/customerPages/myhome_page.dart';
-import 'ui/pages/adminPages/admin_page.dart';
-import 'ui/pages/EmployeePages/employee_page.dart';
-import 'ui/pages/loginPages/login_page.dart';
 import 'domain/usecases/logout_usecase.dart';
 import 'domain/usecases/check_user.dart';
 import 'domain/usecases/search_usecases/add_keyword.dart';
@@ -44,11 +36,6 @@ import 'domain/usecases/product_usecase/search_product_usecase.dart';
 import 'datas/repositoriesimpl/product_repository_impl/search_product_repository_impl.dart';
 import 'domain/repositories/product_repository/search_product_repository.dart';
 import 'datas/datasources/product_data/search_products.dart';
-import 'blocs/bloc/product_bloc/search_all.dart';
-import 'ui/pages/customerPages/shopping_page.dart';
-import 'presentation/login/login_cubit.dart';
-import 'domain/usecases/login_usecase.dart';
-import 'domain/usecases/get_role.dart';
 import 'package:nailxinh/routers/router.dart';
 import 'package:nailxinh/core/dependency_injection/service_locator.dart';
 
@@ -182,12 +169,7 @@ class MyApp extends StatelessWidget {
           BlocProvider<UserBloc>(
             create: (context) => UserBloc(getUsers: context.read<GetUsers>()),
           ),
-          BlocProvider<LoginCubit>(
-            create: (context) => LoginCubit(
-              useCase: context.read<LoginUsecase>(),
-              getRoleUseCase: context.read<GetRoleUseCase>(),
-            ),
-          ),
+
           BlocProvider<AuthBloc>(
             create: (context) => AuthBloc(
               logoutUsecase: context.read<LogoutUsecase>(),
@@ -201,11 +183,6 @@ class MyApp extends StatelessWidget {
           BlocProvider<RoleBloc>(
             create: (context) =>
                 RoleBloc(getRoleUseCase: context.read<GetRoleUseCase>()),
-          ),
-          BlocProvider(
-            create: (context) =>
-                SearchProductAllBloc(context.read<SearchProductUseCase>()),
-            child: Shopping(),
           ),
         ],
         child: MaterialApp.router(

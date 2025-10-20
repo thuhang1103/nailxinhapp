@@ -23,24 +23,24 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, FetchProductState> {
     if (id == null) {
       emit(
         state.copyWith(
-          state: CommonState1.error(Exception('Invalid product id')),
+          state: CommonState.error(Exception('Invalid product id')),
           product: null,
         ),
       );
       return;
     }
 
-    emit(state.copyWith(state: CommonState1.loading(), product: null));
+    emit(state.copyWith(state: CommonState.loading(), product: null));
 
     try {
       print("vào bloc ");
       final Product product = await _searchProduct.searchById(id);
-      emit(state.copyWith(state: CommonState1.success(), product: product));
+      emit(state.copyWith(state: CommonState.success(), product: product));
       print("Đã lấy chi tiết sản phẩm ở bloc : ${product.productName}");
     } catch (e) {
       emit(
         state.copyWith(
-          state: CommonState1.error(Exception(e.toString())),
+          state: CommonState.error(Exception(e.toString())),
           product: null,
         ),
       );

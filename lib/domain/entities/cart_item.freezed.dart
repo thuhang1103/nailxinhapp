@@ -15,24 +15,19 @@ final _privateConstructorUsedError = UnsupportedError(
   'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
 );
 
-CartItem _$CartItemFromJson(Map<String, dynamic> json) {
-  return _CartItem.fromJson(json);
-}
-
 /// @nodoc
 mixin _$CartItem {
   int? get id => throw _privateConstructorUsedError;
   int? get cartId => throw _privateConstructorUsedError;
-  int get productId => throw _privateConstructorUsedError;
-  int get quantity => throw _privateConstructorUsedError;
-  @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson)
+  int? get productId => throw _privateConstructorUsedError;
+  int? get quantity => throw _privateConstructorUsedError;
+  String? get productName => throw _privateConstructorUsedError;
+  String? get imagePath => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  double get total => throw _privateConstructorUsedError;
   bool get isSelected => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-
-  /// Serializes this CartItem to a JSON map.
-  Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
 
   /// Create a copy of CartItem
   /// with the given fields replaced by the non-null parameter values.
@@ -49,9 +44,12 @@ abstract class $CartItemCopyWith<$Res> {
   $Res call({
     int? id,
     int? cartId,
-    int productId,
-    int quantity,
-    @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson) double price,
+    int? productId,
+    int? quantity,
+    String? productName,
+    String? imagePath,
+    double price,
+    double total,
     bool isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -75,9 +73,12 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
   $Res call({
     Object? id = freezed,
     Object? cartId = freezed,
-    Object? productId = null,
-    Object? quantity = null,
+    Object? productId = freezed,
+    Object? quantity = freezed,
+    Object? productName = freezed,
+    Object? imagePath = freezed,
     Object? price = null,
+    Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -92,17 +93,29 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
                 ? _value.cartId
                 : cartId // ignore: cast_nullable_to_non_nullable
                       as int?,
-            productId: null == productId
+            productId: freezed == productId
                 ? _value.productId
                 : productId // ignore: cast_nullable_to_non_nullable
-                      as int,
-            quantity: null == quantity
+                      as int?,
+            quantity: freezed == quantity
                 ? _value.quantity
                 : quantity // ignore: cast_nullable_to_non_nullable
-                      as int,
+                      as int?,
+            productName: freezed == productName
+                ? _value.productName
+                : productName // ignore: cast_nullable_to_non_nullable
+                      as String?,
+            imagePath: freezed == imagePath
+                ? _value.imagePath
+                : imagePath // ignore: cast_nullable_to_non_nullable
+                      as String?,
             price: null == price
                 ? _value.price
                 : price // ignore: cast_nullable_to_non_nullable
+                      as double,
+            total: null == total
+                ? _value.total
+                : total // ignore: cast_nullable_to_non_nullable
                       as double,
             isSelected: null == isSelected
                 ? _value.isSelected
@@ -134,9 +147,12 @@ abstract class _$$CartItemImplCopyWith<$Res>
   $Res call({
     int? id,
     int? cartId,
-    int productId,
-    int quantity,
-    @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson) double price,
+    int? productId,
+    int? quantity,
+    String? productName,
+    String? imagePath,
+    double price,
+    double total,
     bool isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
@@ -159,9 +175,12 @@ class __$$CartItemImplCopyWithImpl<$Res>
   $Res call({
     Object? id = freezed,
     Object? cartId = freezed,
-    Object? productId = null,
-    Object? quantity = null,
+    Object? productId = freezed,
+    Object? quantity = freezed,
+    Object? productName = freezed,
+    Object? imagePath = freezed,
     Object? price = null,
+    Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
     Object? updatedAt = freezed,
@@ -176,17 +195,29 @@ class __$$CartItemImplCopyWithImpl<$Res>
             ? _value.cartId
             : cartId // ignore: cast_nullable_to_non_nullable
                   as int?,
-        productId: null == productId
+        productId: freezed == productId
             ? _value.productId
             : productId // ignore: cast_nullable_to_non_nullable
-                  as int,
-        quantity: null == quantity
+                  as int?,
+        quantity: freezed == quantity
             ? _value.quantity
             : quantity // ignore: cast_nullable_to_non_nullable
-                  as int,
+                  as int?,
+        productName: freezed == productName
+            ? _value.productName
+            : productName // ignore: cast_nullable_to_non_nullable
+                  as String?,
+        imagePath: freezed == imagePath
+            ? _value.imagePath
+            : imagePath // ignore: cast_nullable_to_non_nullable
+                  as String?,
         price: null == price
             ? _value.price
             : price // ignore: cast_nullable_to_non_nullable
+                  as double,
+        total: null == total
+            ? _value.total
+            : total // ignore: cast_nullable_to_non_nullable
                   as double,
         isSelected: null == isSelected
             ? _value.isSelected
@@ -206,35 +237,40 @@ class __$$CartItemImplCopyWithImpl<$Res>
 }
 
 /// @nodoc
-@JsonSerializable()
+
 class _$CartItemImpl extends _CartItem {
   const _$CartItemImpl({
     this.id,
     this.cartId,
-    required this.productId,
-    this.quantity = 1,
-    @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson)
-    required this.price,
+    this.productId,
+    this.quantity,
+    this.productName,
+    this.imagePath,
+    this.price = 0.0,
+    this.total = 0.0,
     this.isSelected = false,
     this.createdAt,
     this.updatedAt,
   }) : super._();
-
-  factory _$CartItemImpl.fromJson(Map<String, dynamic> json) =>
-      _$$CartItemImplFromJson(json);
 
   @override
   final int? id;
   @override
   final int? cartId;
   @override
-  final int productId;
+  final int? productId;
+  @override
+  final int? quantity;
+  @override
+  final String? productName;
+  @override
+  final String? imagePath;
   @override
   @JsonKey()
-  final int quantity;
-  @override
-  @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson)
   final double price;
+  @override
+  @JsonKey()
+  final double total;
   @override
   @JsonKey()
   final bool isSelected;
@@ -245,7 +281,7 @@ class _$CartItemImpl extends _CartItem {
 
   @override
   String toString() {
-    return 'CartItem(id: $id, cartId: $cartId, productId: $productId, quantity: $quantity, price: $price, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CartItem(id: $id, cartId: $cartId, productId: $productId, quantity: $quantity, productName: $productName, imagePath: $imagePath, price: $price, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -259,7 +295,12 @@ class _$CartItemImpl extends _CartItem {
                 other.productId == productId) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
+            (identical(other.productName, productName) ||
+                other.productName == productName) &&
+            (identical(other.imagePath, imagePath) ||
+                other.imagePath == imagePath) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.total, total) || other.total == total) &&
             (identical(other.isSelected, isSelected) ||
                 other.isSelected == isSelected) &&
             (identical(other.createdAt, createdAt) ||
@@ -268,7 +309,6 @@ class _$CartItemImpl extends _CartItem {
                 other.updatedAt == updatedAt));
   }
 
-  @JsonKey(includeFromJson: false, includeToJson: false)
   @override
   int get hashCode => Object.hash(
     runtimeType,
@@ -276,7 +316,10 @@ class _$CartItemImpl extends _CartItem {
     cartId,
     productId,
     quantity,
+    productName,
+    imagePath,
     price,
+    total,
     isSelected,
     createdAt,
     updatedAt,
@@ -289,41 +332,40 @@ class _$CartItemImpl extends _CartItem {
   @pragma('vm:prefer-inline')
   _$$CartItemImplCopyWith<_$CartItemImpl> get copyWith =>
       __$$CartItemImplCopyWithImpl<_$CartItemImpl>(this, _$identity);
-
-  @override
-  Map<String, dynamic> toJson() {
-    return _$$CartItemImplToJson(this);
-  }
 }
 
 abstract class _CartItem extends CartItem {
   const factory _CartItem({
     final int? id,
     final int? cartId,
-    required final int productId,
-    final int quantity,
-    @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson)
-    required final double price,
+    final int? productId,
+    final int? quantity,
+    final String? productName,
+    final String? imagePath,
+    final double price,
+    final double total,
     final bool isSelected,
     final DateTime? createdAt,
     final DateTime? updatedAt,
   }) = _$CartItemImpl;
   const _CartItem._() : super._();
 
-  factory _CartItem.fromJson(Map<String, dynamic> json) =
-      _$CartItemImpl.fromJson;
-
   @override
   int? get id;
   @override
   int? get cartId;
   @override
-  int get productId;
+  int? get productId;
   @override
-  int get quantity;
+  int? get quantity;
   @override
-  @JsonKey(fromJson: _doubleFromJson, toJson: _doubleToJson)
+  String? get productName;
+  @override
+  String? get imagePath;
+  @override
   double get price;
+  @override
+  double get total;
   @override
   bool get isSelected;
   @override

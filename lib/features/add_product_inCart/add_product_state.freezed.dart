@@ -17,7 +17,7 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AddProductToCartState {
-  CommonState1 get state => throw _privateConstructorUsedError;
+  CommonState get state => throw _privateConstructorUsedError;
   Product? get product => throw _privateConstructorUsedError;
 
   /// Create a copy of AddProductToCartState
@@ -34,9 +34,9 @@ abstract class $AddProductToCartStateCopyWith<$Res> {
     $Res Function(AddProductToCartState) then,
   ) = _$AddProductToCartStateCopyWithImpl<$Res, AddProductToCartState>;
   @useResult
-  $Res call({CommonState1 state, Product? product});
+  $Res call({CommonState state, Product? product});
 
-  $CommonState1CopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
@@ -62,7 +62,7 @@ class _$AddProductToCartStateCopyWithImpl<
             state: null == state
                 ? _value.state
                 : state // ignore: cast_nullable_to_non_nullable
-                      as CommonState1,
+                      as CommonState,
             product: freezed == product
                 ? _value.product
                 : product // ignore: cast_nullable_to_non_nullable
@@ -76,8 +76,8 @@ class _$AddProductToCartStateCopyWithImpl<
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CommonState1CopyWith<$Res> get state {
-    return $CommonState1CopyWith<$Res>(_value.state, (value) {
+  $CommonStateCopyWith<$Res> get state {
+    return $CommonStateCopyWith<$Res>(_value.state, (value) {
       return _then(_value.copyWith(state: value) as $Val);
     });
   }
@@ -92,10 +92,10 @@ abstract class _$$AddProductToCartStateImplCopyWith<$Res>
   ) = __$$AddProductToCartStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({CommonState1 state, Product? product});
+  $Res call({CommonState state, Product? product});
 
   @override
-  $CommonState1CopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get state;
 }
 
 /// @nodoc
@@ -118,7 +118,7 @@ class __$$AddProductToCartStateImplCopyWithImpl<$Res>
         state: null == state
             ? _value.state
             : state // ignore: cast_nullable_to_non_nullable
-                  as CommonState1,
+                  as CommonState,
         product: freezed == product
             ? _value.product
             : product // ignore: cast_nullable_to_non_nullable
@@ -132,13 +132,13 @@ class __$$AddProductToCartStateImplCopyWithImpl<$Res>
 
 class _$AddProductToCartStateImpl implements _AddProductToCartState {
   const _$AddProductToCartStateImpl({
-    this.state = const CommonState1.initial(),
+    this.state = const CommonState.initial(),
     this.product,
   });
 
   @override
   @JsonKey()
-  final CommonState1 state;
+  final CommonState state;
   @override
   final Product? product;
 
@@ -174,12 +174,12 @@ class _$AddProductToCartStateImpl implements _AddProductToCartState {
 
 abstract class _AddProductToCartState implements AddProductToCartState {
   const factory _AddProductToCartState({
-    final CommonState1 state,
+    final CommonState state,
     final Product? product,
   }) = _$AddProductToCartStateImpl;
 
   @override
-  CommonState1 get state;
+  CommonState get state;
   @override
   Product? get product;
 
