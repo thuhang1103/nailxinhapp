@@ -24,7 +24,7 @@ class UserDataImpl implements UserData {
   @override
   Future<bool> isUsernameExists({required String username}) async {
     final response = await client.post(
-      Uri.parse('http://192.168.15.105:5000/api/users/checkUsername'),
+      Uri.parse('http://192.168.123.3:5000/api/users/checkUsername'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'username': username}),
     );
@@ -39,7 +39,7 @@ class UserDataImpl implements UserData {
   @override
   Future<bool> isEmailExists({required String email}) async {
     final response = await client.post(
-      Uri.parse('http://192.168.15.105:5000/api/users/checkEmail'),
+      Uri.parse('http://192.168.123.3:5000/api/users/checkEmail'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({'email': email}),
     );
@@ -54,7 +54,7 @@ class UserDataImpl implements UserData {
   @override
   Future<List<User>> fetchUsers() async {
     final response = await client.get(
-      Uri.parse('http://192.168.15.105:5000/api/users'),
+      Uri.parse('http://192.168.123.3:5000/api/users'),
     );
 
     if (response.statusCode == 200) {
@@ -76,7 +76,7 @@ class UserDataImpl implements UserData {
     required String phone,
   }) async {
     final response = await client.post(
-      Uri.parse('http://192.168.15.105:5000/api/users'),
+      Uri.parse('http://192.168.123.3:5000/api/users'),
       headers: {'Content-Type': 'application/json'},
       body: jsonEncode({
         'UserName': userName,

@@ -54,4 +54,6 @@ class RouteNames {
   static const String productDetail = 'productDetail';
   //cartpage
   static const String cartPage = 'cartPage';
+  //resetpass
+  static const String resetPass = 'resetPass';
 }

@@ -1,6 +1,7 @@
 import '../../../datas/datasources/product_data/search_products.dart';
 import '../../../domain/repositories/product_repository/search_product_repository.dart';
 import '../../../domain/entities/products.dart';
+import '../../../domain/entities/product_detail.dart';
 
 class SearchProductRepositoryImpl implements SearchProductRepository {
   final SearchProductData productData;
@@ -18,7 +19,7 @@ class SearchProductRepositoryImpl implements SearchProductRepository {
   }
 
   @override
-  Future<Product> getById(int id) {
+  Future<ProductDetail> getById(int id) {
     return productData.getById(id);
   }
 

@@ -62,6 +62,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
         event.username,
         event.password,
       );
+
       final role = await getRoleUseCase.call();
       emit(Authenticated(role));
     } catch (e) {
@@ -101,8 +102,6 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     Emitter<AuthState> emit,
   ) async {
     final message = await logoutUsecase.call();
-    await storage.deleteAll();
-    print('bloc đã đăng xuất: $message');
     emit(Unauthenticated(message));
   }
 }

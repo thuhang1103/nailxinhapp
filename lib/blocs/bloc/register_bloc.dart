@@ -22,10 +22,8 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
       emit(VerifyOtpLoading());
       try {
         final token = await registerUser.verifyOtp(event.email, event.otp);
-        print('verify otp thành công trong bloc: $token');
         emit(VerifyOtpSuccess('OTP verified', token: token));
       } catch (e) {
-        print('verify otp thất bại: $e');
         emit(VerifyOtpFailure(e.toString()));
       }
     });

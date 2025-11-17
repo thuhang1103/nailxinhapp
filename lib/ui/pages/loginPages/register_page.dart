@@ -10,6 +10,9 @@ import '../../widgets/textfill/customTextFormFill.dart';
 import '../../../domain/usecases/check_user.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+//router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -50,7 +53,7 @@ class _RegisterPageState extends State<RegisterPage> {
             color: MyColor.textColor,
           ), // Đổi icon và màu
           onPressed: () {
-            Navigator.pop(context); // Quay lại trang trước
+            context.pop(); // Quay lại trang trước
           },
         ),
         title: const Text(
@@ -65,19 +68,13 @@ class _RegisterPageState extends State<RegisterPage> {
       body: BlocConsumer<RegisterBloc, RegisterState>(
         listener: (context, state) {
           if (state is SendOtpSuccess) {
-            print('đã gửi otp thành công, chuyển trang');
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (_) => BlocProvider.value(
-                  value: context.read<RegisterBloc>(),
-                  child: OtpPage(
-                    email: emailCtrl.text,
-                    username: usernameCtrl.text,
-                    password: passwordCtrl.text,
-                  ),
-                ),
-              ),
+            context.push(
+              RoutePaths.otp,
+              extra: {
+                'email': emailCtrl.text,
+                'username': usernameCtrl.text,
+                'password': passwordCtrl.text,
+              },
             );
           } else if (state is SendOtpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

@@ -161,7 +161,7 @@ class _NailPageState extends State<NailPage>
                           break;
                         case 3: // Giá
                           sortedProducts.sort(
-                            (a, b) => a.price.compareTo(b.price),
+                            (a, b) => a.basePrice.compareTo(b.basePrice),
                           );
                           break;
                         default:
@@ -190,7 +190,7 @@ class _NailPageState extends State<NailPage>
                             },
                             imagePath: product.imagePath ?? '',
                             name: product.productName,
-                            price: '${product.price}đ',
+                            price: product.basePrice,
                             soldCount: product.soldQuantity,
                           );
                         },

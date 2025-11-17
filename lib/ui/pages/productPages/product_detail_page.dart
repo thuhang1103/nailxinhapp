@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../domain/entities/products.dart';
+import '../../../domain/entities/product_detail.dart';
 //mycolor
 import '../../../core/color/mycolor.dart';
 //widget
@@ -16,11 +17,13 @@ import '../../../features/fetch_detail_product/state.dart';
 import '../../../features/fetch_detail_product/event.dart';
 import '../../../core/common_state.dart';
 import '../../widgets/button/button_gradient.dart';
+import 'package:intl/intl.dart';
 
 class ProductDetailPage extends StatefulWidget {
-  final Product product;
+  final int productID;
 
-  const ProductDetailPage({Key? key, required this.product}) : super(key: key);
+  const ProductDetailPage({Key? key, required this.productID})
+    : super(key: key);
 
   @override
   State<ProductDetailPage> createState() => _ProductDetailPageState();
@@ -32,16 +35,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       context.read<ProductDetailBloc>().add(
-        FetchProductDetail(productId: widget.product.productId),
+        FetchProductDetail(productId: widget.productID),
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    // final priceText =
-    //     '${widget.product.price.toStringAsFixed(widget.product.price.truncateToDouble() == widget.product.price ? 0 : 2)} đ';
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -95,7 +95,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
           return cs.maybeWhen<Widget>(
             loading: () => const Center(child: CircularProgressIndicator()),
             success: (data) {
-              final product = state.product ?? widget.product;
+              final product = data as ProductDetail;
               return _productContent(product);
             },
             error: (failure) {
@@ -109,9 +109,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                     ElevatedButton(
                       onPressed: () {
                         context.read<ProductDetailBloc>().add(
-                          FetchProductDetail(
-                            productId: widget.product.productId,
-                          ),
+                          FetchProductDetail(productId: widget.productID),
                         );
                       },
                       child: const Text('Thử lại'),
@@ -120,7 +118,14 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
               );
             },
-            orElse: () => _productContent(state.product ?? widget.product),
+            orElse: () {
+              final product = state.product;
+              if (product == null) {
+                // fallback khi chưa có dữ liệu: hiển thị placeholder hoặc rỗng
+                return const SizedBox.shrink();
+              }
+              return _productContent(product);
+            },
           );
         },
       ),
@@ -148,16 +153,13 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Expanded(
                 child: ButtonGradient(
                   onPressed: () {
-                    // xử lý mua ngay
+                    // gọi tới bloc/repository để thêm vào giỏ hàng
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text('Chuyển tới thanh toán')),
+                      const SnackBar(content: Text('chuyển trang thanh toán ')),
                     );
                   },
-                  text: 'Mua ngay',
+                  text: 'Mua Ngay',
                   height: 48,
-                  gradient: const LinearGradient(
-                    colors: [Colors.orange, Colors.deepOrange],
-                  ),
                 ),
               ),
             ],
@@ -167,27 +169,19 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
     );
   }
 
-  Widget _productContent(Product product) {
-    final priceText =
-        '${product.price.toStringAsFixed(product.price.truncateToDouble() == product.price ? 0 : 2)} đ';
-
+  Widget _productContent(ProductDetail product) {
+    final bp = product.basePrice;
+    final hasNoFraction =
+        bp != null && (bp - bp.truncateToDouble()).abs() < 1e-9;
+    final nf = NumberFormat.currency(
+      locale: 'vi_VN',
+      symbol: '₫',
+      decimalDigits: hasNoFraction ? 0 : 2,
+    );
+    final priceText = bp != null ? nf.format(bp) : '0 ₫';
     return SingleChildScrollView(
       child: Column(
         children: [
-          AspectRatio(
-            aspectRatio: 16 / 12,
-            child: Hero(
-              tag: 'product_${product.productId}',
-              child: product.imagePath != null && product.imagePath!.isNotEmpty
-                  ? Image.network(
-                      product.imagePath!,
-                      fit: BoxFit.cover,
-                      width: double.infinity,
-                      errorBuilder: (_, __, ___) => _placeholderImage(),
-                    )
-                  : _placeholderImage(),
-            ),
-          ),
           const SizedBox(height: 12),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -204,7 +198,7 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  product.productName,
+                  product.productName ?? 'Tên sản phẩm',
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w600,

@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 class ProductItem extends StatelessWidget {
   final String imagePath;
   final String name;
-  final String price;
+  final double price;
   final int soldCount;
+  final double score;
   final String address;
   final VoidCallback? onTap;
 
@@ -13,6 +15,7 @@ class ProductItem extends StatelessWidget {
     required this.imagePath,
     required this.name,
     required this.price,
+    this.score = 4,
     this.soldCount = 0, // Mặc định là 0
     this.address = 'TP.Hồ Chí Minh', // Mặc định là TP.Hồ Chí Minh
     this.onTap,
@@ -57,39 +60,85 @@ class ProductItem extends StatelessWidget {
                 children: [
                   Text(
                     name,
-                    style: TextStyle(fontSize: 14, fontWeight: FontWeight.w500),
+                    style: TextStyle(
+                      color: const Color.fromARGB(255, 4, 4, 4),
+                      fontSize: 14,
+                      fontWeight: FontWeight.normal,
+                    ),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                     textAlign: TextAlign.left,
                   ),
                   SizedBox(height: 4),
                   Text(
-                    price,
+                    '${NumberFormat("#,###", "vi_VN").format(price)} đ',
                     style: TextStyle(
                       fontSize: 13,
-                      color: Colors.redAccent,
+                      color: const Color.fromARGB(255, 180, 40, 40),
                       fontWeight: FontWeight.bold,
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  Text(
-                    'Đã bán: $soldCount',
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color.fromARGB(255, 70, 70, 70),
-                    ),
-                    textAlign: TextAlign.left,
+                  Row(
+                    children: [
+                      Container(
+                        height: 14,
+                        padding: EdgeInsets.symmetric(horizontal: 3),
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          color: Color.fromARGB(255, 247, 241, 205),
+                          border: Border.all(color: Colors.orange, width: 0.5),
+                        ),
+                        child: Row(
+                          children: [
+                            Icon(
+                              Icons.star,
+                              size: 12,
+                              color: const Color.fromARGB(255, 246, 212, 23),
+                            ),
+                            SizedBox(width: 2),
+                            Text(
+                              score.toString(),
+                              style: const TextStyle(
+                                fontSize: 10,
+                                color: Color.fromARGB(255, 29, 27, 27),
+                              ),
+                              textAlign: TextAlign.left,
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(width: 4),
+                      Container(width: 1, height: 12, color: Colors.grey),
+                      SizedBox(width: 4),
+                      Text(
+                        'Đã bán: $soldCount',
+                        style: const TextStyle(
+                          fontSize: 11,
+                          fontWeight: FontWeight.bold,
+                          color: Color.fromARGB(255, 7, 6, 6),
+                        ),
+                        textAlign: TextAlign.left,
+                      ),
+                    ],
                   ),
+
                   const SizedBox(height: 4),
-                  Text(
-                    address,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color.fromARGB(255, 70, 70, 70),
-                    ),
-                    textAlign: TextAlign.left,
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
+                  Row(
+                    children: [
+                      Icon(Icons.location_on, size: 14, color: Colors.grey),
+                      SizedBox(width: 2),
+                      Text(
+                        address,
+                        style: const TextStyle(
+                          fontSize: 12,
+                          color: Color.fromARGB(255, 70, 70, 70),
+                        ),
+                        textAlign: TextAlign.left,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ],
                   ),
                   const SizedBox(height: 4),
                 ],

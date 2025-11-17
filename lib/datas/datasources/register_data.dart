@@ -35,15 +35,12 @@ class RegisterDataImpl implements RegisterData {
 
   @override
   Future<String> verifyOtp(String email, String otp) async {
-    print('vào được verify otp data');
-    print('email và otp: $email, $otp');
     final res = await dio.post(
       '/auth/verifyOtp',
       data: {'email': email, 'otp': otp},
       options: Options(headers: {'Content-Type': 'application/json'}),
     );
     if (res.statusCode != 200) throw Exception(res.data['message']);
-    print('verify otp data thành công: ${res.data['registrationToken']}');
     return res.data['registrationToken'];
   }
 

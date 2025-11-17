@@ -38,7 +38,8 @@ class _StartPageState extends State<StartPage> {
           // Trang customer chưa đăng nhập
           context.go(RoutePaths.home);
         } else if (state is TokenExpired) {
-          context.go(RoutePaths.login);
+          context.read<AuthBloc>().add(LogoutRequested());
+          context.go(RoutePaths.home);
         }
       },
       child: Scaffold(body: Center(child: CircularProgressIndicator())),

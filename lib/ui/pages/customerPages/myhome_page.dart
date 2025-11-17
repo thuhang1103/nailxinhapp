@@ -8,6 +8,11 @@ import 'order_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/bloc/auth_bloc.dart';
 import '../../../blocs/states/auth_state.dart';
+//bloc
+import '../../../blocs/bloc/product_bloc/search_all.dart';
+import '../../../core/dependency_injection/service_locator.dart';
+//usecase
+import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
 //go router
 import 'package:go_router/go_router.dart';
 import '../../../routers/router_path.dart';
@@ -23,7 +28,10 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0; // Trang
 
   final List<Widget> _pages = [
-    Shopping(),
+    BlocProvider<SearchProductAllBloc>(
+      create: (_) => SearchProductAllBloc(sl<SearchProductUseCase>()),
+      child: Shopping(),
+    ),
     Booking(),
     OrderHistory(),
     ShopDetail(),
@@ -34,8 +42,6 @@ class _MyHomePageState extends State<MyHomePage> {
     if (index == 4 || index == 2) {
       final authState = context.read<AuthBloc>().state;
       if (authState is Unauthenticated) {
-        print('User not authenticated, redirecting to login');
-        // Nếu chưa đăng nhập, điều hướng sang trang login
         context.go(RoutePaths.login);
         return;
       }

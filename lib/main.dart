@@ -189,13 +189,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'User Demo',
           theme: ThemeData(primarySwatch: Colors.blue),
-          // routes: {
-          //   '/customer': (context) => MyHomePage(),
-          //   '/admin': (context) => AdminPage(),
-          //   '/staff': (context) => EmployeePage(),
-          //   '/login': (context) => LoginPage(),
-          //   // các route khác
-          // },
+
           routerConfig: router,
         ),
       ),

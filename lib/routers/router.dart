@@ -37,6 +37,8 @@ import '../ui/pages/adminPages/revenue_page.dart';
 import '../ui/pages/productPages/product_detail_page.dart';
 //employee
 import '../ui/pages/employeePages/employee_page.dart';
+//otppage
+import '../ui/pages/loginPages/otp_page.dart';
 //getit
 import 'package:get_it/get_it.dart';
 import '../core/dependency_injection/service_locator.dart';
@@ -211,12 +213,12 @@ final GoRouter router = GoRouter(
             body: const Center(child: Text(' sản phẩm bị lỗi ')),
           );
         }
-        final product = extra as Product;
+        final productID = extra as int;
         return BlocProvider<ProductDetailBloc>(
           create: (_) => ProductDetailBloc(
             searchProductUseCase: sl<SearchProductUseCase>(),
           ),
-          child: ProductDetailPage(product: product),
+          child: ProductDetailPage(productID: productID),
         );
       },
     ),
@@ -225,6 +227,43 @@ final GoRouter router = GoRouter(
       name: RouteNames.cartPage,
       builder: (context, state) {
         return CartPage();
+      },
+    ),
+    //resetpasspage
+    GoRoute(
+      path: RoutePaths.resetPass,
+      name: RouteNames.resetPass,
+      builder: (context, state) {
+        return BlocProvider<RegisterBloc>(
+          create: (_) => RegisterBloc(registerUser: sl<RegisterUser>()),
+          child: ResetPassPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.register,
+      name: RouteNames.register,
+      builder: (context, state) {
+        return BlocProvider<RegisterBloc>(
+          create: (_) => RegisterBloc(registerUser: sl<RegisterUser>()),
+          child: RegisterPage(),
+        );
+      },
+    ),
+    //otpPage
+    GoRoute(
+      path: RoutePaths.otp,
+      name: RouteNames.otp,
+      builder: (context, state) {
+        final data = state.extra as Map<String, dynamic>;
+        return BlocProvider<RegisterBloc>(
+          create: (_) => RegisterBloc(registerUser: sl<RegisterUser>()),
+          child: OtpPage(
+            email: data['email'],
+            username: data['username'],
+            password: data['password'],
+          ),
+        );
       },
     ),
   ],

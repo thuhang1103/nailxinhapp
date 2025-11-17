@@ -42,6 +42,8 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<String> logout() async {
     final result = await authData.logout();
+    await secureStorage.delete(key: 'token');
+    await secureStorage.delete(key: 'refreshToken');
     return result;
   }
 

@@ -155,7 +155,9 @@ class _SearchResultsPageState extends State<SearchResultsPage>
                 );
                 break;
               case 3: // Giá
-                sortedProducts.sort((a, b) => a.price.compareTo(b.price));
+                sortedProducts.sort(
+                  (a, b) => a.basePrice.compareTo(b.basePrice),
+                );
                 break;
               default:
                 // Không cần sort
@@ -177,7 +179,7 @@ class _SearchResultsPageState extends State<SearchResultsPage>
                 return ProductItem(
                   imagePath: product.imagePath ?? '',
                   name: product.productName,
-                  price: '${product.price}đ',
+                  price: product.basePrice,
                   soldCount: product.soldQuantity,
                 );
               },

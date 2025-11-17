@@ -72,9 +72,7 @@ class AuthDataImpl implements AuthData {
   @override
   Future<String> logout() async {
     try {
-      print('Đang logout...');
       final response = await dio.post('/auth/logout');
-      print('Response logout: ${response.data}');
       return response.data["message"];
     } catch (e) {
       throw Exception("Logout failed: $e");

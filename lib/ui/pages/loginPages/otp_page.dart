@@ -9,6 +9,9 @@ import 'package:nailxinh/ui/widgets/text/text_appbar.dart';
 import 'package:nailxinh/ui/widgets/button/button_gradient.dart';
 import './login_page.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+//router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class OtpPage extends StatefulWidget {
   final String email;
@@ -41,7 +44,7 @@ class _OtpPageState extends State<OtpPage> {
             Icons.arrow_back_ios,
             color: MyColor.textColor,
           ), // Đổi màu và kích thước icon
-          onPressed: () => Navigator.pop(context),
+          onPressed: () => context.pop(),
         ),
         title: TitleText(text: "Nhập Mã Xác Thực"),
         backgroundColor: Colors.transparent, // Đổi màu nền AppBar nếu muốn
@@ -70,10 +73,7 @@ class _OtpPageState extends State<OtpPage> {
               ),
             );
             Future.delayed(const Duration(seconds: 3), () {
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (_) => const LoginPage()),
-              );
+              context.go(RoutePaths.login);
             });
           } else if (state is RegisterFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

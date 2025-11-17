@@ -2,7 +2,7 @@ class Product {
   final int productId;
   final String productName;
   final String? description;
-  final double price;
+  final double basePrice;
   final int? categoryId;
   final int stockQuantity;
   final int soldQuantity;
@@ -15,7 +15,7 @@ class Product {
     required this.productId,
     required this.productName,
     this.description,
-    required this.price,
+    required this.basePrice,
     this.categoryId,
     this.stockQuantity = 0,
     this.soldQuantity = 0,

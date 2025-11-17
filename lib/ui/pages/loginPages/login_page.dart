@@ -45,7 +45,11 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios), // Đổi icon
           onPressed: () {
-            Navigator.pop(context);
+            if (Navigator.canPop(context)) {
+              Navigator.pop(context);
+            } else {
+              // Không làm gì, hoặc điều hướng đến page mặc định
+            }
           },
         ),
         backgroundColor: Colors.transparent, // Nền trong suốt
@@ -74,36 +78,7 @@ class _LoginPageState extends State<LoginPage> {
             ).showSnackBar(SnackBar(content: Text(state.error)));
           }
         },
-        // body: BlocConsumer<LoginCubit, LoginState>(
-        //   listener: (context, state) {
-        //     final loginState = state.loginState;
-        //     if (loginState is Success) {
-        //       switch (state.role) {
-        //         case "Admin":
-        //           Navigator.pushReplacement(
-        //             context,
-        //             MaterialPageRoute(builder: (_) => AdminPage()),
-        //           );
-        //           break;
-        //         case "Staff":
-        //           Navigator.pushReplacement(
-        //             context,
-        //             MaterialPageRoute(builder: (_) => EmployeePage()),
-        //           );
-        //           break;
-        //         case "Customer":
-        //           Navigator.pushReplacement(
-        //             context,
-        //             MaterialPageRoute(builder: (_) => MyHomePage()),
-        //           );
-        //           break;
-        //       }
-        //     } else if (loginState is Error) {
-        //       ScaffoldMessenger.of(context).showSnackBar(
-        //         SnackBar(content: Text(loginState.failure.toString())),
-        //       );
-        //     }
-        //   },
+
         builder: (context, state) {
           if (state is AuthLoading) {
             return Container(
@@ -140,7 +115,6 @@ class _LoginPageState extends State<LoginPage> {
                     context.read<AuthBloc>().add(
                       LoginRequested(username, password),
                     );
-                    // Xử lý đăng nhập
                   },
                   // onPressed: () {
                   //   context.read<LoginCubit>().signin(
@@ -156,17 +130,7 @@ class _LoginPageState extends State<LoginPage> {
                   alignment: Alignment.centerLeft,
                   child: TextButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => BlocProvider(
-                            create: (_) => RegisterBloc(
-                              registerUser: context.read<RegisterUser>(),
-                            ),
-                            child: const ResetPassPage(),
-                          ),
-                        ),
-                      );
+                      context.push(RoutePaths.resetPass);
                     },
                     child: const Text(
                       'Quên mật khẩu?',
@@ -209,17 +173,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     TextButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (_) => BlocProvider(
-                              create: (_) => RegisterBloc(
-                                registerUser: context.read<RegisterUser>(),
-                              ),
-                              child: const RegisterPage(),
-                            ),
-                          ),
-                        );
+                        context.push(RoutePaths.register);
                       },
                       child: const Text(
                         "Đăng ký",

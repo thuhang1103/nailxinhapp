@@ -1,4 +1,5 @@
 import '../../entities/products.dart';
+import '../../entities/product_detail.dart';
 import '../../repositories/product_repository/search_product_repository.dart';
 
 class SearchProductUseCase {
@@ -14,7 +15,7 @@ class SearchProductUseCase {
     return repository.getByCategory(categoryId);
   }
 
-  Future<Product> searchById(int id) {
+  Future<ProductDetail> searchById(int id) {
     return repository.getById(id);
   }
 

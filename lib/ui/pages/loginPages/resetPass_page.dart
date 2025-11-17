@@ -8,6 +8,9 @@ import '../../../blocs/states/register_state.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
 import 'login_page.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+//router
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class ResetPassPage extends StatefulWidget {
   const ResetPassPage({Key? key}) : super(key: key);
@@ -96,10 +99,7 @@ class _ResetPassPageState extends State<ResetPassPage> {
             ScaffoldMessenger.of(context).showSnackBar(
               const SnackBar(content: Text("Đặt lại mật khẩu thành công!")),
             );
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (_) => const LoginPage()),
-            );
+            context.go(RoutePaths.login);
           } else if (state is ResetPassFailure) {
             setState(() => isLoading = false);
             ScaffoldMessenger.of(

@@ -5,7 +5,7 @@ class ProductModel {
   final int productId;
   final String productName;
   final String? description;
-  final double price;
+  final double basePrice;
   final int? categoryId;
   final int stockQuantity;
   final int soldQuantity;
@@ -18,7 +18,7 @@ class ProductModel {
     required this.productId,
     required this.productName,
     this.description,
-    required this.price,
+    required this.basePrice,
     this.categoryId,
     this.stockQuantity = 0,
     this.soldQuantity = 0,
@@ -33,7 +33,7 @@ class ProductModel {
       productId: json['ProductID'] as int,
       productName: json['ProductName'],
       description: json['Description'],
-      price: double.parse(json['Price'].toString()),
+      basePrice: double.parse(json['BasePrice'].toString()),
       categoryId: json['CategoryID'],
       stockQuantity: json['StockQuantity'] ?? 0,
       soldQuantity: json['SoldQuantity'] ?? 0,
@@ -48,7 +48,7 @@ class ProductModel {
     'ProductID': productId,
     'ProductName': productName,
     'Description': description,
-    'Price': price,
+    'BasePrice': basePrice,
     'CategoryID': categoryId,
     'StockQuantity': stockQuantity,
     'SoldQuantity': soldQuantity,
@@ -62,7 +62,7 @@ class ProductModel {
       productId: this.productId,
       productName: this.productName,
       description: this.description,
-      price: this.price,
+      basePrice: this.basePrice,
       categoryId: this.categoryId,
       stockQuantity: this.stockQuantity,
       soldQuantity: this.soldQuantity,

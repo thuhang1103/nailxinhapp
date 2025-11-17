@@ -90,7 +90,7 @@ class _ShoppingState extends State<Shopping> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 222, 218, 218),
+      backgroundColor: const Color.fromARGB(255, 232, 229, 229),
       appBar: AppBar(
         backgroundColor: MyColor.colorappbar,
         titleSpacing: 0, // bỏ padding mặc định
@@ -132,7 +132,7 @@ class _ShoppingState extends State<Shopping> {
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Color(0xff630243)),
             onPressed: () {
-              // Xử lý khi nhấn icon
+              context.push(RoutePaths.cartPage);
             },
           ),
           Padding(
@@ -154,136 +154,149 @@ class _ShoppingState extends State<Shopping> {
         ],
       ),
 
-      body: SingleChildScrollView(
-        child: Stack(
-          children: [
-            Container(
-              height: 165,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: MyColor.pinkColor,
-                borderRadius: BorderRadius.vertical(
-                  bottom: Radius.circular(25),
+      body: CustomScrollView(
+        slivers: [
+          SliverToBoxAdapter(
+            child: Stack(
+              children: [
+                Container(
+                  height: 165,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: MyColor.pinkColor,
+                    borderRadius: BorderRadius.vertical(
+                      bottom: Radius.circular(25),
+                    ),
+                  ),
                 ),
-              ),
+
+                Container(
+                  // margin: EdgeInsets.only(left: 10, right: 10),
+                  decoration: BoxDecoration(color: Colors.transparent),
+                  child: Column(
+                    children: [
+                      //vourcher
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                        height: 70,
+                        decoration: BoxDecoration(
+                          gradient: MyColor.mainGradient,
+                          borderRadius: BorderRadius.circular(20),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black12,
+                              blurRadius: 4,
+                              offset: Offset(0, 2),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      Container(
+                        margin: EdgeInsets.symmetric(
+                          vertical: 5,
+                          horizontal: 10,
+                        ),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            CategoryButton(
+                              onPressed: () {},
+                              imageUrl: 'assets/icons/Abstract Shape (7).png',
+                              text: 'Tích điểm',
+                            ),
+                            CategoryButton(
+                              onPressed: () {},
+                              imageUrl: 'assets/icons/11.png',
+                              text: 'Mẫu nail',
+                            ),
+                            CategoryButton(
+                              onPressed: onNailPressed,
+                              imageUrl: 'assets/icons/8.png',
+                              text: 'Nail',
+                            ),
+                            CategoryButton(
+                              onPressed: onThietBiNailPressed,
+                              imageUrl: 'assets/icons/12.png',
+                              text: 'Thiết bị nail',
+                            ),
+                            CategoryButton(
+                              onPressed: onNailBoxPressed,
+                              imageUrl: 'assets/icons/9.png',
+                              text: 'Nail Box',
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 8),
+                      SizedBox(
+                        height: 3,
+                        width: 40,
+                        child: Container(color: MyColor.textColor),
+                      ),
+                      SizedBox(height: 8),
+                    ],
+                  ),
+                ),
+              ],
             ),
+          ),
 
-            Container(
-              margin: EdgeInsets.only(left: 10, right: 10),
-              decoration: BoxDecoration(color: Colors.transparent),
-              child: Column(
-                children: [
-                  //vourcher
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    height: 70,
-                    decoration: BoxDecoration(
-                      gradient: MyColor.mainGradient,
-                      borderRadius: BorderRadius.circular(20),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 4,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 10),
-                  Container(
-                    margin: EdgeInsets.symmetric(vertical: 5),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        CategoryButton(
-                          onPressed: () {},
-                          imageUrl: 'assets/icons/Abstract Shape (7).png',
-                          text: 'Tích điểm',
-                        ),
-                        CategoryButton(
-                          onPressed: () {},
-                          imageUrl: 'assets/icons/11.png',
-                          text: 'Mẫu nail',
-                        ),
-                        CategoryButton(
-                          onPressed: onNailPressed,
-                          imageUrl: 'assets/icons/8.png',
-                          text: 'Nail',
-                        ),
-                        CategoryButton(
-                          onPressed: onThietBiNailPressed,
-                          imageUrl: 'assets/icons/12.png',
-                          text: 'Thiết bị nail',
-                        ),
-                        CategoryButton(
-                          onPressed: onNailBoxPressed,
-                          imageUrl: 'assets/icons/9.png',
-                          text: 'Nail Box',
-                        ),
-                      ],
-                    ),
-                  ),
-                  SizedBox(height: 8),
-                  SizedBox(
-                    height: 3,
-                    width: 40,
-                    child: Container(color: MyColor.textColor),
-                  ),
-                  SizedBox(height: 8),
+          // Danh sách sản phẩm dạng grid
+          BlocBuilder<SearchProductAllBloc, SearchProductAllState>(
+            builder: (context, state) {
+              if (state is SearchProductAllLoading) {
+                return const SliverToBoxAdapter(
+                  child: Center(child: CircularProgressIndicator()),
+                );
+              }
 
-                  // Danh sách sản phẩm
-                  BlocBuilder<SearchProductAllBloc, SearchProductAllState>(
-                    builder: (context, state) {
-                      if (state is SearchProductAllLoading) {
-                        return CircularProgressIndicator();
-                      }
-                      if (state is SearchProductAllSuccess) {
-                        final listProduct = state.products;
-                        if (listProduct.isEmpty) {
-                          return const Center(
-                            child: Text('Không có dữ liệu sản phẩm'),
-                          );
-                        }
-                        return GridView.builder(
-                          padding: const EdgeInsets.all(8),
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2, // 2 sản phẩm mỗi hàng
-                                childAspectRatio: 0.62,
-                                crossAxisSpacing: 9,
-                                mainAxisSpacing: 9,
-                              ),
-                          itemCount: listProduct.length,
-                          itemBuilder: (context, index) {
-                            final product = listProduct[index];
-                            return ProductItem(
-                              onTap: () {
-                                context.pushNamed(
-                                  RouteNames.productDetail,
-                                  extra: product,
-                                );
-                              },
-                              imagePath: product.imagePath ?? '',
-                              name: product.productName,
-                              price: '${product.price}đ',
-                              soldCount: product.soldQuantity,
-                            );
-                          },
+              if (state is SearchProductAllSuccess) {
+                final listProduct = state.products;
+                if (listProduct.isEmpty) {
+                  return const Center(child: Text('Không có dữ liệu sản phẩm'));
+                }
+
+                return SliverGrid(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    crossAxisSpacing: 9,
+                    mainAxisSpacing: 9,
+                    childAspectRatio: 0.62,
+                  ),
+                  delegate: SliverChildBuilderDelegate((context, index) {
+                    final product = listProduct[index];
+                    return ProductItem(
+                      onTap: () {
+                        context.pushNamed(
+                          RouteNames.productDetail,
+                          extra: product.productId,
                         );
-                      }
-                      if (state is SearchProductAllFailure) {
-                        return Center(child: Text('Lỗi: ${state.error}'));
-                      }
-                      return SizedBox.shrink();
-                    },
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
+                      },
+                      imagePath: product.imagePath ?? '',
+                      name: product.productName,
+                      price: product.basePrice,
+                      soldCount: product.soldQuantity,
+                    );
+                  }, childCount: listProduct.length),
+                );
+              }
+
+              if (state is SearchProductAllFailure) {
+                return SliverToBoxAdapter(
+                  child: Center(child: Text("Lỗi: ${state.error}")),
+                );
+              }
+
+              return const SliverToBoxAdapter(
+                child: Text("Không có dữ liệu sản phẩm"),
+              );
+            },
+          ),
+        ],
       ),
     );
   }
