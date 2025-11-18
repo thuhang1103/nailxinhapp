@@ -21,7 +21,7 @@ _$ProductDetailImpl _$$ProductDetailImplFromJson(Map<String, dynamic> json) =>
       updatedAt: json['updatedAt'] == null
           ? null
           : DateTime.parse(json['updatedAt'] as String),
-      statusProduct: json['statusProduct'] as String?,
+      statusProduct: (json['statusProduct'] as num?)?.toInt(),
       images:
           (json['images'] as List<dynamic>?)
               ?.map((e) => e as String)

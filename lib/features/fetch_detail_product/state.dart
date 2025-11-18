@@ -9,7 +9,7 @@ part 'state.freezed.dart';
 @freezed
 class FetchProductState with _$FetchProductState {
   const factory FetchProductState({
-    @Default(CommonState.initial()) CommonState state,
+    @Default(CommonState.initial()) CommonState productState,
     ProductDetail? product,
   }) = _FetchProductState;
 }

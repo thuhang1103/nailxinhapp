@@ -20,26 +20,19 @@ class ProductDetailBloc extends Bloc<ProductDetailEvent, FetchProductState> {
     FetchProductDetail event,
     Emitter<FetchProductState> emit,
   ) async {
-    final id = event.productId;
-    if (id == null) {
-      emit(
-        state.copyWith(
-          state: CommonState.error(Exception('Invalid product id')),
-          product: null,
-        ),
-      );
-      return;
-    }
-
-    emit(state.copyWith(state: CommonState.loading(), product: null));
+    emit(state.copyWith(productState: CommonState.loading(), product: null));
 
     try {
-      final ProductDetail product = await _searchProduct.searchById(id);
-      emit(state.copyWith(state: CommonState.success(), product: product));
+      final ProductDetail product = await _searchProduct.searchById(
+        event.productId,
+      );
+      emit(
+        state.copyWith(productState: CommonState.success(), product: product),
+      );
     } catch (e) {
       emit(
         state.copyWith(
-          state: CommonState.error(Exception(e.toString())),
+          productState: CommonState.error(Exception(e.toString())),
           product: null,
         ),
       );

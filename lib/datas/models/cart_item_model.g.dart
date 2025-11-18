@@ -16,7 +16,7 @@ _$CartItemModelImpl _$$CartItemModelImplFromJson(Map<String, dynamic> json) =>
       quantity: (json['Quantity'] as num?)?.toInt() ?? 1,
       price: (json['Price'] as num?)?.toDouble() ?? 0.0,
       total: (json['Total'] as num?)?.toDouble() ?? 0.0,
-      isSelected: json['is_selected'] as bool? ?? false,
+      isSelected: (json['is_selected'] as num?)?.toInt() ?? 0,
       createdAt: json['CreatedAt'] as String?,
       updatedAt: json['UpdatedAt'] as String?,
     );

@@ -22,7 +22,7 @@ _$ProductDetailModelImpl _$$ProductDetailModelImplFromJson(
   updatedAt: json['UpdatedAt'] == null
       ? null
       : DateTime.parse(json['UpdatedAt'] as String),
-  statusProduct: json['Status_Product'] as String?,
+  statusProduct: (json['Status_Product'] as num?)?.toInt(),
   images:
       (json['Images'] as List<dynamic>?)?.map((e) => e as String).toList() ??
       const <String>[],

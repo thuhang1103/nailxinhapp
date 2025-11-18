@@ -18,7 +18,7 @@ class ProductDetailModel with _$ProductDetailModel {
     @JsonKey(name: 'SoldQuantity') @Default(0) int soldQuantity,
     @JsonKey(name: 'CreatedAt') DateTime? createdAt,
     @JsonKey(name: 'UpdatedAt') DateTime? updatedAt,
-    @JsonKey(name: 'Status_Product') String? statusProduct,
+    @JsonKey(name: 'Status_Product') int? statusProduct,
     @JsonKey(name: 'Images') @Default(<String>[]) List<String> images,
   }) = _ProductDetailModel;
 

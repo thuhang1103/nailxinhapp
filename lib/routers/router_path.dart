@@ -53,7 +53,7 @@ class RoutePaths {
   //product detail
   static const String productDetail = '/product-detail';
   //cartpage
-  static const String cartPage = '/cart-page';
+
   //resetpass
   static const String resetPass = '/reset-pass';
 }

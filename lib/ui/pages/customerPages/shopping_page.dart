@@ -132,7 +132,7 @@ class _ShoppingState extends State<Shopping> {
           IconButton(
             icon: Icon(Icons.shopping_cart_outlined, color: Color(0xff630243)),
             onPressed: () {
-              context.push(RoutePaths.cartPage);
+              context.push(RoutePaths.cart);
             },
           ),
           Padding(
@@ -260,28 +260,32 @@ class _ShoppingState extends State<Shopping> {
                   return const Center(child: Text('Không có dữ liệu sản phẩm'));
                 }
 
-                return SliverGrid(
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    crossAxisSpacing: 9,
-                    mainAxisSpacing: 9,
-                    childAspectRatio: 0.62,
+                return SliverPadding(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  sliver: SliverGrid(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          crossAxisSpacing: 9,
+                          mainAxisSpacing: 9,
+                          childAspectRatio: 0.62,
+                        ),
+                    delegate: SliverChildBuilderDelegate((context, index) {
+                      final product = listProduct[index];
+                      return ProductItem(
+                        onTap: () {
+                          context.push(
+                            RoutePaths.productDetail,
+                            extra: product.productId,
+                          );
+                        },
+                        imagePath: product.imagePath ?? '',
+                        name: product.productName,
+                        price: product.basePrice,
+                        soldCount: product.soldQuantity,
+                      );
+                    }, childCount: listProduct.length),
                   ),
-                  delegate: SliverChildBuilderDelegate((context, index) {
-                    final product = listProduct[index];
-                    return ProductItem(
-                      onTap: () {
-                        context.pushNamed(
-                          RouteNames.productDetail,
-                          extra: product.productId,
-                        );
-                      },
-                      imagePath: product.imagePath ?? '',
-                      name: product.productName,
-                      price: product.basePrice,
-                      soldCount: product.soldQuantity,
-                    );
-                  }, childCount: listProduct.length),
                 );
               }
 

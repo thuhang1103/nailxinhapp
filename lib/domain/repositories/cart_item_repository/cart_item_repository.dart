@@ -12,7 +12,7 @@ abstract class CartItemRepository {
   Future<int> updateCartItem({
     required int cartItemId,
     int? quantity,
-    bool? isSelected,
+    int? isSelected,
   });
 
   Future<bool> deleteCartItem({required int cartItemId});
@@ -20,4 +20,5 @@ abstract class CartItemRepository {
   Future<CartItem?> getById({required int cartItemId});
 
   Future<List<CartItem>> getAllByUserId({required int userId});
+  Future<int> getUserID();
 }

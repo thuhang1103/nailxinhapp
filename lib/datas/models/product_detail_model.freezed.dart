@@ -40,7 +40,7 @@ mixin _$ProductDetailModel {
   @JsonKey(name: 'UpdatedAt')
   DateTime? get updatedAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'Status_Product')
-  String? get statusProduct => throw _privateConstructorUsedError;
+  int? get statusProduct => throw _privateConstructorUsedError;
   @JsonKey(name: 'Images')
   List<String> get images => throw _privateConstructorUsedError;
 
@@ -71,7 +71,7 @@ abstract class $ProductDetailModelCopyWith<$Res> {
     @JsonKey(name: 'SoldQuantity') int soldQuantity,
     @JsonKey(name: 'CreatedAt') DateTime? createdAt,
     @JsonKey(name: 'UpdatedAt') DateTime? updatedAt,
-    @JsonKey(name: 'Status_Product') String? statusProduct,
+    @JsonKey(name: 'Status_Product') int? statusProduct,
     @JsonKey(name: 'Images') List<String> images,
   });
 }
@@ -144,7 +144,7 @@ class _$ProductDetailModelCopyWithImpl<$Res, $Val extends ProductDetailModel>
             statusProduct: freezed == statusProduct
                 ? _value.statusProduct
                 : statusProduct // ignore: cast_nullable_to_non_nullable
-                      as String?,
+                      as int?,
             images: null == images
                 ? _value.images
                 : images // ignore: cast_nullable_to_non_nullable
@@ -174,7 +174,7 @@ abstract class _$$ProductDetailModelImplCopyWith<$Res>
     @JsonKey(name: 'SoldQuantity') int soldQuantity,
     @JsonKey(name: 'CreatedAt') DateTime? createdAt,
     @JsonKey(name: 'UpdatedAt') DateTime? updatedAt,
-    @JsonKey(name: 'Status_Product') String? statusProduct,
+    @JsonKey(name: 'Status_Product') int? statusProduct,
     @JsonKey(name: 'Images') List<String> images,
   });
 }
@@ -246,7 +246,7 @@ class __$$ProductDetailModelImplCopyWithImpl<$Res>
         statusProduct: freezed == statusProduct
             ? _value.statusProduct
             : statusProduct // ignore: cast_nullable_to_non_nullable
-                  as String?,
+                  as int?,
         images: null == images
             ? _value._images
             : images // ignore: cast_nullable_to_non_nullable
@@ -306,7 +306,7 @@ class _$ProductDetailModelImpl extends _ProductDetailModel {
   final DateTime? updatedAt;
   @override
   @JsonKey(name: 'Status_Product')
-  final String? statusProduct;
+  final int? statusProduct;
   final List<String> _images;
   @override
   @JsonKey(name: 'Images')
@@ -394,7 +394,7 @@ abstract class _ProductDetailModel extends ProductDetailModel {
     @JsonKey(name: 'SoldQuantity') final int soldQuantity,
     @JsonKey(name: 'CreatedAt') final DateTime? createdAt,
     @JsonKey(name: 'UpdatedAt') final DateTime? updatedAt,
-    @JsonKey(name: 'Status_Product') final String? statusProduct,
+    @JsonKey(name: 'Status_Product') final int? statusProduct,
     @JsonKey(name: 'Images') final List<String> images,
   }) = _$ProductDetailModelImpl;
   const _ProductDetailModel._() : super._();
@@ -431,7 +431,7 @@ abstract class _ProductDetailModel extends ProductDetailModel {
   DateTime? get updatedAt;
   @override
   @JsonKey(name: 'Status_Product')
-  String? get statusProduct;
+  int? get statusProduct;
   @override
   @JsonKey(name: 'Images')
   List<String> get images;

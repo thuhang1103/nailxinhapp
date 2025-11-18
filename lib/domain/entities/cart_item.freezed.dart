@@ -25,7 +25,7 @@ mixin _$CartItem {
   String? get imagePath => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
-  bool get isSelected => throw _privateConstructorUsedError;
+  int get isSelected => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
 
@@ -50,7 +50,7 @@ abstract class $CartItemCopyWith<$Res> {
     String? imagePath,
     double price,
     double total,
-    bool isSelected,
+    int isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -120,7 +120,7 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
             isSelected: null == isSelected
                 ? _value.isSelected
                 : isSelected // ignore: cast_nullable_to_non_nullable
-                      as bool,
+                      as int,
             createdAt: freezed == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -153,7 +153,7 @@ abstract class _$$CartItemImplCopyWith<$Res>
     String? imagePath,
     double price,
     double total,
-    bool isSelected,
+    int isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
   });
@@ -222,7 +222,7 @@ class __$$CartItemImplCopyWithImpl<$Res>
         isSelected: null == isSelected
             ? _value.isSelected
             : isSelected // ignore: cast_nullable_to_non_nullable
-                  as bool,
+                  as int,
         createdAt: freezed == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -248,7 +248,7 @@ class _$CartItemImpl extends _CartItem {
     this.imagePath,
     this.price = 0.0,
     this.total = 0.0,
-    this.isSelected = false,
+    this.isSelected = 0,
     this.createdAt,
     this.updatedAt,
   }) : super._();
@@ -273,7 +273,7 @@ class _$CartItemImpl extends _CartItem {
   final double total;
   @override
   @JsonKey()
-  final bool isSelected;
+  final int isSelected;
   @override
   final DateTime? createdAt;
   @override
@@ -344,7 +344,7 @@ abstract class _CartItem extends CartItem {
     final String? imagePath,
     final double price,
     final double total,
-    final bool isSelected,
+    final int isSelected,
     final DateTime? createdAt,
     final DateTime? updatedAt,
   }) = _$CartItemImpl;
@@ -367,7 +367,7 @@ abstract class _CartItem extends CartItem {
   @override
   double get total;
   @override
-  bool get isSelected;
+  int get isSelected;
   @override
   DateTime? get createdAt;
   @override

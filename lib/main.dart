@@ -51,9 +51,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider<UserRepository>(
-          create: (_) => UserRepositoryImpl(UserDataImpl(http.Client())),
-        ),
+        // RepositoryProvider<UserRepository>(
+        //   create: (_) => UserRepositoryImpl(UserDataImpl(dio: sl<Dio>())),
+        // ),
         RepositoryProvider<SearchHistoryRepository>(
           create: (_) => SearchHistoryRepositoryImpl(SearchHistoryStorage()),
         ),

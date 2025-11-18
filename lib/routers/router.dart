@@ -44,7 +44,7 @@ import 'package:get_it/get_it.dart';
 import '../core/dependency_injection/service_locator.dart';
 //bloc
 import 'package:flutter_bloc/flutter_bloc.dart';
-import '../blocs/bloc/auth_bloc.dart';
+
 import '../blocs/bloc/user_bloc.dart';
 import '../blocs/bloc/role_bloc.dart';
 import '../blocs/bloc/register_bloc.dart';
@@ -53,6 +53,7 @@ import '../blocs/bloc/storage_search_history/storage_search_history_bloc.dart';
 import '../blocs/bloc/storage_search_history/suggestion_history_bloc.dart';
 import '../blocs/bloc/product_bloc/search_product_name_bloc.dart';
 import '../features/fetch_detail_product/bloc.dart';
+import '../features/fetch_cartItem/cart_item_bloc.dart';
 
 //usecase
 import '../domain/usecases/login_usecase.dart';
@@ -62,6 +63,10 @@ import '../domain/usecases/logout_usecase.dart';
 import '../domain/usecases/check_user.dart';
 import '../domain/usecases/register_user.dart';
 import '../domain/usecases/get_user.dart';
+import '../domain/usecases/cartItem_usecase/get_all_cartItem_uc.dart';
+import '../domain/usecases/cartItem_usecase/delete_cartItem_usecase.dart';
+import '../domain/usecases/cartItem_usecase/update_cartItem_usecase.dart';
+
 //storage
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 //search usecase
@@ -142,7 +147,16 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePaths.cart,
       name: RouteNames.cart,
-      builder: (context, state) => CartPage(),
+      builder: (context, state) {
+        return BlocProvider<CartItemBloc>(
+          create: (_) => CartItemBloc(
+            getAll: sl<GetAllCartItemUseCase>(),
+            deleteCartItem: sl<DeleteCartItemUseCase>(),
+            updateCartItem: sl<UpdateCartItemUseCase>(),
+          ),
+          child: CartPage(),
+        );
+      },
     ),
     GoRoute(
       path: RoutePaths.userDetail,
@@ -207,13 +221,13 @@ final GoRouter router = GoRouter(
       name: RouteNames.productDetail,
       builder: (context, state) {
         final extra = state.extra;
-        if (extra is! Product) {
+        if (extra == null || extra is! int) {
           return Scaffold(
             appBar: AppBar(title: const Text('Chi tiết sản phẩm')),
             body: const Center(child: Text(' sản phẩm bị lỗi ')),
           );
         }
-        final productID = extra as int;
+        final productID = extra;
         return BlocProvider<ProductDetailBloc>(
           create: (_) => ProductDetailBloc(
             searchProductUseCase: sl<SearchProductUseCase>(),
@@ -222,13 +236,7 @@ final GoRouter router = GoRouter(
         );
       },
     ),
-    GoRoute(
-      path: RoutePaths.cartPage,
-      name: RouteNames.cartPage,
-      builder: (context, state) {
-        return CartPage();
-      },
-    ),
+
     //resetpasspage
     GoRoute(
       path: RoutePaths.resetPass,

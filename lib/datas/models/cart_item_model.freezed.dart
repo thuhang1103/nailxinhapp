@@ -38,7 +38,7 @@ mixin _$CartItemModel {
   @JsonKey(name: 'Total')
   double get total => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_selected')
-  bool get isSelected => throw _privateConstructorUsedError;
+  int get isSelected => throw _privateConstructorUsedError;
   @JsonKey(name: 'CreatedAt')
   String? get createdAt => throw _privateConstructorUsedError;
   @JsonKey(name: 'UpdatedAt')
@@ -70,7 +70,7 @@ abstract class $CartItemModelCopyWith<$Res> {
     @JsonKey(name: 'Quantity') int quantity,
     @JsonKey(name: 'Price') double price,
     @JsonKey(name: 'Total') double total,
-    @JsonKey(name: 'is_selected') bool isSelected,
+    @JsonKey(name: 'is_selected') int isSelected,
     @JsonKey(name: 'CreatedAt') String? createdAt,
     @JsonKey(name: 'UpdatedAt') String? updatedAt,
   });
@@ -140,7 +140,7 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
             isSelected: null == isSelected
                 ? _value.isSelected
                 : isSelected // ignore: cast_nullable_to_non_nullable
-                      as bool,
+                      as int,
             createdAt: freezed == createdAt
                 ? _value.createdAt
                 : createdAt // ignore: cast_nullable_to_non_nullable
@@ -173,7 +173,7 @@ abstract class _$$CartItemModelImplCopyWith<$Res>
     @JsonKey(name: 'Quantity') int quantity,
     @JsonKey(name: 'Price') double price,
     @JsonKey(name: 'Total') double total,
-    @JsonKey(name: 'is_selected') bool isSelected,
+    @JsonKey(name: 'is_selected') int isSelected,
     @JsonKey(name: 'CreatedAt') String? createdAt,
     @JsonKey(name: 'UpdatedAt') String? updatedAt,
   });
@@ -242,7 +242,7 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
         isSelected: null == isSelected
             ? _value.isSelected
             : isSelected // ignore: cast_nullable_to_non_nullable
-                  as bool,
+                  as int,
         createdAt: freezed == createdAt
             ? _value.createdAt
             : createdAt // ignore: cast_nullable_to_non_nullable
@@ -268,7 +268,7 @@ class _$CartItemModelImpl extends _CartItemModel {
     @JsonKey(name: 'Quantity') this.quantity = 1,
     @JsonKey(name: 'Price') this.price = 0.0,
     @JsonKey(name: 'Total') this.total = 0.0,
-    @JsonKey(name: 'is_selected') this.isSelected = false,
+    @JsonKey(name: 'is_selected') this.isSelected = 0,
     @JsonKey(name: 'CreatedAt') this.createdAt,
     @JsonKey(name: 'UpdatedAt') this.updatedAt,
   }) : super._();
@@ -303,7 +303,7 @@ class _$CartItemModelImpl extends _CartItemModel {
   final double total;
   @override
   @JsonKey(name: 'is_selected')
-  final bool isSelected;
+  final int isSelected;
   @override
   @JsonKey(name: 'CreatedAt')
   final String? createdAt;
@@ -383,7 +383,7 @@ abstract class _CartItemModel extends CartItemModel {
     @JsonKey(name: 'Quantity') final int quantity,
     @JsonKey(name: 'Price') final double price,
     @JsonKey(name: 'Total') final double total,
-    @JsonKey(name: 'is_selected') final bool isSelected,
+    @JsonKey(name: 'is_selected') final int isSelected,
     @JsonKey(name: 'CreatedAt') final String? createdAt,
     @JsonKey(name: 'UpdatedAt') final String? updatedAt,
   }) = _$CartItemModelImpl;
@@ -418,7 +418,7 @@ abstract class _CartItemModel extends CartItemModel {
   double get total;
   @override
   @JsonKey(name: 'is_selected')
-  bool get isSelected;
+  int get isSelected;
   @override
   @JsonKey(name: 'CreatedAt')
   String? get createdAt;

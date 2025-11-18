@@ -31,7 +31,7 @@ class CartItemRepositoryImpl implements CartItemRepository {
   Future<int> updateCartItem({
     required int cartItemId,
     int? quantity,
-    bool? isSelected,
+    int? isSelected,
   }) async {
     final affected = await data.updateCartItem(
       cartItemId: cartItemId,
@@ -57,5 +57,11 @@ class CartItemRepositoryImpl implements CartItemRepository {
   Future<List<CartItem>> getAllByUserId({required int userId}) async {
     final models = await data.getAllByUserId(userId: userId);
     return models.map((m) => m.toEntity()).toList();
+  }
+
+  @override
+  Future<int> getUserID() async {
+    final userId = await data.getUserID();
+    return userId;
   }
 }

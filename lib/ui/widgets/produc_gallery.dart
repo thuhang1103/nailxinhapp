@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
+import '../pages/productPages/fullscreen_image.dart';
+import '../../domain/entities/product_detail.dart';
 
-class ProductGalleryWidget extends StatefulWidget {
-  final Map<String, dynamic> product;
-  const ProductGalleryWidget({required this.product, super.key});
+class ProductGallery extends StatefulWidget {
+  final ProductDetail product;
+  const ProductGallery({required this.product, super.key});
 
   @override
-  State<ProductGalleryWidget> createState() => _ProductGalleryWidgetState();
+  State<ProductGallery> createState() => _ProductGalleryState();
 }
 
-class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
+class _ProductGalleryState extends State<ProductGallery> {
   int _currentIndex = 0;
   late PageController _pageController;
 
@@ -26,7 +28,7 @@ class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
 
   @override
   Widget build(BuildContext context) {
-    final images = List<String>.from(widget.product['Images'] ?? []);
+    final images = List<String>.from(widget.product.images);
 
     if (images.isEmpty) {
       return Container(
@@ -40,7 +42,7 @@ class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
       children: [
         // Ảnh lớn swipe ngang
         AspectRatio(
-          aspectRatio: 16 / 12,
+          aspectRatio: 1,
           child: PageView.builder(
             controller: _pageController,
             onPageChanged: (index) {
@@ -51,15 +53,29 @@ class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
             itemCount: images.length,
             itemBuilder: (_, index) {
               final imageUrl = images[index];
-              return Hero(
-                tag: 'product_${widget.product['ProductID']}_$index',
-                child: Image.network(
-                  imageUrl,
-                  fit: BoxFit.cover,
-                  width: double.infinity,
-                  errorBuilder: (_, __, ___) => Container(
-                    color: Colors.grey[300],
-                    child: const Icon(Icons.image, size: 50),
+              return GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => FullscreenImageView(
+                        images: images,
+                        initialIndex: index,
+                        tagPrefix: 'product_${widget.product.productId}',
+                      ),
+                    ),
+                  );
+                },
+                child: Hero(
+                  tag: 'product_${widget.product.productId}_$index',
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    width: double.infinity,
+                    errorBuilder: (_, __, ___) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image, size: 50),
+                    ),
                   ),
                 ),
               );
@@ -71,7 +87,7 @@ class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
 
         // Hàng ảnh nhỏ (thumbnails)
         SizedBox(
-          height: 60,
+          height: 50,
           child: ListView.builder(
             scrollDirection: Axis.horizontal,
             itemCount: images.length,
@@ -91,18 +107,19 @@ class _ProductGalleryWidgetState extends State<ProductGalleryWidget> {
                 },
                 child: Container(
                   margin: const EdgeInsets.symmetric(horizontal: 4),
-                  padding: isSelected
-                      ? const EdgeInsets.all(2)
-                      : EdgeInsets.zero,
+                  padding: EdgeInsets.all(1),
                   decoration: BoxDecoration(
                     border: isSelected
-                        ? Border.all(color: Colors.blue, width: 2)
+                        ? Border.all(
+                            color: const Color.fromARGB(255, 249, 10, 10),
+                            width: 1,
+                          )
                         : null,
                   ),
                   child: Image.network(
                     imageUrl,
-                    width: 60,
-                    height: 60,
+                    width: 50,
+                    height: 50,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => Container(
                       color: Colors.grey[300],

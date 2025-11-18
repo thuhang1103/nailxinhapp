@@ -15,7 +15,7 @@ class CartItem with _$CartItem {
     String? imagePath,
     @Default(0.0) double price,
     @Default(0.0) double total,
-    @Default(false) bool isSelected,
+    @Default(0) int isSelected,
     DateTime? createdAt,
     DateTime? updatedAt,
   }) = _CartItem;

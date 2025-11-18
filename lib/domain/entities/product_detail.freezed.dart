@@ -30,7 +30,7 @@ mixin _$ProductDetail {
   int get soldQuantity => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
   DateTime? get updatedAt => throw _privateConstructorUsedError;
-  String? get statusProduct => throw _privateConstructorUsedError;
+  int? get statusProduct => throw _privateConstructorUsedError;
   List<String> get images => throw _privateConstructorUsedError;
 
   /// Serializes this ProductDetail to a JSON map.
@@ -60,7 +60,7 @@ abstract class $ProductDetailCopyWith<$Res> {
     int soldQuantity,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? statusProduct,
+    int? statusProduct,
     List<String> images,
   });
 }
@@ -133,7 +133,7 @@ class _$ProductDetailCopyWithImpl<$Res, $Val extends ProductDetail>
             statusProduct: freezed == statusProduct
                 ? _value.statusProduct
                 : statusProduct // ignore: cast_nullable_to_non_nullable
-                      as String?,
+                      as int?,
             images: null == images
                 ? _value.images
                 : images // ignore: cast_nullable_to_non_nullable
@@ -163,7 +163,7 @@ abstract class _$$ProductDetailImplCopyWith<$Res>
     int soldQuantity,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? statusProduct,
+    int? statusProduct,
     List<String> images,
   });
 }
@@ -235,7 +235,7 @@ class __$$ProductDetailImplCopyWithImpl<$Res>
         statusProduct: freezed == statusProduct
             ? _value.statusProduct
             : statusProduct // ignore: cast_nullable_to_non_nullable
-                  as String?,
+                  as int?,
         images: null == images
             ? _value._images
             : images // ignore: cast_nullable_to_non_nullable
@@ -286,7 +286,7 @@ class _$ProductDetailImpl implements _ProductDetail {
   @override
   final DateTime? updatedAt;
   @override
-  final String? statusProduct;
+  final int? statusProduct;
   final List<String> _images;
   @override
   @JsonKey()
@@ -371,7 +371,7 @@ abstract class _ProductDetail implements ProductDetail {
     final int soldQuantity,
     final DateTime? createdAt,
     final DateTime? updatedAt,
-    final String? statusProduct,
+    final int? statusProduct,
     final List<String> images,
   }) = _$ProductDetailImpl;
 
@@ -397,7 +397,7 @@ abstract class _ProductDetail implements ProductDetail {
   @override
   DateTime? get updatedAt;
   @override
-  String? get statusProduct;
+  int? get statusProduct;
   @override
   List<String> get images;
 

@@ -40,21 +40,19 @@ import 'package:nailxinh/datas/datasources/product_data/search_products.dart';
 import 'package:nailxinh/domain/repositories/product_repository/search_product_repository.dart';
 import 'package:nailxinh/datas/repositoriesimpl/product_repository_impl/search_product_repository_impl.dart';
 
+//cartitem
+import '../../datas/datasources/cartItem_data/cart_item_data.dart';
+import '../../datas/repositoriesimpl/cart_item_repository_impl/cart_item_repository_impl.dart';
+import '../../domain/repositories/cart_item_repository/cart_item_repository.dart';
+import '../../domain/usecases/cartItem_usecase/add_cartItem_usecase.dart';
+import '../../domain/usecases/cartItem_usecase/delete_cartItem_usecase.dart';
+import '../../domain/usecases/cartItem_usecase/get_all_cartItem_uc.dart';
+import '../../domain/usecases/cartItem_usecase/update_cartItem_usecase.dart';
+import '../../domain/usecases/cartItem_usecase/get_cartItem_uc.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
-  // ======getUsser
-
-  sl.registerLazySingleton<http.Client>(() => http.Client());
-  sl.registerLazySingleton<UserData>(() => UserDataImpl(sl<http.Client>()));
-
-  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(sl()));
-  sl.registerLazySingleton<GetUsers>(() => GetUsers(sl()));
-  //CheckUser
-  sl.registerLazySingleton<CheckUserExistsUseCase>(
-    () => CheckUserExistsUseCase(sl()),
-  );
-
   //GetRoleUseCase
   sl.registerLazySingleton<FlutterSecureStorage>(
     () => const FlutterSecureStorage(),
@@ -84,6 +82,15 @@ Future<void> initDependencies() async {
     );
     return authRepository;
   });
+  // ======getUsser=======
+  sl.registerLazySingleton<UserData>(() => UserDataImpl(sl<Dio>()));
+
+  sl.registerLazySingleton<UserRepository>(() => UserRepositoryImpl(sl()));
+  sl.registerLazySingleton<GetUsers>(() => GetUsers(sl()));
+  //CheckUser
+  sl.registerLazySingleton<CheckUserExistsUseCase>(
+    () => CheckUserExistsUseCase(sl()),
+  );
   sl.registerLazySingleton<GetRoleUseCase>(() => GetRoleUseCase(sl()));
   //registerUser
   sl.registerLazySingleton<RegisterUser>(() => RegisterUser(sl()));
@@ -136,5 +143,21 @@ Future<void> initDependencies() async {
     () => SearchProductUseCase(sl()),
   );
 
-  //
+  //fetch cartItem
+  sl.registerLazySingleton<CartItemData>(() => CartItemDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<CartItemRepository>(
+    () => CartItemRepositoryImpl(sl<CartItemData>()),
+  );
+  sl.registerLazySingleton<CreateCartItemUseCase>(
+    () => CreateCartItemUseCase(sl<CartItemRepository>()),
+  );
+  sl.registerLazySingleton<DeleteCartItemUseCase>(
+    () => DeleteCartItemUseCase(sl<CartItemRepository>()),
+  );
+  sl.registerLazySingleton<GetAllCartItemUseCase>(
+    () => GetAllCartItemUseCase(sl<CartItemRepository>()),
+  );
+  sl.registerLazySingleton<UpdateCartItemUseCase>(
+    () => UpdateCartItemUseCase(sl<CartItemRepository>()),
+  );
 }

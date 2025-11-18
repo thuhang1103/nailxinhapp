@@ -18,7 +18,7 @@ class CartItemModel with _$CartItemModel {
     @JsonKey(name: 'Price') @Default(0.0) double price,
     //total
     @JsonKey(name: 'Total') @Default(0.0) double total,
-    @JsonKey(name: 'is_selected') @Default(false) bool isSelected,
+    @JsonKey(name: 'is_selected') @Default(0) int isSelected,
     @JsonKey(name: 'CreatedAt') String? createdAt,
     @JsonKey(name: 'UpdatedAt') String? updatedAt,
   }) = _CartItemModel;

@@ -15,7 +15,7 @@ class ProductDetail with _$ProductDetail {
     @Default(0) int soldQuantity,
     DateTime? createdAt,
     DateTime? updatedAt,
-    String? statusProduct,
+    int? statusProduct,
     @Default(<String>[]) List<String> images,
   }) = _ProductDetail;
 

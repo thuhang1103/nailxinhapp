@@ -16,11 +16,12 @@ abstract class CartItemData {
   Future<int> updateCartItem({
     required int cartItemId,
     int? quantity,
-    bool? isSelected,
+    int? isSelected,
   });
   Future<bool> deleteCartItem({required int cartItemId});
   Future<CartItemModel?> getById({required int cartItemId});
   Future<List<CartItemModel>> getAllByUserId({required int userId});
+  Future<int> getUserID();
 }
 
 class CartItemDataImpl implements CartItemData {
@@ -92,11 +93,11 @@ class CartItemDataImpl implements CartItemData {
   Future<int> updateCartItem({
     required int cartItemId,
     int? quantity,
-    bool? isSelected,
+    int? isSelected,
   }) async {
     final payload = <String, dynamic>{};
     if (quantity != null) payload['Quantity'] = quantity;
-    if (isSelected != null) payload['is_selected'] = isSelected ? 1 : 0;
+    if (isSelected != null) payload['is_selected'] = isSelected;
 
     if (payload.isEmpty) {
       throw ArgumentError(
@@ -153,5 +154,21 @@ class CartItemDataImpl implements CartItemData {
     final res = await dio.get('$basePath/user/$userId');
     final list = _normalizeToListOfMap(res.data);
     return list.map((m) => CartItemModel.fromJson(m)).toList();
+  }
+
+  @override
+  Future<int> getUserID() async {
+    try {
+      final res = await dio.get('$basePath/getUserID');
+      final data = res.data;
+      if (data == null || data['ok'] != true) {
+        throw Exception("API trả dữ liệu không hợp lệ");
+      }
+      final userId = data['UserID'];
+      return int.tryParse(userId.toString()) ?? 0;
+    } catch (e) {
+      print("Error in getUserID: $e");
+      return 0;
+    }
   }
 }

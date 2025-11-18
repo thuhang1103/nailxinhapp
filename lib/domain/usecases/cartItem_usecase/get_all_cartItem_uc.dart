@@ -10,4 +10,8 @@ class GetAllCartItemUseCase {
   Future<List<CartItem>> getAllCartItems({required int userId}) {
     return repository.getAllByUserId(userId: userId);
   }
+
+  Future<int> getUserID() {
+    return repository.getUserID();
+  }
 }
