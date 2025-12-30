@@ -18,22 +18,3 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     });
   }
 }
-
-
-
-
-
-
-
-// UserBloc(this.getUsers) : super(UserInitial()) {
-// on<LoadUsers>((event, emit) async {
-// emit(UserLoading());
-// try {
-// final users = await getUsers();
-// emit(UserLoaded(users));
-// } catch (e) {
-// emit(UserError(e.toString()));
-// }
-// });
-// }
-// }

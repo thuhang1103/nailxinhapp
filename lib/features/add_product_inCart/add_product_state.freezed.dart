@@ -17,8 +17,12 @@ final _privateConstructorUsedError = UnsupportedError(
 
 /// @nodoc
 mixin _$AddProductToCartState {
-  CommonState get state => throw _privateConstructorUsedError;
-  Product? get product => throw _privateConstructorUsedError;
+  List<FullOption> get fullOptions => throw _privateConstructorUsedError;
+  Map<int, int> get selectedValues => throw _privateConstructorUsedError;
+  double? get price => throw _privateConstructorUsedError;
+  int? get stock => throw _privateConstructorUsedError;
+  int get quantity => throw _privateConstructorUsedError;
+  CommonState get addToCartState => throw _privateConstructorUsedError;
 
   /// Create a copy of AddProductToCartState
   /// with the given fields replaced by the non-null parameter values.
@@ -34,9 +38,16 @@ abstract class $AddProductToCartStateCopyWith<$Res> {
     $Res Function(AddProductToCartState) then,
   ) = _$AddProductToCartStateCopyWithImpl<$Res, AddProductToCartState>;
   @useResult
-  $Res call({CommonState state, Product? product});
+  $Res call({
+    List<FullOption> fullOptions,
+    Map<int, int> selectedValues,
+    double? price,
+    int? stock,
+    int quantity,
+    CommonState addToCartState,
+  });
 
-  $CommonStateCopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get addToCartState;
 }
 
 /// @nodoc
@@ -56,17 +67,40 @@ class _$AddProductToCartStateCopyWithImpl<
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? state = null, Object? product = freezed}) {
+  $Res call({
+    Object? fullOptions = null,
+    Object? selectedValues = null,
+    Object? price = freezed,
+    Object? stock = freezed,
+    Object? quantity = null,
+    Object? addToCartState = null,
+  }) {
     return _then(
       _value.copyWith(
-            state: null == state
-                ? _value.state
-                : state // ignore: cast_nullable_to_non_nullable
+            fullOptions: null == fullOptions
+                ? _value.fullOptions
+                : fullOptions // ignore: cast_nullable_to_non_nullable
+                      as List<FullOption>,
+            selectedValues: null == selectedValues
+                ? _value.selectedValues
+                : selectedValues // ignore: cast_nullable_to_non_nullable
+                      as Map<int, int>,
+            price: freezed == price
+                ? _value.price
+                : price // ignore: cast_nullable_to_non_nullable
+                      as double?,
+            stock: freezed == stock
+                ? _value.stock
+                : stock // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            quantity: null == quantity
+                ? _value.quantity
+                : quantity // ignore: cast_nullable_to_non_nullable
+                      as int,
+            addToCartState: null == addToCartState
+                ? _value.addToCartState
+                : addToCartState // ignore: cast_nullable_to_non_nullable
                       as CommonState,
-            product: freezed == product
-                ? _value.product
-                : product // ignore: cast_nullable_to_non_nullable
-                      as Product?,
           )
           as $Val,
     );
@@ -76,9 +110,9 @@ class _$AddProductToCartStateCopyWithImpl<
   /// with the given fields replaced by the non-null parameter values.
   @override
   @pragma('vm:prefer-inline')
-  $CommonStateCopyWith<$Res> get state {
-    return $CommonStateCopyWith<$Res>(_value.state, (value) {
-      return _then(_value.copyWith(state: value) as $Val);
+  $CommonStateCopyWith<$Res> get addToCartState {
+    return $CommonStateCopyWith<$Res>(_value.addToCartState, (value) {
+      return _then(_value.copyWith(addToCartState: value) as $Val);
     });
   }
 }
@@ -92,10 +126,17 @@ abstract class _$$AddProductToCartStateImplCopyWith<$Res>
   ) = __$$AddProductToCartStateImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({CommonState state, Product? product});
+  $Res call({
+    List<FullOption> fullOptions,
+    Map<int, int> selectedValues,
+    double? price,
+    int? stock,
+    int quantity,
+    CommonState addToCartState,
+  });
 
   @override
-  $CommonStateCopyWith<$Res> get state;
+  $CommonStateCopyWith<$Res> get addToCartState;
 }
 
 /// @nodoc
@@ -112,17 +153,40 @@ class __$$AddProductToCartStateImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? state = null, Object? product = freezed}) {
+  $Res call({
+    Object? fullOptions = null,
+    Object? selectedValues = null,
+    Object? price = freezed,
+    Object? stock = freezed,
+    Object? quantity = null,
+    Object? addToCartState = null,
+  }) {
     return _then(
       _$AddProductToCartStateImpl(
-        state: null == state
-            ? _value.state
-            : state // ignore: cast_nullable_to_non_nullable
+        fullOptions: null == fullOptions
+            ? _value._fullOptions
+            : fullOptions // ignore: cast_nullable_to_non_nullable
+                  as List<FullOption>,
+        selectedValues: null == selectedValues
+            ? _value._selectedValues
+            : selectedValues // ignore: cast_nullable_to_non_nullable
+                  as Map<int, int>,
+        price: freezed == price
+            ? _value.price
+            : price // ignore: cast_nullable_to_non_nullable
+                  as double?,
+        stock: freezed == stock
+            ? _value.stock
+            : stock // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        quantity: null == quantity
+            ? _value.quantity
+            : quantity // ignore: cast_nullable_to_non_nullable
+                  as int,
+        addToCartState: null == addToCartState
+            ? _value.addToCartState
+            : addToCartState // ignore: cast_nullable_to_non_nullable
                   as CommonState,
-        product: freezed == product
-            ? _value.product
-            : product // ignore: cast_nullable_to_non_nullable
-                  as Product?,
       ),
     );
   }
@@ -132,19 +196,47 @@ class __$$AddProductToCartStateImplCopyWithImpl<$Res>
 
 class _$AddProductToCartStateImpl implements _AddProductToCartState {
   const _$AddProductToCartStateImpl({
-    this.state = const CommonState.initial(),
-    this.product,
-  });
+    final List<FullOption> fullOptions = const [],
+    final Map<int, int> selectedValues = const {},
+    this.price,
+    this.stock,
+    this.quantity = 1,
+    this.addToCartState = const CommonState.initial(),
+  }) : _fullOptions = fullOptions,
+       _selectedValues = selectedValues;
 
+  final List<FullOption> _fullOptions;
   @override
   @JsonKey()
-  final CommonState state;
+  List<FullOption> get fullOptions {
+    if (_fullOptions is EqualUnmodifiableListView) return _fullOptions;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_fullOptions);
+  }
+
+  final Map<int, int> _selectedValues;
   @override
-  final Product? product;
+  @JsonKey()
+  Map<int, int> get selectedValues {
+    if (_selectedValues is EqualUnmodifiableMapView) return _selectedValues;
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableMapView(_selectedValues);
+  }
+
+  @override
+  final double? price;
+  @override
+  final int? stock;
+  @override
+  @JsonKey()
+  final int quantity;
+  @override
+  @JsonKey()
+  final CommonState addToCartState;
 
   @override
   String toString() {
-    return 'AddProductToCartState(state: $state, product: $product)';
+    return 'AddProductToCartState(fullOptions: $fullOptions, selectedValues: $selectedValues, price: $price, stock: $stock, quantity: $quantity, addToCartState: $addToCartState)';
   }
 
   @override
@@ -152,12 +244,32 @@ class _$AddProductToCartStateImpl implements _AddProductToCartState {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$AddProductToCartStateImpl &&
-            (identical(other.state, state) || other.state == state) &&
-            (identical(other.product, product) || other.product == product));
+            const DeepCollectionEquality().equals(
+              other._fullOptions,
+              _fullOptions,
+            ) &&
+            const DeepCollectionEquality().equals(
+              other._selectedValues,
+              _selectedValues,
+            ) &&
+            (identical(other.price, price) || other.price == price) &&
+            (identical(other.stock, stock) || other.stock == stock) &&
+            (identical(other.quantity, quantity) ||
+                other.quantity == quantity) &&
+            (identical(other.addToCartState, addToCartState) ||
+                other.addToCartState == addToCartState));
   }
 
   @override
-  int get hashCode => Object.hash(runtimeType, state, product);
+  int get hashCode => Object.hash(
+    runtimeType,
+    const DeepCollectionEquality().hash(_fullOptions),
+    const DeepCollectionEquality().hash(_selectedValues),
+    price,
+    stock,
+    quantity,
+    addToCartState,
+  );
 
   /// Create a copy of AddProductToCartState
   /// with the given fields replaced by the non-null parameter values.
@@ -174,14 +286,26 @@ class _$AddProductToCartStateImpl implements _AddProductToCartState {
 
 abstract class _AddProductToCartState implements AddProductToCartState {
   const factory _AddProductToCartState({
-    final CommonState state,
-    final Product? product,
+    final List<FullOption> fullOptions,
+    final Map<int, int> selectedValues,
+    final double? price,
+    final int? stock,
+    final int quantity,
+    final CommonState addToCartState,
   }) = _$AddProductToCartStateImpl;
 
   @override
-  CommonState get state;
+  List<FullOption> get fullOptions;
   @override
-  Product? get product;
+  Map<int, int> get selectedValues;
+  @override
+  double? get price;
+  @override
+  int? get stock;
+  @override
+  int get quantity;
+  @override
+  CommonState get addToCartState;
 
   /// Create a copy of AddProductToCartState
   /// with the given fields replaced by the non-null parameter values.

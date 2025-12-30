@@ -32,4 +32,9 @@ class SearchProductRepositoryImpl implements SearchProductRepository {
   Future<List<Product>> getAll() {
     return productData.getAll();
   }
+
+  @override
+  Future<List<Product>> getAllSimilar() {
+    return productData.getAllSimilar();
+  }
 }

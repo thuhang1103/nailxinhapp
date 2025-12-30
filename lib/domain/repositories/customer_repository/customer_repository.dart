@@ -1,4 +1,5 @@
 import '../../entities/customers.dart';
+import '../../entities/profile.dart';
 
 abstract class CustomerRepository {
   Future<Customer?> getCustomerByUserId({required int userId});
@@ -11,4 +12,10 @@ abstract class CustomerRepository {
     String? membershipLevel,
   });
   Future<bool> deleteCustomer({required int customerId});
+  Future<Profile?> getCustomerProfile();
+  Future<Map<String, dynamic>> updateCustomerProfile({
+    required String fullName,
+    required String phone,
+  });
+  Future<bool> deleteAccount();
 }

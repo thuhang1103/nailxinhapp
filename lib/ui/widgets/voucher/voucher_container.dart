@@ -1,26 +1,27 @@
 import 'package:flutter/material.dart';
 import '../../../core/color/mycolor.dart';
+import 'package:intl/intl.dart';
 
 class VoucherContainer extends StatelessWidget {
   final String imageUrl;
-  final String maxDiscount;
+  final String Discount;
   final String minValue;
   final DateTime startTime;
   final DateTime endTime;
-  final VoidCallback onSave;
 
   const VoucherContainer({
     Key? key,
     this.imageUrl = 'assets/icons/Abstract Shape (5).png',
-    this.maxDiscount = '0',
+    this.Discount = '0',
     this.minValue = '0',
     required this.startTime,
     required this.endTime,
-    required this.onSave,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final discountValue = double.tryParse(Discount.toString()) ?? 0;
+    final minValueFormatted = double.tryParse(minValue.toString()) ?? 0;
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
       padding: const EdgeInsets.all(10),
@@ -44,7 +45,7 @@ class VoucherContainer extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Giảm tối đa $maxDiscountđ',
+                  'Giảm ${NumberFormat("#,###", "vi_VN").format(discountValue)}đ',
                   style: const TextStyle(
                     fontWeight: FontWeight.bold,
                     fontSize: 14,
@@ -52,7 +53,7 @@ class VoucherContainer extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'đơn tối thiểu: $minValueđ',
+                  'đơn tối thiểu: ${NumberFormat("#,###", "vi_VN").format(minValueFormatted)}đ',
                   style: const TextStyle(fontSize: 12, color: Colors.white),
                 ),
                 Text(
@@ -60,27 +61,6 @@ class VoucherContainer extends StatelessWidget {
                   style: const TextStyle(fontSize: 10, color: Colors.white),
                 ),
               ],
-            ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-              gradient: MyColor.mainGradient,
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: ElevatedButton(
-              onPressed: onSave,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent, // Nền trong suốt
-                shadowColor: Colors.transparent,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 12,
-                  vertical: 6,
-                ),
-              ),
-              child: const Text('Lưu', style: TextStyle(color: Colors.white)),
             ),
           ),
         ],

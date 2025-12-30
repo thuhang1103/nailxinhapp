@@ -37,6 +37,12 @@ class RegisterBloc extends Bloc<RegisterEvent, RegisterState> {
           password: event.password,
           registrationToken: event.registrationToken,
         );
+        //gọi usecase đăgn kí cútomer và cart
+        final customerId = await registerUser.addCustomer(
+          userId: userId,
+          fullName: event.username,
+        );
+        final cartId = await registerUser.createCart(customerId: customerId);
         emit(RegisterSuccess('Customer registered', data: userId));
       } catch (e) {
         emit(RegisterFailure(e.toString()));

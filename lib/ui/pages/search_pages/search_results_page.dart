@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import '../../../blocs/bloc/product_bloc/search_product_name_bloc.dart';
 import '../../../blocs/evens/product_event/search_product_event.dart';
 import '../../../ui/widgets/searchBox/searchButton.dart';
@@ -14,6 +15,9 @@ import '../../../domain/usecases/search_usecases/search_suggestion_usecase.dart'
 import '../../../blocs/states/product_state/search_product_name_state.dart';
 import '../../widgets/product_item.dart';
 import 'search_page.dart';
+import '../../../routers/router.dart';
+import '../../../routers/router_path.dart';
+import '../../widgets/page_view/page_error.dart';
 
 class SearchResultsPage extends StatefulWidget {
   final String selectedKeyword;
@@ -67,37 +71,16 @@ class _SearchResultsPageState extends State<SearchResultsPage>
                   Icons.arrow_back_ios,
                   color: MyColor.textColor,
                 ),
-                onPressed: () => Navigator.pop(context),
+                onPressed: () => context.pop(),
                 iconSize: 19,
               ),
             ),
             Expanded(
               child: SearchButton(
                 onTap: () {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => MultiBlocProvider(
-                        providers: [
-                          BlocProvider(
-                            create: (context) => StorageSearchHistoryBloc(
-                              clear: context.read<ClearHistorySearch>(),
-                              addKeywordUsecase: context.read<AddKeyword>(),
-                              getHistoryUsecase: context
-                                  .read<GetSearchHistory>(),
-                            ),
-                          ),
-                          BlocProvider(
-                            create: (context) => SuggestionHistoryBloc(
-                              context.read<SearchSuggestionUseCase>(),
-                            ),
-                          ),
-                        ],
-                        child: SearchPage(
-                          searchController: widget.selectedKeyword,
-                        ),
-                      ),
-                    ),
+                  context.push(
+                    RoutePaths.search,
+                    extra: widget.selectedKeyword,
                   );
                 },
 
@@ -139,8 +122,6 @@ class _SearchResultsPageState extends State<SearchResultsPage>
             return const Center(child: CircularProgressIndicator());
           }
           if (state is SearchProductNameSuccess) {
-            // Lấy danh sách sản phẩm từ state
-
             List<Product> sortedProducts = List.from(state.products);
 
             switch (_tabController.index) {
@@ -163,8 +144,6 @@ class _SearchResultsPageState extends State<SearchResultsPage>
                 // Không cần sort
                 break;
             }
-
-            // Hiển thị GridView sản phẩm
             return GridView.builder(
               padding: const EdgeInsets.all(8),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -177,6 +156,12 @@ class _SearchResultsPageState extends State<SearchResultsPage>
               itemBuilder: (context, index) {
                 final product = sortedProducts[index];
                 return ProductItem(
+                  onTap: () {
+                    context.push(
+                      RoutePaths.productDetail,
+                      extra: product.productId,
+                    );
+                  },
                   imagePath: product.imagePath ?? '',
                   name: product.productName,
                   price: product.basePrice,
@@ -186,7 +171,7 @@ class _SearchResultsPageState extends State<SearchResultsPage>
             );
           }
           if (state is SearchProductNameFailure) {
-            return Center(child: Text('Lỗi: ${state.error}'));
+            return ErrorView(message: 'Lỗi: ${state.error}');
           }
           return const SizedBox.shrink();
         },

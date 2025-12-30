@@ -27,6 +27,14 @@ class RegisterUser {
     );
   }
 
+  Future<int> addCustomer({required int userId, required String fullName}) {
+    return repository.addCustomer(userId: userId, fullName: fullName);
+  }
+
+  Future<int> createCart({required int customerId}) {
+    return repository.createCart(customerId: customerId);
+  }
+
   Future<String> resetpass({
     required String email,
     required String password,

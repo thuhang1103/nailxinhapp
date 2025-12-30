@@ -6,16 +6,30 @@ class CreateCartItemUseCase {
   CreateCartItemUseCase(this.repository);
 
   Future<int> createCartItem({
-    required int cartId,
+    required int userId,
     required int productId,
+    required int variantId,
     required int quantity,
     required double price,
   }) {
     return repository.addCartItem(
-      cartId: cartId,
+      userId: userId,
       productId: productId,
+      variantId: variantId,
       quantity: quantity,
       price: price,
+    );
+  }
+
+  Future<int> checkCartItemExists({
+    required int userId,
+    required int variantId,
+    required int quantity,
+  }) {
+    return repository.checkCartItemExists(
+      userId: userId,
+      variantId: variantId,
+      quantity: quantity,
     );
   }
 }

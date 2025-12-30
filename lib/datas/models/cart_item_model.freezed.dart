@@ -27,15 +27,21 @@ mixin _$CartItemModel {
   int? get cartId => throw _privateConstructorUsedError;
   @JsonKey(name: 'ProductID')
   int? get productId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'VariantID')
+  int? get variantId => throw _privateConstructorUsedError;
+  @JsonKey(name: 'VariantName')
+  String? get variantName => throw _privateConstructorUsedError;
   @JsonKey(name: 'ProductName')
   String? get productName => throw _privateConstructorUsedError;
   @JsonKey(name: 'ImagePath')
   String? get imagePath => throw _privateConstructorUsedError;
   @JsonKey(name: 'Quantity')
   int get quantity => throw _privateConstructorUsedError;
-  @JsonKey(name: 'Price')
-  double get price => throw _privateConstructorUsedError; //total
-  @JsonKey(name: 'Total')
+  @JsonKey(name: 'Price', fromJson: _parseDouble)
+  double get price => throw _privateConstructorUsedError;
+  @JsonKey(name: 'Stock')
+  int get stock => throw _privateConstructorUsedError; //total
+  @JsonKey(name: 'Total', fromJson: _parseDouble)
   double get total => throw _privateConstructorUsedError;
   @JsonKey(name: 'is_selected')
   int get isSelected => throw _privateConstructorUsedError;
@@ -65,11 +71,14 @@ abstract class $CartItemModelCopyWith<$Res> {
     @JsonKey(name: 'CartItemID') int? cartItemId,
     @JsonKey(name: 'CartID') int? cartId,
     @JsonKey(name: 'ProductID') int? productId,
+    @JsonKey(name: 'VariantID') int? variantId,
+    @JsonKey(name: 'VariantName') String? variantName,
     @JsonKey(name: 'ProductName') String? productName,
     @JsonKey(name: 'ImagePath') String? imagePath,
     @JsonKey(name: 'Quantity') int quantity,
-    @JsonKey(name: 'Price') double price,
-    @JsonKey(name: 'Total') double total,
+    @JsonKey(name: 'Price', fromJson: _parseDouble) double price,
+    @JsonKey(name: 'Stock') int stock,
+    @JsonKey(name: 'Total', fromJson: _parseDouble) double total,
     @JsonKey(name: 'is_selected') int isSelected,
     @JsonKey(name: 'CreatedAt') String? createdAt,
     @JsonKey(name: 'UpdatedAt') String? updatedAt,
@@ -94,10 +103,13 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
     Object? cartItemId = freezed,
     Object? cartId = freezed,
     Object? productId = freezed,
+    Object? variantId = freezed,
+    Object? variantName = freezed,
     Object? productName = freezed,
     Object? imagePath = freezed,
     Object? quantity = null,
     Object? price = null,
+    Object? stock = null,
     Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
@@ -117,6 +129,14 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
                 ? _value.productId
                 : productId // ignore: cast_nullable_to_non_nullable
                       as int?,
+            variantId: freezed == variantId
+                ? _value.variantId
+                : variantId // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            variantName: freezed == variantName
+                ? _value.variantName
+                : variantName // ignore: cast_nullable_to_non_nullable
+                      as String?,
             productName: freezed == productName
                 ? _value.productName
                 : productName // ignore: cast_nullable_to_non_nullable
@@ -133,6 +153,10 @@ class _$CartItemModelCopyWithImpl<$Res, $Val extends CartItemModel>
                 ? _value.price
                 : price // ignore: cast_nullable_to_non_nullable
                       as double,
+            stock: null == stock
+                ? _value.stock
+                : stock // ignore: cast_nullable_to_non_nullable
+                      as int,
             total: null == total
                 ? _value.total
                 : total // ignore: cast_nullable_to_non_nullable
@@ -168,11 +192,14 @@ abstract class _$$CartItemModelImplCopyWith<$Res>
     @JsonKey(name: 'CartItemID') int? cartItemId,
     @JsonKey(name: 'CartID') int? cartId,
     @JsonKey(name: 'ProductID') int? productId,
+    @JsonKey(name: 'VariantID') int? variantId,
+    @JsonKey(name: 'VariantName') String? variantName,
     @JsonKey(name: 'ProductName') String? productName,
     @JsonKey(name: 'ImagePath') String? imagePath,
     @JsonKey(name: 'Quantity') int quantity,
-    @JsonKey(name: 'Price') double price,
-    @JsonKey(name: 'Total') double total,
+    @JsonKey(name: 'Price', fromJson: _parseDouble) double price,
+    @JsonKey(name: 'Stock') int stock,
+    @JsonKey(name: 'Total', fromJson: _parseDouble) double total,
     @JsonKey(name: 'is_selected') int isSelected,
     @JsonKey(name: 'CreatedAt') String? createdAt,
     @JsonKey(name: 'UpdatedAt') String? updatedAt,
@@ -196,10 +223,13 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
     Object? cartItemId = freezed,
     Object? cartId = freezed,
     Object? productId = freezed,
+    Object? variantId = freezed,
+    Object? variantName = freezed,
     Object? productName = freezed,
     Object? imagePath = freezed,
     Object? quantity = null,
     Object? price = null,
+    Object? stock = null,
     Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
@@ -219,6 +249,14 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
             ? _value.productId
             : productId // ignore: cast_nullable_to_non_nullable
                   as int?,
+        variantId: freezed == variantId
+            ? _value.variantId
+            : variantId // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        variantName: freezed == variantName
+            ? _value.variantName
+            : variantName // ignore: cast_nullable_to_non_nullable
+                  as String?,
         productName: freezed == productName
             ? _value.productName
             : productName // ignore: cast_nullable_to_non_nullable
@@ -235,6 +273,10 @@ class __$$CartItemModelImplCopyWithImpl<$Res>
             ? _value.price
             : price // ignore: cast_nullable_to_non_nullable
                   as double,
+        stock: null == stock
+            ? _value.stock
+            : stock // ignore: cast_nullable_to_non_nullable
+                  as int,
         total: null == total
             ? _value.total
             : total // ignore: cast_nullable_to_non_nullable
@@ -263,11 +305,14 @@ class _$CartItemModelImpl extends _CartItemModel {
     @JsonKey(name: 'CartItemID') this.cartItemId,
     @JsonKey(name: 'CartID') this.cartId,
     @JsonKey(name: 'ProductID') this.productId,
+    @JsonKey(name: 'VariantID') this.variantId,
+    @JsonKey(name: 'VariantName') this.variantName,
     @JsonKey(name: 'ProductName') this.productName,
     @JsonKey(name: 'ImagePath') this.imagePath,
     @JsonKey(name: 'Quantity') this.quantity = 1,
-    @JsonKey(name: 'Price') this.price = 0.0,
-    @JsonKey(name: 'Total') this.total = 0.0,
+    @JsonKey(name: 'Price', fromJson: _parseDouble) this.price = 0.0,
+    @JsonKey(name: 'Stock') this.stock = 0,
+    @JsonKey(name: 'Total', fromJson: _parseDouble) this.total = 0.0,
     @JsonKey(name: 'is_selected') this.isSelected = 0,
     @JsonKey(name: 'CreatedAt') this.createdAt,
     @JsonKey(name: 'UpdatedAt') this.updatedAt,
@@ -286,6 +331,12 @@ class _$CartItemModelImpl extends _CartItemModel {
   @JsonKey(name: 'ProductID')
   final int? productId;
   @override
+  @JsonKey(name: 'VariantID')
+  final int? variantId;
+  @override
+  @JsonKey(name: 'VariantName')
+  final String? variantName;
+  @override
   @JsonKey(name: 'ProductName')
   final String? productName;
   @override
@@ -295,11 +346,14 @@ class _$CartItemModelImpl extends _CartItemModel {
   @JsonKey(name: 'Quantity')
   final int quantity;
   @override
-  @JsonKey(name: 'Price')
+  @JsonKey(name: 'Price', fromJson: _parseDouble)
   final double price;
+  @override
+  @JsonKey(name: 'Stock')
+  final int stock;
   //total
   @override
-  @JsonKey(name: 'Total')
+  @JsonKey(name: 'Total', fromJson: _parseDouble)
   final double total;
   @override
   @JsonKey(name: 'is_selected')
@@ -313,7 +367,7 @@ class _$CartItemModelImpl extends _CartItemModel {
 
   @override
   String toString() {
-    return 'CartItemModel(cartItemId: $cartItemId, cartId: $cartId, productId: $productId, productName: $productName, imagePath: $imagePath, quantity: $quantity, price: $price, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CartItemModel(cartItemId: $cartItemId, cartId: $cartId, productId: $productId, variantId: $variantId, variantName: $variantName, productName: $productName, imagePath: $imagePath, quantity: $quantity, price: $price, stock: $stock, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -326,6 +380,10 @@ class _$CartItemModelImpl extends _CartItemModel {
             (identical(other.cartId, cartId) || other.cartId == cartId) &&
             (identical(other.productId, productId) ||
                 other.productId == productId) &&
+            (identical(other.variantId, variantId) ||
+                other.variantId == variantId) &&
+            (identical(other.variantName, variantName) ||
+                other.variantName == variantName) &&
             (identical(other.productName, productName) ||
                 other.productName == productName) &&
             (identical(other.imagePath, imagePath) ||
@@ -333,6 +391,7 @@ class _$CartItemModelImpl extends _CartItemModel {
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.stock, stock) || other.stock == stock) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.isSelected, isSelected) ||
                 other.isSelected == isSelected) &&
@@ -349,10 +408,13 @@ class _$CartItemModelImpl extends _CartItemModel {
     cartItemId,
     cartId,
     productId,
+    variantId,
+    variantName,
     productName,
     imagePath,
     quantity,
     price,
+    stock,
     total,
     isSelected,
     createdAt,
@@ -378,11 +440,14 @@ abstract class _CartItemModel extends CartItemModel {
     @JsonKey(name: 'CartItemID') final int? cartItemId,
     @JsonKey(name: 'CartID') final int? cartId,
     @JsonKey(name: 'ProductID') final int? productId,
+    @JsonKey(name: 'VariantID') final int? variantId,
+    @JsonKey(name: 'VariantName') final String? variantName,
     @JsonKey(name: 'ProductName') final String? productName,
     @JsonKey(name: 'ImagePath') final String? imagePath,
     @JsonKey(name: 'Quantity') final int quantity,
-    @JsonKey(name: 'Price') final double price,
-    @JsonKey(name: 'Total') final double total,
+    @JsonKey(name: 'Price', fromJson: _parseDouble) final double price,
+    @JsonKey(name: 'Stock') final int stock,
+    @JsonKey(name: 'Total', fromJson: _parseDouble) final double total,
     @JsonKey(name: 'is_selected') final int isSelected,
     @JsonKey(name: 'CreatedAt') final String? createdAt,
     @JsonKey(name: 'UpdatedAt') final String? updatedAt,
@@ -402,6 +467,12 @@ abstract class _CartItemModel extends CartItemModel {
   @JsonKey(name: 'ProductID')
   int? get productId;
   @override
+  @JsonKey(name: 'VariantID')
+  int? get variantId;
+  @override
+  @JsonKey(name: 'VariantName')
+  String? get variantName;
+  @override
   @JsonKey(name: 'ProductName')
   String? get productName;
   @override
@@ -411,10 +482,13 @@ abstract class _CartItemModel extends CartItemModel {
   @JsonKey(name: 'Quantity')
   int get quantity;
   @override
-  @JsonKey(name: 'Price')
-  double get price; //total
+  @JsonKey(name: 'Price', fromJson: _parseDouble)
+  double get price;
   @override
-  @JsonKey(name: 'Total')
+  @JsonKey(name: 'Stock')
+  int get stock; //total
+  @override
+  @JsonKey(name: 'Total', fromJson: _parseDouble)
   double get total;
   @override
   @JsonKey(name: 'is_selected')

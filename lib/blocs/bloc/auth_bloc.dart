@@ -101,7 +101,11 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     LogoutRequested event,
     Emitter<AuthState> emit,
   ) async {
-    final message = await logoutUsecase.call();
-    emit(Unauthenticated(message));
+    try {
+      final message = await logoutUsecase.call();
+      emit(Unauthenticated(message));
+    } catch (e) {
+      emit(Unauthenticated("Đăng xuất thất bại, vui lòng thử lại"));
+    }
   }
 }

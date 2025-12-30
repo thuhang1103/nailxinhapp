@@ -14,12 +14,7 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [
-    const Management(),
-    const Edit(),
-    const Revenue(),
-    const Accounts(),
-  ];
+  final List<Widget> _pages = [Management(), Edit(), Revenue(), Accounts()];
 
   void _onItemTapped(int index) {
     setState(() {
@@ -30,34 +25,23 @@ class _AdminPageState extends State<AdminPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Trang Admin'),
-        centerTitle: true,
-        backgroundColor: Colors.deepPurpleAccent,
-      ),
       body: _pages[_selectedIndex],
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.deepPurple,
+        selectedItemColor: const Color.fromARGB(255, 89, 5, 62),
         unselectedItemColor: Colors.grey,
         onTap: _onItemTapped,
         items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'quản lý'),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people),
-            label: 'Người dùng',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.shopping_cart),
-            label: 'Đơn hàng',
+            icon: Icon(Icons.edit_document),
+            label: 'kho',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.bar_chart),
-            label: 'Thống kê',
+            label: 'Doanh thu',
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Cài đặt',
-          ),
+          BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Cài đặt'),
         ],
       ),
     );

@@ -26,4 +26,8 @@ class SearchProductUseCase {
   Future<List<Product>> getAllProducts() {
     return repository.getAll();
   }
+
+  Future<List<Product>> getAllSimilarProducts() {
+    return repository.getAllSimilar();
+  }
 }

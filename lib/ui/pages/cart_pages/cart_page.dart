@@ -1,191 +1,262 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../core/color/mycolor.dart';
+import '../../../routers/router.dart';
+import 'package:go_router/go_router.dart';
 
-class CartItem {
-  final int id;
-  final String name;
-  final double price;
-  int quantity;
-  final String? imageUrl;
+import '../../../domain/entities/cart_item.dart';
 
-  CartItem({
-    required this.id,
-    required this.name,
-    required this.price,
-    this.quantity = 1,
-    this.imageUrl,
-  });
-}
+import '../../../ui/widgets/cart_item.dart';
+//router
+import '../../../routers/router.dart';
+import '../../../routers/router_path.dart';
+//bloc event state
+import '../../../features/fetch_cartItem/cart_item_bloc.dart';
+import '../../../features/fetch_cartItem/cart_item_event.dart';
+import '../../../features/fetch_cartItem/cart_item_state.dart';
+//page view
+import '../../widgets/page_view/page_loading.dart';
+import '../../widgets/page_view/page_error.dart';
+import '../../widgets/page_view/page_empty.dart';
+import '../../widgets/button/button_gradient.dart';
+import 'package:intl/intl.dart';
+import '../../pages/customerPages/voucher_page.dart';
 
 class CartPage extends StatefulWidget {
-  final List<CartItem>? initialItems;
-  const CartPage({Key? key, this.initialItems}) : super(key: key);
+  const CartPage({Key? key}) : super(key: key);
 
   @override
   State<CartPage> createState() => _CartPageState();
 }
 
 class _CartPageState extends State<CartPage> {
-  late List<CartItem> _items;
-
   @override
   void initState() {
     super.initState();
-    _items = widget.initialItems ??
-        [
-          CartItem(id: 1, name: 'Mẫu móng 1', price: 120000, imageUrl: null),
-          CartItem(id: 2, name: 'Mẫu móng 2', price: 90000, imageUrl: null),
-        ];
-  }
-
-  double get _total =>
-      _items.fold(0.0, (s, it) => s + it.price * it.quantity);
-
-  void _increaseQty(int index) {
-    setState(() {
-      _items[index].quantity++;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<CartItemBloc>().add(GetCartItemEvent());
     });
-  }
-
-  void _decreaseQty(int index) {
-    setState(() {
-      if (_items[index].quantity > 1) {
-        _items[index].quantity--;
-      } else {
-        _items.removeAt(index);
-      }
+    context.read<CartItemBloc>().uiEvents.listen((msg) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
     });
-  }
-
-  void _removeItem(int index) {
-    setState(() {
-      _items.removeAt(index);
-    });
-  }
-
-  void _clearCart() {
-    setState(() {
-      _items.clear();
-    });
-  }
-
-  void _checkout() {
-    // TODO: kết nối Bloc hoặc điều hướng tới trang thanh toán
-    ScaffoldMessenger.of(context)
-        .showSnackBar(const SnackBar(content: Text('Bắt đầu thanh toán...')));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyColor.pinkColor,
       appBar: AppBar(
-        title: const Text('Giỏ hàng'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.maybePop(context),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.delete_forever),
-            onPressed: _items.isNotEmpty ? _clearCart : null,
-            tooltip: 'Xóa tất cả',
+        backgroundColor: MyColor.pinkColor,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 8.0),
+          child: IconButton(
+            padding: const EdgeInsets.all(6),
+            constraints: const BoxConstraints(),
+            icon: const Icon(Icons.arrow_back_ios),
+            color: MyColor.textColor, // màu icon
+            onPressed: () => context.pop(),
           ),
-        ],
-      ),
-      body: _items.isEmpty
-          ? const Center(child: Text('Giỏ hàng trống'))
-          : ListView.separated(
-              padding: const EdgeInsets.all(12),
-              itemCount: _items.length,
-              separatorBuilder: (_, __) => const SizedBox(height: 8),
-              itemBuilder: (context, index) {
-                final item = _items[index];
-                return Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8),
-                    child: Row(
-                      children: [
-                        Container(
-                          width: 80,
-                          height: 80,
-                          color: Colors.grey[200],
-                          child: item.imageUrl != null
-                              ? Image.network(item.imageUrl!, fit: BoxFit.cover)
-                              : const Icon(Icons.image_outlined, size: 40),
-                        ),
-                        const SizedBox(width: 12),
-                        Expanded(
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(item.name,
-                                  style: const TextStyle(
-                                      fontSize: 16, fontWeight: FontWeight.w600)),
-                              const SizedBox(height: 6),
-                              Text(
-                                  '${item.price.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')} đ',
-                                  style: const TextStyle(
-                                      color: Colors.redAccent, fontWeight: FontWeight.bold)),
-                              const SizedBox(height: 6),
-                              Row(
-                                children: [
-                                  IconButton(
-                                    icon: const Icon(Icons.remove_circle_outline),
-                                    onPressed: () => _decreaseQty(index),
-                                  ),
-                                  Text('${item.quantity}'),
-                                  IconButton(
-                                    icon: const Icon(Icons.add_circle_outline),
-                                    onPressed: () => _increaseQty(index),
-                                  ),
-                                  const Spacer(),
-                                  IconButton(
-                                    icon: const Icon(Icons.delete_outline),
-                                    onPressed: () => _removeItem(index),
-                                  ),
-                                ],
-                              )
-                            ],
-                          ),
-                        )
-                      ],
+        ),
+        title: BlocBuilder<CartItemBloc, CartItemState>(
+          builder: (context, state) {
+            final count = state.cartItems.length;
+            return Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Text(
+                  'Giỏ hàng',
+                  style: TextStyle(
+                    color: MyColor.textColor,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                if (count > 0)
+                  Text(
+                    '($count)',
+                    style: const TextStyle(
+                      color: MyColor.textColor,
+                      fontSize: 12,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
-                );
-              },
-            ),
-      bottomNavigationBar: SafeArea(
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-          decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor,
-            boxShadow: [BoxShadow(color: Colors.black12, blurRadius: 8)],
+              ],
+            );
+          },
+        ),
+        centerTitle: true,
+        elevation: 0.5,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.chat_bubble_outline_sharp),
+            color: MyColor.textColor,
+            tooltip: 'Chat hỗ trợ',
+            onPressed: () {
+              context.push(RoutePaths.chatPage);
+            },
           ),
-          child: Row(
-            children: [
-              Expanded(
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: BlocBuilder<CartItemBloc, CartItemState>(
+        builder: (context, state) {
+          return state.cartItemState.maybeWhen(
+            loading: () => const LoadingView(),
+            error: (e) => ErrorView(
+              message: e.toString(),
+              onRetry: () =>
+                  context.read<CartItemBloc>().add(GetCartItemEvent()),
+            ),
+            success: (data) {
+              if (state.cartItems.isEmpty) {
+                return EmptyView(
+                  message: 'Giỏ hàng của bạn đang trống',
+                  buttonText: 'Tiếp tục mua sắm',
+                  onPressed: () => context.push(RoutePaths.shoppingPage),
+                );
+              }
+
+              return _CartListView(items: state.cartItems);
+            },
+            orElse: () => const SizedBox.shrink(),
+          );
+        },
+      ),
+      bottomNavigationBar: BlocBuilder<CartItemBloc, CartItemState>(
+        builder: (context, state) {
+          return Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+
+            child: Row(
+              children: [
+                Row(
                   children: [
-                    const Text('Tổng cộng', style: TextStyle(fontSize: 12, color: Colors.grey)),
-                    const SizedBox(height: 4),
-                    Text(
-                      '${_total.toStringAsFixed(0).replaceAllMapped(RegExp(r'(\d)(?=(\d{3})+(?!\d))'), (m) => '${m[1]}.')} đ',
-                      style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    Checkbox(
+                      value: state.isSelectAll == 1,
+                      activeColor: const Color.fromARGB(255, 234, 132, 202),
+                      checkColor: Colors.white,
+                      onChanged: (value) {
+                        context.read<CartItemBloc>().add(
+                          SelectAllCartItemsEvent(),
+                        );
+                      },
+                    ),
+                    const Text(
+                      "Tất cả",
+                      style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w500,
+                      ),
                     ),
                   ],
                 ),
-              ),
-              const SizedBox(width: 12),
-              ElevatedButton(
-                onPressed: _items.isNotEmpty ? _checkout : null,
-                child: const Text('Mua ngay'),
-                style: ElevatedButton.styleFrom(padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14)),
-              ),
-            ],
-          ),
-        ),
+
+                const Spacer(),
+
+                // ---- 2. TỔNG TIỀN ----
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    const Text("Tổng:", style: TextStyle(fontSize: 13)),
+                    Text(
+                      "${NumberFormat.currency(locale: 'vi_VN', symbol: '').format(state.totalPrice)} đ",
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.red,
+                      ),
+                    ),
+                  ],
+                ),
+
+                const SizedBox(width: 12),
+
+                // ---- 3. NÚT THANH TOÁN ----
+                SizedBox(
+                  height: 35,
+                  width: 110, // quan trọng!
+                  child: ButtonGradient(
+                    text: 'Đặt Hàng',
+                    onPressed: () {
+                      context.push(RoutePaths.confirmOrder);
+                    },
+                    height: 35,
+                    gradient: MyColor.mainGradient2,
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
+    );
+  }
+}
+
+class _CartListView extends StatelessWidget {
+  final List<CartItem> items;
+
+  const _CartListView({required this.items});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListView.separated(
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+      itemCount: items.length,
+      separatorBuilder: (_, __) => const SizedBox(height: 8),
+      itemBuilder: (context, index) {
+        final item = items[index];
+
+        return Card(
+          child: CartItemWidget(
+            isSelected: (item.isSelected ?? 0) == 1,
+            imageUrl: item.imagePath ?? '',
+            name: item.productName ?? 'Sản phẩm',
+            quantity: item.quantity ?? 1,
+            price: (item.price ?? 0).toDouble(),
+            stock: item.stock ?? 0,
+            variant: item.variantName ?? 'mặc định',
+            onSelect: (checked) {
+              context.read<CartItemBloc>().add(
+                ChangeIsSelectedEvent(
+                  cartItemId: item.id!,
+                  quantity: item.quantity ?? 1,
+                  variantId: item.variantId ?? 0,
+                  isSelected: checked! ? 1 : 0,
+                ),
+              );
+            },
+            onDiscount: () {
+              context.push(RoutePaths.voucher);
+            },
+            onDecrement: () {
+              if ((item.quantity ?? 1) > 1) {
+                context.read<CartItemBloc>().add(
+                  DecreaseQuantityEvent(cartItemId: item.id!),
+                );
+              }
+            },
+            onIncrement: () {
+              if ((item.quantity ?? 1) < item.stock!) {
+                context.read<CartItemBloc>().add(
+                  IncreaseQuantityEvent(
+                    cartItemId: item.id!,
+                    stock: item.stock ?? 1,
+                  ),
+                );
+              }
+            },
+            onRemove: () {
+              context.read<CartItemBloc>().add(
+                DeleteCartItemEvent(cartItemId: item.id!),
+              );
+            },
+          ),
+        );
+      },
     );
   }
 }

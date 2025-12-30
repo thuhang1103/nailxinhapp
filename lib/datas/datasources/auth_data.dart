@@ -58,9 +58,7 @@ class AuthDataImpl implements AuthData {
   @override
   Future<String> getRole() async {
     try {
-      print('Đang lấy role...');
       final response = await dio.get('/auth/role');
-      print('Response getRole: ${response.data}');
       // AuthInterceptor sẽ tự động gắn access token vào header
       return response.data["role"];
     } catch (e) {

@@ -11,7 +11,7 @@ class SearchProductAllBloc
     on<GetAllProductsEvent>((event, emit) async {
       emit(SearchProductAllLoading());
       try {
-        final products = await useCase.getAllProducts();
+        final products = await useCase.getAllSimilarProducts();
         emit(SearchProductAllSuccess(products));
       } catch (e) {
         emit(SearchProductAllFailure(e.toString()));

@@ -4,6 +4,12 @@ import 'package:dio/dio.dart';
 import '../../models/customer_model.dart';
 import '../../../domain/entities/customers.dart' as entity;
 
+import '../../models/profile_model.dart';
+import '../../../domain/entities/profile.dart' as entity2;
+
+import '../../../core/appException.dart';
+import '../../../core/helper.dart';
+
 abstract class CustomerData {
   Future<entity.Customer?> getCustomerByUserId({required int userId});
   Future<int?> getCustomerIdByUserId({required int userId});
@@ -15,6 +21,12 @@ abstract class CustomerData {
     String? membershipLevel,
   });
   Future<bool> deleteCustomer({required int customerId});
+  Future<entity2.Profile> getCustomerProfile();
+  Future<Map<String, dynamic>> updateCustomerProfile({
+    required String fullName,
+    required String phone,
+  });
+  Future<bool> deleteAccount();
 }
 
 class CustomerDataImpl implements CustomerData {
@@ -125,5 +137,72 @@ class CustomerDataImpl implements CustomerData {
       if (affected != null) return (int.tryParse(affected.toString()) ?? 0) > 0;
     }
     return res.statusCode == 200;
+  }
+
+  Future<entity2.Profile> getCustomerProfile() async {
+    try {
+      final res = await dio.get('$basePath/get_profile');
+      final status = res.statusCode ?? 0;
+      if (status < 200 || status >= 300) {
+        throw ServerException();
+      }
+
+      dynamic data = res.data;
+
+      if (data is String) {
+        data = jsonDecode(data);
+      }
+      if (data is! Map<String, dynamic>) {
+        throw ParseException();
+      }
+
+      final model = ProfileModel.fromJson(data);
+      return model.toEntity();
+    } on DioException catch (e) {
+      throw mapDioExceptionToAppException(e);
+    } on FormatException catch (_) {
+      throw const ParseException();
+    } catch (e) {
+      throw BusinessException(e.toString());
+    }
+  }
+
+  Future<Map<String, dynamic>> updateCustomerProfile({
+    required String fullName,
+    required String phone,
+  }) async {
+    try {
+      print('Updating profile: $fullName, $phone');
+      final res = await dio.patch(
+        '$basePath/update_profile',
+        data: {'fullName': fullName, 'phone': phone},
+      );
+      final data = res.data;
+      if (data is! Map<String, dynamic>) {
+        throw Exception('Invalid response format');
+      }
+      return Map<String, dynamic>.from(res.data as Map);
+    } on DioException catch (e) {
+      throw mapDioExceptionToAppException(e);
+    } on FormatException catch (_) {
+      throw const ParseException();
+    } catch (e) {
+      throw BusinessException(e.toString());
+    }
+  }
+
+  Future<bool> deleteAccount() async {
+    try {
+      final res = await dio.delete('$basePath/delete_account');
+      return res.statusCode != null &&
+          res.statusCode! >= 200 &&
+          res.statusCode! < 300;
+    } on DioException catch (e) {
+      throw mapDioExceptionToAppException(e);
+    } on FormatException catch (_) {
+      throw const ParseException();
+    } catch (e) {
+      throw BusinessException(e.toString());
+    }
   }
 }

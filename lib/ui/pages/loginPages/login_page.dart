@@ -45,11 +45,7 @@ class _LoginPageState extends State<LoginPage> {
         leading: IconButton(
           icon: Icon(Icons.arrow_back_ios), // Đổi icon
           onPressed: () {
-            if (Navigator.canPop(context)) {
-              Navigator.pop(context);
-            } else {
-              // Không làm gì, hoặc điều hướng đến page mặc định
-            }
+            context.go(RoutePaths.start);
           },
         ),
         backgroundColor: Colors.transparent, // Nền trong suốt

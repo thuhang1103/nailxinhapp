@@ -18,6 +18,14 @@ import 'package:go_router/go_router.dart';
 import '../../../routers/router_path.dart';
 import '../../../routers/router_name.dart';
 import '../../../routers/router.dart';
+import '../../pages/customerPages/appointment_page.dart';
+//voucherbloc
+import '../../../features/fetch_Voucher/fetch_voucher_bloc.dart';
+import '../../../features/fetch_Voucher/fetch_voucher_event.dart';
+import '../../../features/fetch_Voucher/fetch_voucher_state.dart';
+import '../../../domain/usecases/voucher_usecase.dart';
+import '../../../features/edit_address/edit_address_bloc.dart';
+import '../../../domain/usecases/address_usecase.dart';
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -28,21 +36,49 @@ class _MyHomePageState extends State<MyHomePage> {
   int _selectedIndex = 0; // Trang
 
   final List<Widget> _pages = [
-    BlocProvider<SearchProductAllBloc>(
-      create: (_) => SearchProductAllBloc(sl<SearchProductUseCase>()),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<SearchProductAllBloc>(
+          create: (_) => SearchProductAllBloc(sl<SearchProductUseCase>()),
+        ),
+        BlocProvider<VoucherBloc>(
+          create: (_) => VoucherBloc(voucherUseCase: sl<VoucherUseCase>()),
+        ),
+      ],
       child: Shopping(),
     ),
     Booking(),
     OrderHistory(),
-    ShopDetail(),
-    UserDetail(),
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<SearchProductAllBloc>(
+          create: (_) => SearchProductAllBloc(sl<SearchProductUseCase>()),
+        ),
+        BlocProvider<VoucherBloc>(
+          create: (_) => VoucherBloc(voucherUseCase: sl<VoucherUseCase>()),
+        ),
+      ],
+      child: ShopDetail(),
+    ),
+
+    MultiBlocProvider(
+      providers: [
+        BlocProvider<SearchProductAllBloc>(
+          create: (_) => SearchProductAllBloc(sl<SearchProductUseCase>()),
+        ),
+        BlocProvider<EditAddressBloc>(
+          create: (_) => EditAddressBloc(addressUseCase: sl<AddressUseCase>()),
+        ),
+      ],
+      child: UserDetail(),
+    ),
   ];
 
   void _onItemTapped(int index) {
     if (index == 4 || index == 2) {
       final authState = context.read<AuthBloc>().state;
       if (authState is Unauthenticated) {
-        context.go(RoutePaths.login);
+        context.push(RoutePaths.login);
         return;
       }
     }

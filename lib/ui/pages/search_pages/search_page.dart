@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:nailxinh/routers/router_path.dart';
 import '../../widgets/searchBox/searchBox.dart';
 import '../../../core/color/mycolor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -8,10 +9,9 @@ import '../../../blocs/evens/storage_search_history/storage_search_history_event
 import '../../../blocs/evens/storage_search_history/suggestion_history_event.dart';
 import '../../../blocs/states/storage_search_history/storage_search_history_state.dart';
 import '../../../blocs/states/storage_search_history/suggestion_history_state.dart';
-import 'search_results_page.dart';
-import '../../../domain/usecases/product_usecase/search_product_usecase.dart';
-import '../../../blocs/bloc/product_bloc/search_product_name_bloc.dart';
 import 'package:go_router/go_router.dart';
+import '../../widgets/page_view/page_empty.dart';
+import '../../widgets/button/button_gradient.dart';
 
 class SearchPage extends StatefulWidget {
   final String? searchController;
@@ -30,7 +30,6 @@ class _SearchPageState extends State<SearchPage> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     _searchController.text = widget.searchController ?? '';
-    // context.read<StorageSearchHistoryBloc>().add(LoadSearchHistoryEvent());
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNode.requestFocus();
     });
@@ -62,19 +61,7 @@ class _SearchPageState extends State<SearchPage> {
     context.read<SuggestionHistoryBloc>().add(
       AddSuggestionEvent(keyWord: keyword),
     );
-
-    // TODO: chuyển sang trang kết quả tìm kiếm
-    print("Searching for: $keyword");
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) =>
-              SearchProductNameBloc(context.read<SearchProductUseCase>()),
-          child: SearchResultsPage(selectedKeyword: keyword),
-        ),
-      ),
-    );
+    context.push(RoutePaths.searchResult, extra: keyword);
   }
 
   @override
@@ -83,13 +70,13 @@ class _SearchPageState extends State<SearchPage> {
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: MyColor.colorappbar,
+        backgroundColor: MyColor.pinkColor,
         elevation: 0,
         titleSpacing: 0,
         title: Row(
           children: [
             Container(
-              decoration: BoxDecoration(color: MyColor.colorappbar),
+              decoration: BoxDecoration(color: MyColor.pinkColor),
               child: IconButton(
                 icon: const Icon(
                   Icons.arrow_back_ios,
@@ -127,13 +114,14 @@ class _SearchPageState extends State<SearchPage> {
                       }
                       if (state is StorageSearchHistoryLoaded) {
                         if (state.history.isEmpty) {
-                          return Center(
-                            child: const Text('Không có lịch sử tìm kiếm'),
+                          return EmptyView(
+                            message: 'không có lịch sử tìm kiếm',
                           );
                         }
                         return Padding(
                           padding: const EdgeInsets.all(16),
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               ListView.builder(
                                 shrinkWrap: true,
@@ -141,74 +129,72 @@ class _SearchPageState extends State<SearchPage> {
                                 itemCount: state.history.length,
                                 itemBuilder: (context, index) {
                                   final keyword = state.history[index];
-                                  return IntrinsicWidth(
-                                    child: Column(
-                                      children: [
-                                        SizedBox(
-                                          height: 32,
-                                          child: TextButton(
-                                            style: TextButton.styleFrom(
-                                              backgroundColor: Colors.pink[100],
-                                              shape: RoundedRectangleBorder(
-                                                borderRadius:
-                                                    BorderRadius.circular(20),
+                                  return Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: IntrinsicWidth(
+                                      child: Column(
+                                        children: [
+                                          SizedBox(
+                                            height: 32,
+                                            child: TextButton(
+                                              style: TextButton.styleFrom(
+                                                backgroundColor:
+                                                    Colors.pink[100],
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(20),
+                                                ),
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                      horizontal: 16,
+                                                      vertical: 8,
+                                                    ),
                                               ),
-                                              padding:
-                                                  const EdgeInsets.symmetric(
-                                                    horizontal: 16,
-                                                    vertical: 8,
+                                              onPressed: () {
+                                                _searchController
+                                                    .removeListener(
+                                                      _onSearchChanged,
+                                                    );
+                                                _searchController.text =
+                                                    keyword;
+                                                _searchController.addListener(
+                                                  _onSearchChanged,
+                                                );
+                                                _onKeywordSelected(keyword);
+                                              },
+                                              child: Text(
+                                                keyword,
+                                                style: const TextStyle(
+                                                  fontSize: 14,
+                                                  color: Color.fromARGB(
+                                                    255,
+                                                    90,
+                                                    89,
+                                                    91,
                                                   ),
-                                            ),
-                                            onPressed: () {
-                                              _searchController.removeListener(
-                                                _onSearchChanged,
-                                              );
-                                              _searchController.text = keyword;
-                                              _searchController.addListener(
-                                                _onSearchChanged,
-                                              );
-                                              _onKeywordSelected(keyword);
-                                            },
-                                            child: Text(
-                                              keyword,
-                                              style: const TextStyle(
-                                                fontSize: 14,
+                                                ),
                                               ),
                                             ),
                                           ),
-                                        ),
-                                        const SizedBox(
-                                          height: 8,
-                                        ), // khoảng cách giữa các item
-                                      ],
+                                          const SizedBox(
+                                            height: 8,
+                                          ), // khoảng cách giữa các item
+                                        ],
+                                      ),
                                     ),
                                   );
                                 },
                               ),
-                              TextButton(
+                              ButtonGradient(
+                                text: 'Xoá lịch sử tìm kiếm',
                                 onPressed: () {
                                   context.read<StorageSearchHistoryBloc>().add(
                                     ClearSearchHistoryEvent(),
                                   );
                                   _searchController.text = '';
                                 },
-                                style: TextButton.styleFrom(
-                                  backgroundColor: const Color.fromARGB(
-                                    255,
-                                    243,
-                                    191,
-                                    209,
-                                  ), // màu nền
-                                  foregroundColor: const Color.fromARGB(
-                                    255,
-                                    90,
-                                    89,
-                                    91,
-                                  ), // màu chữ
-                                ),
-                                child: Center(
-                                  child: const Text('Xoá lịch sử tìm kiếm'),
-                                ),
+                                height: 35,
+                                gradient: MyColor.mainGradient2,
                               ),
                             ],
                           ),
@@ -228,7 +214,6 @@ class _SearchPageState extends State<SearchPage> {
             )
           : BlocBuilder<SuggestionHistoryBloc, SuggestionHistoryState>(
               builder: (context, state) {
-                print("bắt đầu build gợi ý tìm kiếm");
                 if (state is SuggestionHistoryLoading) {
                   return const Center(child: CircularProgressIndicator());
                 }
@@ -241,7 +226,6 @@ class _SearchPageState extends State<SearchPage> {
                       child: const Center(child: Text('Không có gợi ý')),
                     );
                   }
-                  print("trả về đúng state: ${state.suggestions}");
                   return Container(
                     height: MediaQuery.of(context).size.height,
                     decoration: BoxDecoration(
@@ -253,26 +237,34 @@ class _SearchPageState extends State<SearchPage> {
                       itemBuilder: (context, index) {
                         final keyword = state.suggestions[index];
                         return Container(
-                          height: 40,
-                          decoration: BoxDecoration(
-                            border: Border(
-                              bottom: BorderSide(
-                                color: const Color.fromARGB(255, 122, 121, 121),
-                                width: 2,
-                              ), // viền dưới
-                              // top: BorderSide(...), left: BorderSide(...), right: BorderSide(...) nếu muốn viền cạnh khác
-                            ),
-                          ),
-                          child: ListTile(
-                            title: Text(keyword),
-                            onTap: () {
-                              _searchController.removeListener(
-                                _onSearchChanged,
-                              );
-                              _searchController.text = keyword;
-                              _searchController.addListener(_onSearchChanged);
-                              _onKeywordSelected(keyword);
-                            },
+                          height: 42,
+                          margin: const EdgeInsets.symmetric(horizontal: 10),
+                          child: Column(
+                            children: [
+                              ListTile(
+                                dense: true, // giảm chiều cao mặc định
+                                visualDensity: VisualDensity.compact,
+                                title: Text(
+                                  keyword,
+                                  style: const TextStyle(fontSize: 14),
+                                ),
+                                onTap: () {
+                                  _searchController.removeListener(
+                                    _onSearchChanged,
+                                  );
+                                  _searchController.text = keyword;
+                                  _searchController.addListener(
+                                    _onSearchChanged,
+                                  );
+                                  _onKeywordSelected(keyword);
+                                },
+                              ),
+                              const Divider(
+                                height: 1,
+                                color: Color.fromARGB(255, 255, 255, 255),
+                                thickness: 1,
+                              ),
+                            ],
                           ),
                         );
                       },

@@ -20,10 +20,13 @@ mixin _$CartItem {
   int? get id => throw _privateConstructorUsedError;
   int? get cartId => throw _privateConstructorUsedError;
   int? get productId => throw _privateConstructorUsedError;
+  int? get variantId => throw _privateConstructorUsedError;
+  String? get variantName => throw _privateConstructorUsedError;
   int? get quantity => throw _privateConstructorUsedError;
   String? get productName => throw _privateConstructorUsedError;
   String? get imagePath => throw _privateConstructorUsedError;
   double get price => throw _privateConstructorUsedError;
+  int? get stock => throw _privateConstructorUsedError;
   double get total => throw _privateConstructorUsedError;
   int get isSelected => throw _privateConstructorUsedError;
   DateTime? get createdAt => throw _privateConstructorUsedError;
@@ -45,10 +48,13 @@ abstract class $CartItemCopyWith<$Res> {
     int? id,
     int? cartId,
     int? productId,
+    int? variantId,
+    String? variantName,
     int? quantity,
     String? productName,
     String? imagePath,
     double price,
+    int? stock,
     double total,
     int isSelected,
     DateTime? createdAt,
@@ -74,10 +80,13 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
     Object? id = freezed,
     Object? cartId = freezed,
     Object? productId = freezed,
+    Object? variantId = freezed,
+    Object? variantName = freezed,
     Object? quantity = freezed,
     Object? productName = freezed,
     Object? imagePath = freezed,
     Object? price = null,
+    Object? stock = freezed,
     Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
@@ -97,6 +106,14 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
                 ? _value.productId
                 : productId // ignore: cast_nullable_to_non_nullable
                       as int?,
+            variantId: freezed == variantId
+                ? _value.variantId
+                : variantId // ignore: cast_nullable_to_non_nullable
+                      as int?,
+            variantName: freezed == variantName
+                ? _value.variantName
+                : variantName // ignore: cast_nullable_to_non_nullable
+                      as String?,
             quantity: freezed == quantity
                 ? _value.quantity
                 : quantity // ignore: cast_nullable_to_non_nullable
@@ -113,6 +130,10 @@ class _$CartItemCopyWithImpl<$Res, $Val extends CartItem>
                 ? _value.price
                 : price // ignore: cast_nullable_to_non_nullable
                       as double,
+            stock: freezed == stock
+                ? _value.stock
+                : stock // ignore: cast_nullable_to_non_nullable
+                      as int?,
             total: null == total
                 ? _value.total
                 : total // ignore: cast_nullable_to_non_nullable
@@ -148,10 +169,13 @@ abstract class _$$CartItemImplCopyWith<$Res>
     int? id,
     int? cartId,
     int? productId,
+    int? variantId,
+    String? variantName,
     int? quantity,
     String? productName,
     String? imagePath,
     double price,
+    int? stock,
     double total,
     int isSelected,
     DateTime? createdAt,
@@ -176,10 +200,13 @@ class __$$CartItemImplCopyWithImpl<$Res>
     Object? id = freezed,
     Object? cartId = freezed,
     Object? productId = freezed,
+    Object? variantId = freezed,
+    Object? variantName = freezed,
     Object? quantity = freezed,
     Object? productName = freezed,
     Object? imagePath = freezed,
     Object? price = null,
+    Object? stock = freezed,
     Object? total = null,
     Object? isSelected = null,
     Object? createdAt = freezed,
@@ -199,6 +226,14 @@ class __$$CartItemImplCopyWithImpl<$Res>
             ? _value.productId
             : productId // ignore: cast_nullable_to_non_nullable
                   as int?,
+        variantId: freezed == variantId
+            ? _value.variantId
+            : variantId // ignore: cast_nullable_to_non_nullable
+                  as int?,
+        variantName: freezed == variantName
+            ? _value.variantName
+            : variantName // ignore: cast_nullable_to_non_nullable
+                  as String?,
         quantity: freezed == quantity
             ? _value.quantity
             : quantity // ignore: cast_nullable_to_non_nullable
@@ -215,6 +250,10 @@ class __$$CartItemImplCopyWithImpl<$Res>
             ? _value.price
             : price // ignore: cast_nullable_to_non_nullable
                   as double,
+        stock: freezed == stock
+            ? _value.stock
+            : stock // ignore: cast_nullable_to_non_nullable
+                  as int?,
         total: null == total
             ? _value.total
             : total // ignore: cast_nullable_to_non_nullable
@@ -243,10 +282,13 @@ class _$CartItemImpl extends _CartItem {
     this.id,
     this.cartId,
     this.productId,
+    this.variantId,
+    this.variantName,
     this.quantity,
     this.productName,
     this.imagePath,
     this.price = 0.0,
+    this.stock,
     this.total = 0.0,
     this.isSelected = 0,
     this.createdAt,
@@ -260,6 +302,10 @@ class _$CartItemImpl extends _CartItem {
   @override
   final int? productId;
   @override
+  final int? variantId;
+  @override
+  final String? variantName;
+  @override
   final int? quantity;
   @override
   final String? productName;
@@ -268,6 +314,8 @@ class _$CartItemImpl extends _CartItem {
   @override
   @JsonKey()
   final double price;
+  @override
+  final int? stock;
   @override
   @JsonKey()
   final double total;
@@ -281,7 +329,7 @@ class _$CartItemImpl extends _CartItem {
 
   @override
   String toString() {
-    return 'CartItem(id: $id, cartId: $cartId, productId: $productId, quantity: $quantity, productName: $productName, imagePath: $imagePath, price: $price, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
+    return 'CartItem(id: $id, cartId: $cartId, productId: $productId, variantId: $variantId, variantName: $variantName, quantity: $quantity, productName: $productName, imagePath: $imagePath, price: $price, stock: $stock, total: $total, isSelected: $isSelected, createdAt: $createdAt, updatedAt: $updatedAt)';
   }
 
   @override
@@ -293,6 +341,10 @@ class _$CartItemImpl extends _CartItem {
             (identical(other.cartId, cartId) || other.cartId == cartId) &&
             (identical(other.productId, productId) ||
                 other.productId == productId) &&
+            (identical(other.variantId, variantId) ||
+                other.variantId == variantId) &&
+            (identical(other.variantName, variantName) ||
+                other.variantName == variantName) &&
             (identical(other.quantity, quantity) ||
                 other.quantity == quantity) &&
             (identical(other.productName, productName) ||
@@ -300,6 +352,7 @@ class _$CartItemImpl extends _CartItem {
             (identical(other.imagePath, imagePath) ||
                 other.imagePath == imagePath) &&
             (identical(other.price, price) || other.price == price) &&
+            (identical(other.stock, stock) || other.stock == stock) &&
             (identical(other.total, total) || other.total == total) &&
             (identical(other.isSelected, isSelected) ||
                 other.isSelected == isSelected) &&
@@ -315,10 +368,13 @@ class _$CartItemImpl extends _CartItem {
     id,
     cartId,
     productId,
+    variantId,
+    variantName,
     quantity,
     productName,
     imagePath,
     price,
+    stock,
     total,
     isSelected,
     createdAt,
@@ -339,10 +395,13 @@ abstract class _CartItem extends CartItem {
     final int? id,
     final int? cartId,
     final int? productId,
+    final int? variantId,
+    final String? variantName,
     final int? quantity,
     final String? productName,
     final String? imagePath,
     final double price,
+    final int? stock,
     final double total,
     final int isSelected,
     final DateTime? createdAt,
@@ -357,6 +416,10 @@ abstract class _CartItem extends CartItem {
   @override
   int? get productId;
   @override
+  int? get variantId;
+  @override
+  String? get variantName;
+  @override
   int? get quantity;
   @override
   String? get productName;
@@ -364,6 +427,8 @@ abstract class _CartItem extends CartItem {
   String? get imagePath;
   @override
   double get price;
+  @override
+  int? get stock;
   @override
   double get total;
   @override

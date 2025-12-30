@@ -1,6 +1,7 @@
 import '../../../domain/entities/customers.dart';
 import '../../../domain/repositories/customer_repository/customer_repository.dart';
 import '../datasources/customer_data/customer_data.dart';
+import '../../domain/entities/profile.dart';
 
 class CustomerRepositoryImpl implements CustomerRepository {
   final CustomerData data;
@@ -46,5 +47,23 @@ class CustomerRepositoryImpl implements CustomerRepository {
   @override
   Future<bool> deleteCustomer({required int customerId}) async {
     return await data.deleteCustomer(customerId: customerId);
+  }
+
+  @override
+  Future<Profile?> getCustomerProfile() async {
+    return await data.getCustomerProfile();
+  }
+
+  @override
+  Future<Map<String, dynamic>> updateCustomerProfile({
+    required String fullName,
+    required String phone,
+  }) async {
+    return await data.updateCustomerProfile(fullName: fullName, phone: phone);
+  }
+
+  @override
+  Future<bool> deleteAccount() async {
+    return await data.deleteAccount();
   }
 }

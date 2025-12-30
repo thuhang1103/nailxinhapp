@@ -105,6 +105,16 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
+  Future<int> addCustomer({required int userId, required String fullName}) {
+    return registerData.addCustomer(userId: userId, fullName: fullName);
+  }
+
+  @override
+  Future<int> createCart({required int customerId}) {
+    return registerData.createCart(customerId: customerId);
+  }
+
+  @override
   Future<String> resetpass({
     required String email,
     required String password,

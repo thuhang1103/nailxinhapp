@@ -10,11 +10,13 @@ class UpdateCartItemUseCase {
   Future<int> updateCartItem({
     required int cartItemId,
     required int quantity,
+    required int variantId,
     required int isSelected,
   }) {
     return repository.updateCartItem(
       cartItemId: cartItemId,
       quantity: quantity,
+      variantId: variantId,
       isSelected: isSelected,
     );
   }

@@ -16,6 +16,8 @@ abstract class AuthRepository {
     required String username,
     required String registrationToken,
   });
+  Future<int> addCustomer({required int userId, required String fullName});
+  Future<int> createCart({required int customerId});
   Future<String> resetpass({
     required String email,
     required String password,

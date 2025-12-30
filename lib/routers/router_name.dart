@@ -55,4 +55,52 @@ class RouteNames {
 
   //resetpass
   static const String resetPass = 'resetPass';
+  //chatpage
+  static const String chatPage = 'chatPage';
+  //getPointDaily
+  static const String getPointDaily = 'getPointDaily';
+  //nailsample
+  static const String nailSample = 'nailSample';
+  //appointment
+  static const String appointment = 'appointment';
+  //voucher
+  static const String voucher = 'voucher';
+  //spending
+  static const String spending = 'spending';
+  //update profile
+  static const String updateProfile = 'updateProfile';
+  //editAddress
+  static const String editAddress = 'editAddress';
+  //editDetailAddress
+  static const String editDetailAddress = 'editDetailAddress';
+  //confirmorder
+  static const String confirmOrder = 'confirmOrder';
+  //loadAddress
+  static const String loadAddress = 'loadAddress';
+  //loadVoucher
+  static const String loadVoucher = 'loadVoucher';
+  //successOrder
+  static const String successOrder = 'successOrder';
+  //spending order
+  static const String spendingOrder = 'spendingOrder';
+  // spendingOrderDetail
+  static const String spendingOrderDetail = 'spendingOrderDetail';
+  //transport order
+  static const String transportOrder = 'transportOrder';
+  //transportOrderDetail
+  static const String transportOrderDetail = 'transportOrderDetail';
+
+  //confirmOrderDetail
+  //waiting
+  static const String waiting = 'waiting';
+  //waitingdetail
+  static const String waitingDetail = 'waitingDetail';
+  //complete
+  static const String completeOrder = 'completeOrder';
+  //completeOrderDetail
+  static const String completeOrderDetail = 'completeOrderDetail';
+  //cancel
+  static const String cancelOrderDetailPage = 'cancelOrderDetailPage';
+  //cancelOrderDetail
+  static const String cancelOrderDetail = 'cancelOrderDetail';
 }

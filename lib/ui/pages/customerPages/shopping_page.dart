@@ -24,6 +24,14 @@ import 'package:go_router/go_router.dart';
 import '../../../routers/router.dart';
 import '../../../routers/router_name.dart';
 import '../../../routers/router_path.dart';
+//bloc
+import '../../../features/fetch_Voucher/fetch_voucher_bloc.dart';
+import '../../../features/fetch_Voucher/fetch_voucher_event.dart';
+import '../../../features/fetch_Voucher/fetch_voucher_state.dart';
+//voucher
+import '../../../domain/entities/vouchers.dart';
+
+import '../../widgets/voucher/voucher_container.dart';
 
 class Shopping extends StatefulWidget {
   @override
@@ -32,59 +40,33 @@ class Shopping extends StatefulWidget {
 
 class _ShoppingState extends State<Shopping> {
   void onTichDiemPressed() {
-    // Xử lý sự kiện tích điểm
+    context.push(RoutePaths.getPointDaily);
   }
 
   void onMauNailPressed() {
-    // Xử lý sự kiện mẫu nail
+    context.push(RoutePaths.nailSample);
   }
+
   void onNailPressed() {
-    final categoryProduct = 2;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) =>
-              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
-          child: NailPage(category: categoryProduct),
-        ),
-      ),
-    ); // Xử lý sự kiện nail
+    context.push(RoutePaths.nail);
   }
 
   void onThietBiNailPressed() {
-    final categoryProduct = 1;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) =>
-              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
-          child: DevicePage(category: categoryProduct),
-        ),
-      ),
-    ); //
-    // Xử lý sự kiện thiết bị nail
+    context.push(RoutePaths.device);
   }
 
   void onNailBoxPressed() {
-    final categoryProduct = 3;
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => BlocProvider(
-          create: (context) =>
-              SearchProductCategoryBloc(context.read<SearchProductUseCase>()),
-          child: NailBoxPage(category: categoryProduct),
-        ),
-      ),
-    ); //
+    context.push(RoutePaths.nailBox);
   }
 
   @override
   void initState() {
     super.initState();
-    context.read<SearchProductAllBloc>().add(GetAllProductsEvent());
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<VoucherBloc>().add(GetMaxVoucherEvent());
+      context.read<SearchProductAllBloc>().add(GetAllProductsEvent());
+    });
   }
 
   @override
@@ -103,28 +85,7 @@ class _ShoppingState extends State<Shopping> {
           ),
           child: SearchButton(
             onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => MultiBlocProvider(
-                    providers: [
-                      BlocProvider(
-                        create: (context) => StorageSearchHistoryBloc(
-                          clear: context.read<ClearHistorySearch>(),
-                          addKeywordUsecase: context.read<AddKeyword>(),
-                          getHistoryUsecase: context.read<GetSearchHistory>(),
-                        ),
-                      ),
-                      BlocProvider(
-                        create: (context) => SuggestionHistoryBloc(
-                          context.read<SearchSuggestionUseCase>(),
-                        ),
-                      ),
-                    ],
-                    child: SearchPage(),
-                  ),
-                ),
-              );
+              context.push(RoutePaths.search);
             },
           ),
         ),
@@ -144,7 +105,7 @@ class _ShoppingState extends State<Shopping> {
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   image: AssetImage(
-                    'assets/images/image1.PNG',
+                    'assets/icons/5.png',
                   ), // Đường dẫn ảnh đại diện
                   fit: BoxFit.cover,
                 ),
@@ -176,23 +137,22 @@ class _ShoppingState extends State<Shopping> {
                   child: Column(
                     children: [
                       //vourcher
-                      Container(
-                        margin: EdgeInsets.symmetric(
-                          vertical: 5,
-                          horizontal: 10,
-                        ),
-                        height: 70,
-                        decoration: BoxDecoration(
-                          gradient: MyColor.mainGradient,
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black12,
-                              blurRadius: 4,
-                              offset: Offset(0, 2),
-                            ),
-                          ],
-                        ),
+                      BlocSelector<VoucherBloc, VoucherState, Voucher?>(
+                        selector: (state) => state.maxVoucher,
+                        builder: (context, maxVoucher) {
+                          if (maxVoucher == null) {
+                            return const SizedBox();
+                          }
+
+                          return VoucherContainer(
+                            Discount: '${maxVoucher.discount}',
+                            minValue: '${maxVoucher.minOrderValue}',
+                            startTime: maxVoucher.startTime ?? DateTime.now(),
+                            endTime:
+                                maxVoucher.endTime ??
+                                DateTime.now().add(const Duration(days: 7)),
+                          );
+                        },
                       ),
                       SizedBox(height: 10),
                       Container(
@@ -204,12 +164,12 @@ class _ShoppingState extends State<Shopping> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             CategoryButton(
-                              onPressed: () {},
+                              onPressed: onTichDiemPressed,
                               imageUrl: 'assets/icons/Abstract Shape (7).png',
                               text: 'Tích điểm',
                             ),
                             CategoryButton(
-                              onPressed: () {},
+                              onPressed: onMauNailPressed,
                               imageUrl: 'assets/icons/11.png',
                               text: 'Mẫu nail',
                             ),
@@ -257,7 +217,9 @@ class _ShoppingState extends State<Shopping> {
               if (state is SearchProductAllSuccess) {
                 final listProduct = state.products;
                 if (listProduct.isEmpty) {
-                  return const Center(child: Text('Không có dữ liệu sản phẩm'));
+                  return const SliverToBoxAdapter(
+                    child: Center(child: Text('Không có dữ liệu sản phẩm')),
+                  );
                 }
 
                 return SliverPadding(

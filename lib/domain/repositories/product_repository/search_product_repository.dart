@@ -7,4 +7,5 @@ abstract class SearchProductRepository {
   Future<ProductDetail> getById(int id);
   Future<List<Product>> getByStatus(int status);
   Future<List<Product>> getAll();
+  Future<List<Product>> getAllSimilar();
 }

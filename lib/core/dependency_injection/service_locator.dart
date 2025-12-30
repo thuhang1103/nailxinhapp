@@ -49,6 +49,34 @@ import '../../domain/usecases/cartItem_usecase/delete_cartItem_usecase.dart';
 import '../../domain/usecases/cartItem_usecase/get_all_cartItem_uc.dart';
 import '../../domain/usecases/cartItem_usecase/update_cartItem_usecase.dart';
 import '../../domain/usecases/cartItem_usecase/get_cartItem_uc.dart';
+import '../../domain/usecases/cartItem_usecase/option_value_usecase.dart';
+//point
+import '../../datas/datasources/point_data.dart';
+import '../../datas/repositoriesimpl/point_repository_impl.dart';
+import '../../domain/repositories/point_repository.dart';
+import '../../domain/usecases/point_usecase.dart';
+
+//voucher
+import '../../datas/datasources/voucher_data.dart';
+import '../../datas/repositoriesimpl/voucher_repository_impl.dart';
+import '../../domain/repositories/voucher_repository.dart';
+import '../../domain/usecases/voucher_usecase.dart';
+
+//customer
+import '../../datas/datasources/customer_data/customer_data.dart';
+import '../../domain/repositories/customer_repository/customer_repository.dart';
+import '../../datas/repositoriesimpl/customer_repository_impl.dart';
+import '../../domain/usecases/customer_usecase.dart';
+// address
+import '../../datas/datasources/address_data.dart';
+import '../../domain/repositories/address_repository.dart';
+import '../../datas/repositoriesimpl/address_repository_impl.dart';
+import '../../domain/usecases/address_usecase.dart';
+//order
+import '../../datas/datasources/order_data.dart';
+import '../../domain/repositories/order_repository.dart';
+import '../../datas/repositoriesimpl/order_repository_impl.dart';
+import '../../domain/usecases/order_usecase.dart';
 
 final sl = GetIt.instance;
 
@@ -68,20 +96,20 @@ Future<void> initDependencies() async {
 
   // create a Dio that has the auth interceptor and same baseUrl
   final dio = DioClient.create(authInterceptor);
+  authRepository = AuthRepositoryImpl(
+    LoginDataImpl(dio),
+    storage,
+    AuthDataImpl(dio),
+    RegisterDataImpl(dio),
+  );
+
+  sl.registerLazySingleton<AuthRepository>(() => authRepository);
   sl.registerLazySingleton<Dio>(() => dio);
 
   sl.registerLazySingleton<AuthData>(() => AuthDataImpl(sl<Dio>()));
   sl.registerLazySingleton<LoginData>(() => LoginDataImpl(sl<Dio>()));
   sl.registerLazySingleton<RegisterData>(() => RegisterDataImpl(sl<Dio>()));
-  sl.registerLazySingleton<AuthRepository>(() {
-    authRepository = AuthRepositoryImpl(
-      sl<LoginData>(),
-      sl<FlutterSecureStorage>(),
-      sl<AuthData>(),
-      sl<RegisterData>(),
-    );
-    return authRepository;
-  });
+
   // ======getUsser=======
   sl.registerLazySingleton<UserData>(() => UserDataImpl(sl<Dio>()));
 
@@ -159,5 +187,49 @@ Future<void> initDependencies() async {
   );
   sl.registerLazySingleton<UpdateCartItemUseCase>(
     () => UpdateCartItemUseCase(sl<CartItemRepository>()),
+  );
+  sl.registerLazySingleton<OptionValueUseCase>(
+    () => OptionValueUseCase(sl<CartItemRepository>()),
+  );
+  //getPoint
+  sl.registerLazySingleton<PointData>(() => PointDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<PointRepository>(
+    () => PointRepositoryImpl(sl<PointData>()),
+  );
+  sl.registerLazySingleton<PointUseCase>(
+    () => PointUseCase(sl<PointRepository>()),
+  );
+
+  // Voucher
+  sl.registerLazySingleton<VoucherData>(() => VoucherDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<VoucherRepository>(
+    () => VoucherRepositoryImpl(sl<VoucherData>()),
+  );
+  sl.registerLazySingleton<VoucherUseCase>(
+    () => VoucherUseCase(sl<VoucherRepository>()),
+  );
+  //customer
+  sl.registerLazySingleton<CustomerData>(() => CustomerDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<CustomerRepository>(
+    () => CustomerRepositoryImpl(sl<CustomerData>()),
+  );
+  sl.registerLazySingleton<CustomerUseCase>(
+    () => CustomerUseCase(sl<CustomerRepository>()),
+  );
+  //address
+  sl.registerLazySingleton<AddressData>(() => AddressDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<AddressRepository>(
+    () => AddressRepositoryImpl(sl<AddressData>()),
+  );
+  sl.registerLazySingleton<AddressUseCase>(
+    () => AddressUseCase(sl<AddressRepository>()),
+  );
+  //order
+  sl.registerLazySingleton<OrderData>(() => OrderDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<OrderRepository>(
+    () => OrderRepositoryImpl(sl<OrderData>()),
+  );
+  sl.registerLazySingleton<OrderUseCase>(
+    () => OrderUseCase(sl<OrderRepository>()),
   );
 }

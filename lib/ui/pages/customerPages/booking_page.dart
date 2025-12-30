@@ -1,69 +1,73 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:nailxinh/blocs/evens/user_event.dart';
+import '../../../ui/widgets/button/button_gradient.dart';
+import '../../../core/color/mycolor.dart';
 
-import '../../../blocs/bloc/user_bloc.dart';
-import '../../../blocs/states/user_state.dart';
-class Booking extends StatelessWidget {
-  const Booking({super.key});
+//router
+import 'package:go_router/go_router.dart';
 
+class Booking extends StatefulWidget {
+  const Booking({Key? key}) : super(key: key);
+
+  @override
+  State<Booking> createState() => _BookingState();
+}
+
+class _BookingState extends State<Booking> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text("Users")),
-      body: BlocBuilder<UserBloc, UserState>(
-        builder: (context, state) {
-          if (state is UserInitial) {
-            return const Center(child: Text("Press button to load users"));
-          } else if (state is UserLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is UserLoaded) {
-            return ListView.builder(
-              itemCount: state.users.length,
-              itemBuilder: (_, index) {
-                final user = state.users[index];
-                return Container(
-                  margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                  padding: const EdgeInsets.all(16),
-                  decoration: BoxDecoration(
-                    color: Colors.blue[50],
-                    borderRadius: BorderRadius.circular(12),
-                    border: Border.all(color: Colors.blueAccent),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        user.userName,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        user.email,
-                        style: const TextStyle(
-                          fontSize: 14,
-                          color: Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            );
-          } else if (state is UserError) {
-            return Center(child: Text(state.message));
-          }
-          return const SizedBox();
-        },
+      backgroundColor: MyColor.pinkColor,
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        backgroundColor: MyColor.colorappbar,
+        elevation: 0,
+        titleSpacing: 0,
+        title: Container(
+          margin: const EdgeInsets.only(left: 10.0),
+          child: Text(
+            'Đặt Lịch',
+            style: TextStyle(color: MyColor.textColor, fontSize: 20),
+          ),
+        ),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.filter_list, color: MyColor.textColor),
+            onPressed: () {
+              // Xử lý lọc sản phẩm
+            },
+            iconSize: 24,
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.read<UserBloc>().add(LoadUsers());
-        },
-        child: const Icon(Icons.download),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.chat_bubble_outline, size: 80, color: Colors.grey[400]),
+            const SizedBox(height: 20),
+            const Text(
+              'Tính năng đặt lịch đang được NailXinh phát triển!',
+              textAlign: TextAlign.center,
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'Hãy quay lại sau nhé',
+              style: TextStyle(fontSize: 16, color: Colors.grey),
+            ),
+            const SizedBox(height: 30),
+            ButtonGradient(
+              onPressed: () {
+                context.pop();
+              },
+              text: 'Quay lại',
+              gradient: MyColor.mainGradient2,
+              borderRadius: 8,
+              height: 40,
+              width: 120,
+            ),
+          ],
+        ),
       ),
     );
   }

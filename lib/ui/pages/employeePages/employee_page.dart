@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:nailxinh/blocs/bloc/auth_bloc.dart';
+import '../../../blocs/evens/auth_event.dart';
+import 'package:nailxinh/ui/widgets/button/button_gradient.dart';
+import 'package:nailxinh/core/color/mycolor.dart';
 
 class EmployeePage extends StatefulWidget {
   @override
@@ -62,14 +67,30 @@ class _EmployeePageState extends State<EmployeePage> {
           },
         ),
         actions: [
+          // nút Đăng xuất (ButtonGradient)
+          Padding(
+            padding: const EdgeInsets.only(right: 8.0),
+            child: ButtonGradient(
+              text: 'Đăng xuất',
+              onPressed: () {
+                // gọi logout qua AuthBloc
+                context.read<AuthBloc>().add(LogoutRequested());
+              },
+              width: 100,
+              height: 36,
+              borderRadius: 18,
+              gradient: MyColor.mainGradient2,
+            ),
+          ),
+
+          // avatar (nhấn để hiện thông tin nhân viên)
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
             child: GestureDetector(
               onTap: _showEmployeeInfo,
               child: CircleAvatar(
-                backgroundImage: AssetImage(
-                  'assets/images/image1.PNG', // Thay bằng URL ảnh thực tế hoặc Image.asset() nếu là ảnh local
-                ),
+                radius: 18,
+                backgroundImage: const AssetImage('assets/images/image1.PNG'),
               ),
             ),
           ),

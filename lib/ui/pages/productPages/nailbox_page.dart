@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../../widgets/searchBox/searchBox.dart';
+import '../../widgets/searchBox/searchButton.dart';
 import '../../widgets/voucher/voucher_container.dart';
 import '../../../core/color/mycolor.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -73,10 +73,10 @@ class _NailBoxPageState extends State<NailBoxPage>
               ),
             ),
             Expanded(
-              child: CustomSearchBox(
-                controller: _searchController,
-                onSearch: () =>
-                    _onKeywordSelected(_searchController.text.trim()),
+              child: SearchButton(
+                onTap: () {
+                  context.push(RoutePaths.search);
+                },
               ),
             ),
             const SizedBox(width: 8),
@@ -93,17 +93,15 @@ class _NailBoxPageState extends State<NailBoxPage>
       body: Column(
         children: [
           VoucherContainer(
-            maxDiscount: '50.000',
+            Discount: '50.000',
             minValue: '200.000',
             startTime: DateTime.now(),
             endTime: DateTime.now().add(const Duration(days: 7)),
-            onSave: () {
-              // Xử lý lưu voucher
-            },
           ),
           const SizedBox(height: 10),
           Container(
             height: 40,
+            margin: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
               gradient: MyColor.mainGradient,
               borderRadius: BorderRadius.circular(25),
@@ -132,7 +130,14 @@ class _NailBoxPageState extends State<NailBoxPage>
             ),
           ),
           const SizedBox(height: 10),
-          Center(child: Container(height: 10, color: MyColor.textColor)),
+          Center(
+            child: Container(
+              height: 6,
+              width: 100,
+              color: MyColor.textColor,
+              margin: const EdgeInsets.symmetric(horizontal: 12),
+            ),
+          ),
           const SizedBox(height: 10),
           Expanded(
             child:

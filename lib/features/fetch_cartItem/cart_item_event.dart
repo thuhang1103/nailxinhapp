@@ -11,22 +11,19 @@ class GetCartItemEvent extends CartItemEvent {
 class ChangeIsSelectedEvent extends CartItemEvent {
   final int cartItemId;
   final int quantity;
+  final int variantId;
   final int isSelected;
   const ChangeIsSelectedEvent({
     required this.cartItemId,
     required this.quantity,
+    required this.variantId,
     required this.isSelected,
   });
 }
 
 //selectedall
 class SelectAllCartItemsEvent extends CartItemEvent {
-  final int cartId;
-  final int isSelected;
-  const SelectAllCartItemsEvent({
-    required this.cartId,
-    required this.isSelected,
-  });
+  const SelectAllCartItemsEvent();
 }
 
 // delete cart item
@@ -38,7 +35,8 @@ class DeleteCartItemEvent extends CartItemEvent {
 //increaseqty
 class IncreaseQuantityEvent extends CartItemEvent {
   final int cartItemId;
-  const IncreaseQuantityEvent({required this.cartItemId});
+  final int stock;
+  const IncreaseQuantityEvent({required this.cartItemId, required this.stock});
 }
 
 //decreaseqty

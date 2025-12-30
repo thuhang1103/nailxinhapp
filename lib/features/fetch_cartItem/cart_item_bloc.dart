@@ -2,6 +2,7 @@ import './cart_item_event.dart';
 import './cart_item_state.dart';
 import 'package:bloc/bloc.dart';
 import '../../core/common_state.dart';
+import 'dart:async';
 //usecase
 import '../../domain/usecases/cartItem_usecase/get_all_cartItem_uc.dart';
 import '../../domain/usecases/cartItem_usecase/delete_cartItem_usecase.dart';
@@ -11,7 +12,8 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
   final GetAllCartItemUseCase getAll;
   final DeleteCartItemUseCase deleteCartItem;
   final UpdateCartItemUseCase updateCartItem;
-
+  final _uiEventsCtrl = StreamController<String>.broadcast();
+  Stream<String> get uiEvents => _uiEventsCtrl.stream;
   CartItemBloc({
     required this.getAll,
     required this.deleteCartItem,
@@ -23,6 +25,11 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     on<DeleteCartItemEvent>(_onDeleteCartItem);
     on<IncreaseQuantityEvent>(_onIncreaseQuantity);
     on<DecreaseQuantityEvent>(_onDecreaseQuantity);
+  }
+  @override
+  Future<void> close() {
+    _uiEventsCtrl.close();
+    return super.close();
   }
 
   CartItemState _recalculate(CartItemState old) {
@@ -57,6 +64,7 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     try {
       emit(state.copyWith(cartItemState: const CommonState.loading()));
       final userID = await getAll.getUserID();
+      print(' userID: $userID');
 
       final items = await getAll.getAllCartItems(userId: userID);
 
@@ -78,12 +86,14 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     ChangeIsSelectedEvent event,
     Emitter<CartItemState> emit,
   ) async {
-    emit(state.copyWith(cartItemState: const CommonState.loading()));
-
     try {
+      print(
+        'ChangeIsSelectedEvent: cartItemId=${event.cartItemId}, variantId=${event.variantId}, quantity=${event.quantity}, isSelected=${event.isSelected}',
+      );
       final result = await updateCartItem.updateCartItem(
         cartItemId: event.cartItemId,
         quantity: event.quantity,
+        variantId: event.variantId,
         isSelected: event.isSelected,
       );
 
@@ -94,31 +104,14 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
           }
           return item;
         }).toList();
-        emit(
-          _recalculate(
-            state.copyWith(
-              cartItems: updatedItems,
-              cartItemState: const CommonState.success(),
-            ),
-          ),
-        );
+        emit(_recalculate(state.copyWith(cartItems: updatedItems)));
       } else {
-        emit(
-          state.copyWith(
-            cartItemState: CommonState.error(
-              Exception('Không thể cập nhật item'),
-            ),
-          ),
-        );
+        _uiEventsCtrl.add('Cập nhật trạng thái chọn thất bại');
       }
     } catch (e, st) {
       print('Error in _onChangeIsSelected: $e');
       print(st);
-      emit(
-        state.copyWith(
-          cartItemState: CommonState.error(e.toString() as Exception),
-        ),
-      );
+      _uiEventsCtrl.add('Lỗi khi cập nhật trạng thái chọn');
     }
   }
 
@@ -143,7 +136,6 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     DeleteCartItemEvent event,
     Emitter<CartItemState> emit,
   ) async {
-    emit(state.copyWith(cartItemState: const CommonState.loading()));
     try {
       final result = await deleteCartItem.deleteCartItem(
         cartItemId: event.cartItemId,
@@ -154,31 +146,14 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
             .where((item) => item.id != event.cartItemId)
             .toList();
 
-        emit(
-          _recalculate(
-            state.copyWith(
-              cartItems: updatedList,
-              cartItemState: const CommonState.success(),
-            ),
-          ),
-        );
+        emit(_recalculate(state.copyWith(cartItems: updatedList)));
       } else {
-        emit(
-          state.copyWith(
-            cartItemState: CommonState.error(
-              Exception('Xóa sản phẩm thất bại'),
-            ),
-          ),
-        );
+        _uiEventsCtrl.add('Xóa sản phẩm thất bại');
       }
     } catch (e, st) {
       print('Error in _onDeleteCartItem: $e');
       print(st);
-      emit(
-        state.copyWith(
-          cartItemState: CommonState.error(e.toString() as Exception),
-        ),
-      );
+      _uiEventsCtrl.add('Lỗi khi xóa sản phẩm');
     }
   }
 
@@ -187,15 +162,19 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     Emitter<CartItemState> emit,
   ) async {
     try {
-      emit(state.copyWith(cartItemState: const CommonState.loading()));
-
       final item = state.cartItems.firstWhere((i) => i.id == event.cartItemId);
       final currentQty = item.quantity ?? 0;
       final newQuantity = currentQty + 1;
+      final maxStock = event.stock;
+      if (maxStock > 0 && currentQty >= maxStock) {
+        _uiEventsCtrl.add('Không thể tăng số lượng, đã đạt giới hạn kho');
+        return;
+      }
 
       final result = await updateCartItem.updateCartItem(
         cartItemId: event.cartItemId,
         quantity: newQuantity,
+        variantId: item.variantId ?? 0,
         isSelected: item.isSelected,
       );
 
@@ -207,31 +186,14 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
           return i;
         }).toList();
 
-        emit(
-          _recalculate(
-            state.copyWith(
-              cartItems: updatedList,
-              cartItemState: const CommonState.success(),
-            ),
-          ),
-        );
+        emit(_recalculate(state.copyWith(cartItems: updatedList)));
       } else {
-        emit(
-          state.copyWith(
-            cartItemState: CommonState.error(
-              Exception("Không thể tăng số lượng"),
-            ),
-          ),
-        );
+        _uiEventsCtrl.add('Không thể tăng số lượng');
       }
     } catch (e, st) {
       print(" Error in _onIncreaseQuantity: $e");
 
-      emit(
-        state.copyWith(
-          cartItemState: CommonState.error(e.toString() as Exception),
-        ),
-      );
+      _uiEventsCtrl.add('Lỗi khi tăng số lượng');
     }
   }
 
@@ -240,9 +202,6 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     Emitter<CartItemState> emit,
   ) async {
     try {
-      emit(state.copyWith(cartItemState: const CommonState.loading()));
-
-      // tìm item trong danh sách
       final item = state.cartItems.firstWhere((i) => i.id == event.cartItemId);
 
       final currentQty = item.quantity ?? 0;
@@ -253,6 +212,7 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
       final result = await updateCartItem.updateCartItem(
         cartItemId: event.cartItemId,
         quantity: newQuantity,
+        variantId: item.variantId ?? 0,
         isSelected: item.isSelected,
       );
 
@@ -264,32 +224,13 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
           return i;
         }).toList();
 
-        emit(
-          _recalculate(
-            state.copyWith(
-              cartItems: updatedList,
-              cartItemState: const CommonState.success(),
-            ),
-          ),
-        );
+        emit(_recalculate(state.copyWith(cartItems: updatedList)));
       } else {
-        emit(
-          state.copyWith(
-            cartItemState: CommonState.error(
-              Exception("Không thể giảm số lượng"),
-            ),
-          ),
-        );
+        _uiEventsCtrl.add('Không thể giảm số lượng');
       }
     } catch (e, st) {
       print("Error in _onDecreaseQuantity: $e");
-      print(st);
-
-      emit(
-        state.copyWith(
-          cartItemState: CommonState.error(e.toString() as Exception),
-        ),
-      );
+      _uiEventsCtrl.add('Lỗi khi giảm số lượng');
     }
   }
 }
