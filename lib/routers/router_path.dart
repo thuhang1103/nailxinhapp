@@ -106,4 +106,43 @@ class RoutePaths {
   static const String cancel = '/cancel-order';
   //cancelOrderDetail
   static const String cancelOrderDetailPage = '/cancel-order-detail-page';
+  //waitingcustomer
+  static const String waitingCustomer = '/waiting-customer';
+  //confirm customer
+  static const String confirmCustomer = '/confirm-customer';
+  //transportOrder
+  static const String transportCustomer = '/transport-customer';
+  //complete customer
+  static const String completeCustomer = '/complete-customer';
+  //cancel customer
+  static const String cancelCustomer = '/cancel-customer';
+  //OrderDetail_cs_Page
+  static const String orderDetailCsPage = '/order-detail-cs-page';
+  //spendingDetail
+  static const String spendingDetail = '/spending-detail';
+  //getVoucherAd
+  static const String getVoucherAd = '/get-voucher-ad';
+  //updateVoucherAd
+  static const String updateVoucherAd = '/update-voucher-ad';
+  //createVoucherAD
+  static const String createVoucherAd = '/create-voucher-ad';
+  //productNailAD
+  static const String productNailAd = '/product-nail-ad';
+  //productNailBoxAD
+  static const String productNailBoxAd = '/product-nail-box-ad';
+  //productDeviceAD
+  static const String productDeviceAd = '/product-device-ad';
+  //productDetailAD
+  static const String productDetailAd = '/product-detail-ad';
+  //product new
+  static const String productNewAd = '/product-new-ad';
+  //product trending
+  static const String productTrendingAd = '/product-trending-ad';
+
+  //product bestselt
+  static const String productBestSeltAd = '/product-best-selt-ad';
+
+  static const String productStockAd = '/product-stock-ad';
+  //product soldout
+  static const String productSoldOutAd = '/product-sold-out-ad';
 }

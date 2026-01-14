@@ -21,4 +21,49 @@ class VoucherRepositoryImpl implements VoucherRepository {
   Future<List<Voucher>> getVoucherAvailable(double total) {
     return data.getVoucherAvailable(total);
   }
+
+  @override
+  Future<int> createVoucher(
+    String code,
+    String description,
+    double minOrderValue,
+    double discountAmount,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return data.createVoucher(
+      code,
+      description,
+      minOrderValue,
+      discountAmount,
+      startDate,
+      endDate,
+    );
+  }
+
+  @override
+  Future<void> updateVoucher(
+    int id,
+    String code,
+    String description,
+    double minOrderValue,
+    double discountAmount,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return data.updateVoucher(
+      id,
+      code,
+      description,
+      minOrderValue,
+      discountAmount,
+      startDate,
+      endDate,
+    );
+  }
+
+  @override
+  Future<void> deleteVoucher(int id) {
+    return data.deleteVoucher(id);
+  }
 }

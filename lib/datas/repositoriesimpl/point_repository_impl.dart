@@ -36,4 +36,9 @@ class PointRepositoryImpl implements PointRepository {
   Future<int> spinLucky() {
     return data.spinLucky();
   }
+
+  @override
+  Future<void> resetPoint() {
+    return data.resetPoint();
+  }
 }

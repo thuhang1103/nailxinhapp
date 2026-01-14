@@ -107,17 +107,25 @@ class _OrderHistoryState extends State<OrderHistory> {
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Stack(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
+                    Text(
+                      'đơn hàng',
+                      style: TextStyle(
+                        color: MyColor.textColor,
+                        fontSize: 12,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              // TODO: navigate to pending orders
-                              // context.push(RoutePaths.orders, extra: 'pending');
+                              context.push(RoutePaths.waitingCustomer);
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -127,7 +135,9 @@ class _OrderHistoryState extends State<OrderHistory> {
                                   children: [
                                     IconButton(
                                       onPressed: () {
-                                        // same action as InkWell tap if needed
+                                        context.push(
+                                          RoutePaths.waitingCustomer,
+                                        );
                                       },
                                       icon: const Icon(
                                         Icons.hourglass_empty,
@@ -165,12 +175,10 @@ class _OrderHistoryState extends State<OrderHistory> {
                             ),
                           ),
                         ),
-
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              // TODO: navigate to shipping orders
-                              // context.push(RoutePaths.orders, extra: 'shipping');
+                              context.push(RoutePaths.confirmCustomer);
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
@@ -179,7 +187,65 @@ class _OrderHistoryState extends State<OrderHistory> {
                                   clipBehavior: Clip.none,
                                   children: [
                                     IconButton(
-                                      onPressed: () {},
+                                      onPressed: () {
+                                        context.push(
+                                          RoutePaths.confirmCustomer,
+                                        );
+                                      },
+                                      icon: const Icon(
+                                        Icons.all_inbox,
+                                        size: 30,
+                                        color: MyColor.textColor,
+                                      ),
+                                    ),
+                                    Positioned(
+                                      right: 0,
+                                      top: -4,
+                                      child: Container(
+                                        padding: const EdgeInsets.all(4),
+                                        decoration: const BoxDecoration(
+                                          color: Colors.red,
+                                          shape: BoxShape.circle,
+                                        ),
+                                        child: const Text(
+                                          '1',
+                                          style: TextStyle(
+                                            color: Colors.white,
+                                            fontSize: 10,
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                const SizedBox(height: 6),
+                                const Text(
+                                  'Chờ vận chuyển',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(fontSize: 13),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ),
+
+                        Expanded(
+                          child: InkWell(
+                            onTap: () {
+                              context.push(RoutePaths.transportCustomer);
+                            },
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Stack(
+                                  clipBehavior: Clip.none,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        context.push(
+                                          RoutePaths.transportCustomer,
+                                        );
+                                      },
                                       icon: const Icon(
                                         Icons.local_shipping,
                                         size: 30,
@@ -220,14 +286,15 @@ class _OrderHistoryState extends State<OrderHistory> {
                         Expanded(
                           child: InkWell(
                             onTap: () {
-                              // TODO: navigate to delivered orders
-                              // context.push(RoutePaths.orders, extra: 'delivered');
+                              context.push(RoutePaths.completeCustomer);
                             },
                             child: Column(
                               mainAxisSize: MainAxisSize.min,
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    context.push(RoutePaths.completeCustomer);
+                                  },
                                   icon: const Icon(
                                     Icons.check_circle,
                                     size: 30,
@@ -246,25 +313,12 @@ class _OrderHistoryState extends State<OrderHistory> {
                         ),
                       ],
                     ),
-                    Positioned(
-                      left: 0,
-                      top: 0,
-                      child: Text(
-                        'đơn hàng',
-                        style: TextStyle(
-                          color: MyColor.textColor,
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
                   ],
                 ),
               ),
 
               const SizedBox(height: 12),
 
-              // 4) Container: tiêu đề sản phẩm + nút xem
               Divider(
                 color: Colors.white.withOpacity(0.9), // màu trắng nhẹ
                 thickness: 1.5, // độ dày mảnh
@@ -329,7 +383,7 @@ class _OrderHistoryState extends State<OrderHistory> {
               ),
               const SizedBox(height: 14),
               SizedBox(
-                height: 54, // chỉnh chiều cao tổng cho 2 ô
+                height: 54,
                 child: Row(
                   children: [
                     Expanded(
@@ -340,7 +394,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                           onPressed: () {
                             context.push(RoutePaths.getPointDaily);
                           },
-                          // cho rộng tối đa trong Expanded, chiều cao phù hợp
+
                           width: double.infinity,
                           height: 84,
                           borderRadius: 12,
@@ -354,7 +408,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                         child: ButtonGradient(
                           text: 'đơn đã huỷ',
                           onPressed: () {
-                            context.push(RoutePaths.spending);
+                            context.push(RoutePaths.cancelCustomer);
                           },
                           width: double.infinity,
                           height: 84,
@@ -393,7 +447,7 @@ class _OrderHistoryState extends State<OrderHistory> {
                         child: ButtonGradient(
                           text: 'lịch sử mua sắm',
                           onPressed: () {
-                            context.push(RoutePaths.spending);
+                            context.push(RoutePaths.completeCustomer);
                           },
                           width: double.infinity,
                           height: 84,

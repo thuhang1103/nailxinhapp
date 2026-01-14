@@ -78,6 +78,15 @@ import '../../domain/repositories/order_repository.dart';
 import '../../datas/repositoriesimpl/order_repository_impl.dart';
 import '../../domain/usecases/order_usecase.dart';
 
+import '../../datas/datasources/spending_data.dart';
+import '../../domain/repositories/spending_repository.dart';
+import '../../datas/repositoriesimpl/spending_repository_impl.dart';
+import '../../domain/usecases/spending_usecase.dart';
+import '../../domain/usecases/import_usecase.dart';
+import '../../datas/datasources/import_data.dart';
+import '../../domain/repositories/import_reporitory.dart';
+import '../../datas/repositoriesimpl/import_repository_impl.dart';
+
 final sl = GetIt.instance;
 
 Future<void> initDependencies() async {
@@ -231,5 +240,21 @@ Future<void> initDependencies() async {
   );
   sl.registerLazySingleton<OrderUseCase>(
     () => OrderUseCase(sl<OrderRepository>()),
+  );
+  //spending
+  sl.registerLazySingleton<SpendingData>(() => SpendingDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<SpendingRepository>(
+    () => SpendingRepositoryImpl(sl<SpendingData>()),
+  );
+  sl.registerLazySingleton<SpendingUseCase>(
+    () => SpendingUseCase(sl<SpendingRepository>()),
+  );
+  //import_inventory
+  sl.registerLazySingleton<ImportData>(() => ImportDataImpl(sl<Dio>()));
+  sl.registerLazySingleton<ImportRepository>(
+    () => ImportRepositoryImpl(sl<ImportData>()),
+  );
+  sl.registerLazySingleton<ImportUseCase>(
+    () => ImportUseCase(sl<ImportRepository>()),
   );
 }

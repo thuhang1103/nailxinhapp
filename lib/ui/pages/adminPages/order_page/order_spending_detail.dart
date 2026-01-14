@@ -133,7 +133,7 @@ class _OrderSpendingDetailPageState extends State<OrderSpendingDetailPage> {
                       ),
                     );
                   },
-                  child: const Text('Cập nhật trạng thái'),
+                  child: const Text('xác nhận đơn '),
                 ),
               ],
             );

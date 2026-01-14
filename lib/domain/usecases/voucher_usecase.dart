@@ -20,4 +20,46 @@ class VoucherUseCase {
   Future<List<Voucher>> getVoucherAvailable(double total) {
     return repository.getVoucherAvailable(total);
   }
+
+  Future<int> createVoucher(
+    String code,
+    String description,
+    double minOrderValue,
+    double discountAmount,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return repository.createVoucher(
+      code,
+      description,
+      minOrderValue,
+      discountAmount,
+      startDate,
+      endDate,
+    );
+  }
+
+  Future<void> updateVoucher(
+    int id,
+    String code,
+    String description,
+    double minOrderValue,
+    double discountAmount,
+    DateTime startDate,
+    DateTime endDate,
+  ) {
+    return repository.updateVoucher(
+      id,
+      code,
+      description,
+      minOrderValue,
+      discountAmount,
+      startDate,
+      endDate,
+    );
+  }
+
+  Future<void> deleteVoucher(int id) {
+    return repository.deleteVoucher(id);
+  }
 }

@@ -124,7 +124,6 @@ class _OrderConfirmDetailPageState extends State<OrderConfirmDetailPage> {
                 const SizedBox(height: 16),
                 ElevatedButton(
                   onPressed: () {
-                    // Gọi event update cho order này
                     context.read<ManageOrderBloc>().add(
                       UpdateOrderEvent(
                         orderId: widget.orderId ?? 0,
@@ -132,7 +131,7 @@ class _OrderConfirmDetailPageState extends State<OrderConfirmDetailPage> {
                       ),
                     );
                   },
-                  child: const Text('Cập nhật trạng thái'),
+                  child: const Text('đã gửi hàng'),
                 ),
               ],
             );

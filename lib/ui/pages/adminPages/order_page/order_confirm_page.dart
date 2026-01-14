@@ -70,6 +70,18 @@ class _OrderConfirmPageADState extends State<OrderConfirmPageAD> {
       ),
       body: BlocBuilder<ManageOrderBloc, ManageOrderState>(
         builder: (context, state) {
+          final orders = state.orders;
+          if (orders.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Không có đơn hàng',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          }
           return Column(
             children: [
               Expanded(
@@ -82,7 +94,7 @@ class _OrderConfirmPageADState extends State<OrderConfirmPageAD> {
                       order: order,
                       onTap: () async {
                         final result = await context.push(
-                          RoutePaths.spendingOrderDetail,
+                          RoutePaths.waitingDetail,
                           extra: order.orderID,
                         );
                         if (result == true) {

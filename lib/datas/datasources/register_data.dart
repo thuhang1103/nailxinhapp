@@ -158,6 +158,7 @@ class RegisterDataImpl implements RegisterData {
     required String password,
     required String resetpassToken,
   }) async {
+    print('reset password: $email');
     final res = await dio.post(
       '/auth/resetPassword',
       data: {

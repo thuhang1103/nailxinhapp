@@ -129,11 +129,11 @@ class _OrderTransportDetailPageState extends State<OrderTransportDetailPage> {
                     context.read<ManageOrderBloc>().add(
                       UpdateOrderEvent(
                         orderId: widget.orderId ?? 0,
-                        status: 'Complete',
+                        status: 'Completed',
                       ),
                     );
                   },
-                  child: const Text('Cập nhật trạng thái'),
+                  child: const Text('đã hoàn thành đơn'),
                 ),
               ],
             );

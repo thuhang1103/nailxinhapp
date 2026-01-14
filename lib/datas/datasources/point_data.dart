@@ -16,6 +16,7 @@ abstract class PointData {
   Future<int> getPointsStatus();
   Future<bool> checkCanSpinToday();
   Future<int> spinLucky();
+  Future<void> resetPoint();
 }
 
 class PointDataImpl implements PointData {
@@ -187,6 +188,40 @@ class PointDataImpl implements PointData {
 
       final message = data['message']?.toString();
       throw BusinessException(message ?? 'Không thể quay thưởng');
+    } on DioException catch (e) {
+      throw mapDioExceptionToAppException(e);
+    } on FormatException catch (_) {
+      throw const ParseException();
+    } catch (e) {
+      throw BusinessException(e.toString());
+    }
+  }
+
+  @override
+  Future<void> resetPoint() async {
+    try {
+      final response = await dio.post('$basePath/reset-points');
+      final status = response.statusCode ?? 0;
+      if (status < 200 || status >= 300) {
+        throw const ServerException();
+      }
+
+      dynamic data = response.data;
+      if (data is String) {
+        data = jsonDecode(data);
+      }
+      if (data is! Map<String, dynamic>) {
+        throw const ParseException();
+      }
+
+      final affected =
+          int.tryParse((data['affectedRows'] ?? 0).toString()) ?? 0;
+      final msg = data['message']?.toString() ?? data['error']?.toString();
+      if (affected <= 0) {
+        throw BusinessException(msg ?? 'Không thể reset điểm');
+      }
+
+      return;
     } on DioException catch (e) {
       throw mapDioExceptionToAppException(e);
     } on FormatException catch (_) {

@@ -21,6 +21,8 @@ import '../../widgets/page_view/page_empty.dart';
 import '../../widgets/button/button_gradient.dart';
 import 'package:intl/intl.dart';
 import '../../pages/customerPages/voucher_page.dart';
+import '../../../blocs/bloc/auth_bloc.dart';
+import '../../../blocs/states/auth_state.dart';
 
 class CartPage extends StatefulWidget {
   const CartPage({Key? key}) : super(key: key);
@@ -34,7 +36,13 @@ class _CartPageState extends State<CartPage> {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<CartItemBloc>().add(GetCartItemEvent());
+      final authState = context.read<AuthBloc>().state;
+
+      if (authState is Authenticated) {
+        context.read<CartItemBloc>().add(GetCartItemEvent());
+      } else {
+        context.go(RoutePaths.login);
+      }
     });
     context.read<CartItemBloc>().uiEvents.listen((msg) {
       if (!mounted) return;

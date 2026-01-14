@@ -84,6 +84,9 @@ class ManageOrderBloc extends Bloc<ManageOrderEvent, ManageOrderState> {
     emit(state.copyWith(updateOrderState: const CommonState.loading()));
 
     try {
+      print(
+        'Cập nhật trạng thái đơn hàng ${event.orderId} thành ${event.status}',
+      );
       await orderUseCase.updateOrderStatus(
         orderId: event.orderId,
         status: event.status,

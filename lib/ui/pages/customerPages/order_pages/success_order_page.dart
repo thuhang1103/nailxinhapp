@@ -72,21 +72,6 @@ class SuccessOrderPage extends StatelessWidget {
               style: TextStyle(fontSize: 14, color: Colors.grey.shade700),
             ),
 
-            const SizedBox(height: 24),
-
-            /// Order code (optional)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: const Text(
-                'Mã đơn hàng: #ORD123456',
-                style: TextStyle(fontWeight: FontWeight.w600),
-              ),
-            ),
-
             const SizedBox(height: 40),
 
             /// Button quay về thanh toán / đơn hàng

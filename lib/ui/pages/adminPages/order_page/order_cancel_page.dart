@@ -70,6 +70,18 @@ class _OrderCancelPageState extends State<OrderCancelPage> {
       ),
       body: BlocBuilder<ManageOrderBloc, ManageOrderState>(
         builder: (context, state) {
+          final orders = state.orders;
+          if (orders.isEmpty) {
+            return const Center(
+              child: Padding(
+                padding: EdgeInsets.all(16.0),
+                child: Text(
+                  'Không có đơn hàng',
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+            );
+          }
           return Column(
             children: [
               Expanded(

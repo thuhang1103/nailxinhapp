@@ -14,12 +14,6 @@ class Management extends StatefulWidget {
 }
 
 class _ManagementState extends State<Management> {
-  void onNailPressed() {}
-
-  void onThietBiNailPressed() {}
-
-  void onNailBoxPressed() {}
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -131,22 +125,30 @@ class _ManagementState extends State<Management> {
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
                         CategoryButton(
-                          onPressed: onNailPressed,
+                          onPressed: () {
+                            context.push(RoutePaths.productNailAd);
+                          },
                           imageUrl: 'assets/icons/8.png',
                           text: 'Nail',
                         ),
                         CategoryButton(
-                          onPressed: onThietBiNailPressed,
+                          onPressed: () {
+                            context.push(RoutePaths.productDeviceAd);
+                          },
                           imageUrl: 'assets/icons/12.png',
                           text: 'Thiết bị nail',
                         ),
                         CategoryButton(
-                          onPressed: onNailBoxPressed,
+                          onPressed: () {
+                            context.push(RoutePaths.productNailBoxAd);
+                          },
                           imageUrl: 'assets/icons/9.png',
                           text: 'Nail Box',
                         ),
                         CategoryButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            context.push(RoutePaths.productDetailAd);
+                          },
                           imageUrl:
                               'assets/icons/a56d3517bb1323832680fbe7eb342da0.jpg',
                           text: 'thêm sp mới',
@@ -171,7 +173,9 @@ class _ManagementState extends State<Management> {
                       children: [
                         Expanded(
                           child: ButtonGradient(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(RoutePaths.productBestSeltAd);
+                            },
                             text: 'sp bán chạy',
                             borderRadius: 10,
                             gradient: MyColor.mainGradient2,
@@ -186,7 +190,9 @@ class _ManagementState extends State<Management> {
                         SizedBox(width: 18),
                         Expanded(
                           child: ButtonGradient(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(RoutePaths.productTrendingAd);
+                            },
                             text: 'sp xu \nhướng ',
                             borderRadius: 10,
                             gradient: MyColor.mainGradient2,
@@ -201,7 +207,9 @@ class _ManagementState extends State<Management> {
                         SizedBox(width: 18),
                         Expanded(
                           child: ButtonGradient(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(RoutePaths.productNewAd);
+                            },
                             text: 'sp mới',
                             borderRadius: 10,
                             gradient: MyColor.mainGradient2,
@@ -233,7 +241,9 @@ class _ManagementState extends State<Management> {
                       children: [
                         Expanded(
                           child: ButtonGradient(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(RoutePaths.getVoucherAd);
+                            },
                             text: 'xem voucher',
                             borderRadius: 10,
                             gradient: MyColor.mainGradient3,
@@ -242,7 +252,9 @@ class _ManagementState extends State<Management> {
                         SizedBox(width: 18),
                         Expanded(
                           child: ButtonGradient(
-                            onPressed: () {},
+                            onPressed: () {
+                              context.push(RoutePaths.createVoucherAd);
+                            },
                             text: 'tạo voucher',
                             borderRadius: 10,
                             gradient: MyColor.mainGradient3,

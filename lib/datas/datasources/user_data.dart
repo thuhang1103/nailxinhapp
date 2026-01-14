@@ -26,7 +26,7 @@ class UserDataImpl implements UserData {
   Future<bool> isUsernameExists({required String username}) async {
     final response = await dio.post(
       '/users/checkUsername',
-      data: {'UserName': username},
+      data: {'username': username},
       options: Options(headers: {'Content-Type': 'application/json'}),
       // Uri.parse('http://192.168.123.3:5000/api/users/checkUsername'),
       // headers: {'Content-Type': 'application/json'},
@@ -42,9 +42,10 @@ class UserDataImpl implements UserData {
 
   @override
   Future<bool> isEmailExists({required String email}) async {
+    print('Checking data: $email');
     final response = await dio.post(
       '/users/checkEmail',
-      data: {'Email': email},
+      data: {'email': email},
       options: Options(headers: {'Content-Type': 'application/json'}),
     );
     if (response.statusCode == 200) {

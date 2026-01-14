@@ -138,6 +138,45 @@ import '../ui/pages/adminPages/order_page/order_complete_page.dart';
 import '../ui/pages/adminPages/order_page/order_confirm_page.dart';
 import '../ui/pages/adminPages/order_page/order_confirm_detail.dart';
 
+import '../features/get_order_Customer/get_order_bloc.dart';
+import '../features/get_order_Customer/get_order_event.dart';
+import '../ui/pages/customerPages/order_pages/wait_confirm_page.dart';
+import '../ui/pages/customerPages/order_pages/confirm_order_view.dart';
+import '../ui/pages/customerPages/order_pages/transport_page.dart';
+import '../ui/pages/customerPages/order_pages/received_page.dart';
+import '../ui/pages/customerPages/order_pages/cancel_order_view.dart';
+import '../ui/pages/customerPages/order_pages/order_detail_cs_page.dart';
+//order
+import '../domain/entities/order/order.dart';
+//
+import '../features/get_spending/get_spending_bloc.dart';
+import '../domain/usecases/spending_usecase.dart';
+import '../ui/pages/customerPages/spending_detail_page.dart';
+import '../ui/pages/adminPages/voucher_ad_page/get_voucher_ad_page.dart';
+
+import '../ui/pages/adminPages/voucher_ad_page/add_voucher_ad_page.dart';
+import '../feature_admin/manage_voucher/manage_voucher_event.dart';
+import '../feature_admin/manage_voucher/manage_voucher_bloc.dart';
+import '../ui/pages/adminPages/voucher_ad_page/Update_voucher_ad_page.dart';
+import '../domain/entities/vouchers.dart';
+// productAD
+import '../ui/pages/adminPages/manage_product/product_nail_AD_page.dart';
+import '../ui/pages/adminPages/manage_product/product_nailBox_AD_page.dart';
+import '../ui/pages/adminPages/manage_product/product_device_AD_page.dart';
+import '../ui/pages/adminPages/manage_product/product_detail_AD_page.dart';
+import '../feature_admin/manage_import/import_bloc.dart';
+import '../feature_admin/manage_import/import_event.dart';
+import '../domain/usecases/import_usecase.dart';
+import '../ui/pages/adminPages/get_product_AD_page/getProduct_bestselt.dart';
+
+import '../ui/pages/adminPages/get_product_AD_page/get_product_new.dart';
+
+import '../ui/pages/adminPages/get_product_AD_page/get_product_soldout.dart';
+
+import '../ui/pages/adminPages/get_product_AD_page/get_product_stock.dart';
+
+import '../ui/pages/adminPages/get_product_AD_page/get_product_trending.dart';
+
 final GoRouter router = GoRouter(
   initialLocation: RoutePaths.start,
   routes: [
@@ -270,7 +309,12 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePaths.edit,
       name: RouteNames.edit,
-      builder: (context, state) => Edit(),
+      builder: (context, state) {
+        return BlocProvider<ImportBloc>(
+          create: (_) => ImportBloc(importUseCase: sl<ImportUseCase>()),
+          child: Edit(),
+        );
+      },
     ),
     GoRoute(
       path: RoutePaths.manager,
@@ -323,6 +367,40 @@ final GoRouter router = GoRouter(
             ),
           ],
           child: ProductDetailPage(productID: productID),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.productDetailAd,
+      name: RouteNames.productDetailAd,
+      builder: (context, state) {
+        final extra = state.extra;
+        if (extra == null || extra is! Product) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Chi tiết sản phẩm')),
+            body: const Center(child: Text(' sản phẩm bị lỗi ')),
+          );
+        }
+        final product = extra;
+        return MultiBlocProvider(
+          providers: [
+            BlocProvider<ProductDetailBloc>(
+              create: (_) => ProductDetailBloc(
+                searchProductUseCase: sl<SearchProductUseCase>(),
+              ),
+            ),
+            BlocProvider<AddProductToCartBloc>(
+              create: (_) => AddProductToCartBloc(
+                getFullOptions: sl<OptionValueUseCase>(),
+                addToCart: sl<CreateCartItemUseCase>(),
+                getAll: sl<GetAllCartItemUseCase>(),
+              ),
+            ),
+            BlocProvider<SearchProductNameBloc>(
+              create: (_) => SearchProductNameBloc(sl<SearchProductUseCase>()),
+            ),
+          ],
+          child: ProductDetailADPage(product: product),
         );
       },
     ),
@@ -396,6 +474,36 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      path: RoutePaths.productNailBoxAd,
+      name: RouteNames.productNailBoxAd,
+      builder: (context, state) {
+        return BlocProvider<SearchProductCategoryBloc>(
+          create: (_) => SearchProductCategoryBloc(sl<SearchProductUseCase>()),
+          child: ProductNailBoxADPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.productDeviceAd,
+      name: RouteNames.productDeviceAd,
+      builder: (context, state) {
+        return BlocProvider<SearchProductCategoryBloc>(
+          create: (_) => SearchProductCategoryBloc(sl<SearchProductUseCase>()),
+          child: ProductDeviceADPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.productNailAd,
+      name: RouteNames.productNailAd,
+      builder: (context, state) {
+        return BlocProvider<SearchProductCategoryBloc>(
+          create: (_) => SearchProductCategoryBloc(sl<SearchProductUseCase>()),
+          child: ProductNailADPage(),
+        );
+      },
+    ),
+    GoRoute(
       path: RoutePaths.chatPage,
       name: RouteNames.chatPage,
       builder: (context, state) => ChatPage(),
@@ -445,7 +553,24 @@ final GoRouter router = GoRouter(
     GoRoute(
       path: RoutePaths.spending,
       name: RouteNames.spending,
-      builder: (context, state) => SpendingPage(),
+      builder: (context, state) {
+        return BlocProvider<GetSpendingBloc>(
+          create: (_) =>
+              GetSpendingBloc(spendingUseCase: sl<SpendingUseCase>()),
+          child: SpendingPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.spendingDetail,
+      name: RouteNames.spendingDetail,
+      builder: (context, state) {
+        return BlocProvider<GetSpendingBloc>(
+          create: (_) =>
+              GetSpendingBloc(spendingUseCase: sl<SpendingUseCase>()),
+          child: SpendingDetailPage(),
+        );
+      },
     ),
 
     GoRoute(
@@ -679,6 +804,143 @@ final GoRouter router = GoRouter(
           child: OrderCancelDetailPage(orderId: orderId),
         );
       },
+    ),
+    GoRoute(
+      path: RoutePaths.waitingCustomer,
+      name: RouteNames.waitingCustomer,
+      builder: (context, state) {
+        return BlocProvider<GetOrderBloc>(
+          create: (_) => GetOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: const WaitConfirm_Cs_Page(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.confirmCustomer,
+      name: RouteNames.confirmCustomer,
+      builder: (context, state) {
+        return BlocProvider<GetOrderBloc>(
+          create: (_) => GetOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: const Confirm_Cs_Page(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.transportCustomer,
+      name: RouteNames.transportCustomer,
+      builder: (context, state) {
+        return BlocProvider<GetOrderBloc>(
+          create: (_) => GetOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: const Transport_Cs_Page(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.completeCustomer,
+      name: RouteNames.completeCustomer,
+      builder: (context, state) {
+        return BlocProvider<GetOrderBloc>(
+          create: (_) => GetOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: const Complete_Cs_Page(),
+        );
+      },
+    ),
+
+    GoRoute(
+      path: RoutePaths.cancelCustomer,
+      name: RouteNames.cancelCustomer,
+      builder: (context, state) {
+        return BlocProvider<GetOrderBloc>(
+          create: (_) => GetOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: const Cancel_Cs_Page(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.orderDetailCsPage,
+      name: RouteNames.orderDetailCsPage,
+      builder: (context, state) {
+        final extra = state.extra;
+        if (extra == null || extra is! Order) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Chi tiết đơn hàng')),
+            body: const Center(child: Text('Thiếu tham số order')),
+          );
+        }
+        final order = extra as Order;
+
+        return BlocProvider<ManageOrderBloc>(
+          create: (_) => ManageOrderBloc(orderUseCase: sl<OrderUseCase>()),
+          child: OrderDetail_cs_Page(order: order),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.getVoucherAd,
+      name: RouteNames.getVoucherAd,
+      builder: (context, state) {
+        return BlocProvider<ManageVoucherBloc>(
+          create: (_) =>
+              ManageVoucherBloc(voucherUseCase: sl<VoucherUseCase>()),
+          child: GetVoucherPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.updateVoucherAd,
+      name: RouteNames.updateVoucherAd,
+      builder: (context, state) {
+        final extra = state.extra;
+        if (extra == null || extra is! Voucher) {
+          return Scaffold(
+            appBar: AppBar(title: const Text('Cập nhật voucher')),
+            body: const Center(child: Text('Thiếu tham số voucher')),
+          );
+        }
+        final voucher = extra as Voucher;
+
+        return BlocProvider<ManageVoucherBloc>(
+          create: (_) =>
+              ManageVoucherBloc(voucherUseCase: sl<VoucherUseCase>()),
+          child: UpdateVoucherPage(voucher: voucher),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.createVoucherAd,
+      name: RouteNames.createVoucherAd,
+      builder: (context, state) {
+        return BlocProvider<ManageVoucherBloc>(
+          create: (_) =>
+              ManageVoucherBloc(voucherUseCase: sl<VoucherUseCase>()),
+          child: CreateVoucherPage(),
+        );
+      },
+    ),
+    GoRoute(
+      path: RoutePaths.productNewAd,
+      name: RouteNames.productNewAd,
+      builder: (context, state) => NewProductPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.productSoldOutAd,
+      name: RouteNames.productSoldOutAd,
+      builder: (context, state) => SoldOutPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.productStockAd,
+      name: RouteNames.productStockAd,
+      builder: (context, state) => StockPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.productTrendingAd,
+      name: RouteNames.productTrendingAd,
+      builder: (context, state) => TrendingPage(),
+    ),
+    GoRoute(
+      path: RoutePaths.productBestSeltAd,
+      name: RouteNames.productBestSeltAd,
+      builder: (context, state) => BestSellerPage(),
     ),
   ],
 );

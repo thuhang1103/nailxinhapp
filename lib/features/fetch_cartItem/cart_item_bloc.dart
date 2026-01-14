@@ -64,8 +64,6 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     try {
       emit(state.copyWith(cartItemState: const CommonState.loading()));
       final userID = await getAll.getUserID();
-      print(' userID: $userID');
-
       final items = await getAll.getAllCartItems(userId: userID);
 
       emit(
@@ -87,9 +85,6 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     Emitter<CartItemState> emit,
   ) async {
     try {
-      print(
-        'ChangeIsSelectedEvent: cartItemId=${event.cartItemId}, variantId=${event.variantId}, quantity=${event.quantity}, isSelected=${event.isSelected}',
-      );
       final result = await updateCartItem.updateCartItem(
         cartItemId: event.cartItemId,
         quantity: event.quantity,
@@ -98,13 +93,16 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
       );
 
       if (result > 0) {
-        final updatedItems = state.cartItems.map((item) {
-          if (item.id == event.cartItemId) {
-            return item.copyWith(isSelected: event.isSelected);
-          }
-          return item;
-        }).toList();
-        emit(_recalculate(state.copyWith(cartItems: updatedItems)));
+        // final updatedItems = state.cartItems.map((item) {
+        //   if (item.id == event.cartItemId) {
+        //     return item.copyWith(isSelected: event.isSelected);
+        //   }
+        //   return item;
+        // }).toList();
+
+        final userID = await getAll.getUserID();
+        final newList = await getAll.getAllCartItems(userId: userID);
+        emit(_recalculate(state.copyWith(cartItems: newList)));
       } else {
         _uiEventsCtrl.add('Cập nhật trạng thái chọn thất bại');
       }
@@ -115,19 +113,26 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
     }
   }
 
-  void _onSelectAllCartItems(
+  Future<void> _onSelectAllCartItems(
     SelectAllCartItemsEvent event,
     Emitter<CartItemState> emit,
-  ) {
+  ) async {
     final targetSelectValue = state.isSelectAll == 1 ? 0 : 1;
+    for (final item in state.cartItems) {
+      await updateCartItem.updateCartItem(
+        cartItemId: item.id!,
+        quantity: item.quantity!,
+        variantId: item.variantId ?? 0,
+        isSelected: targetSelectValue,
+      );
+    }
 
-    final updated = state.cartItems
-        .map((i) => i.copyWith(isSelected: targetSelectValue))
-        .toList();
+    final userID = await getAll.getUserID();
+    final newList = await getAll.getAllCartItems(userId: userID);
 
     emit(
       _recalculate(
-        state.copyWith(cartItems: updated, isSelectAll: targetSelectValue),
+        state.copyWith(cartItems: newList, isSelectAll: targetSelectValue),
       ),
     );
   }
@@ -142,11 +147,10 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
       );
 
       if (result) {
-        final updatedList = state.cartItems
-            .where((item) => item.id != event.cartItemId)
-            .toList();
+        final userID = await getAll.getUserID();
+        final newList = await getAll.getAllCartItems(userId: userID);
 
-        emit(_recalculate(state.copyWith(cartItems: updatedList)));
+        emit(_recalculate(state.copyWith(cartItems: newList)));
       } else {
         _uiEventsCtrl.add('Xóa sản phẩm thất bại');
       }
@@ -179,14 +183,10 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
       );
 
       if (result > 0) {
-        final updatedList = state.cartItems.map((i) {
-          if (i.id == event.cartItemId) {
-            return i.copyWith(quantity: newQuantity);
-          }
-          return i;
-        }).toList();
+        final userID = await getAll.getUserID();
+        final newList = await getAll.getAllCartItems(userId: userID);
 
-        emit(_recalculate(state.copyWith(cartItems: updatedList)));
+        emit(_recalculate(state.copyWith(cartItems: newList)));
       } else {
         _uiEventsCtrl.add('Không thể tăng số lượng');
       }
@@ -217,14 +217,10 @@ class CartItemBloc extends Bloc<CartItemEvent, CartItemState> {
       );
 
       if (result > 0) {
-        final updatedList = state.cartItems.map((i) {
-          if (i.id == event.cartItemId) {
-            return i.copyWith(quantity: newQuantity);
-          }
-          return i;
-        }).toList();
+        final userID = await getAll.getUserID();
+        final newList = await getAll.getAllCartItems(userId: userID);
 
-        emit(_recalculate(state.copyWith(cartItems: updatedList)));
+        emit(_recalculate(state.copyWith(cartItems: newList)));
       } else {
         _uiEventsCtrl.add('Không thể giảm số lượng');
       }

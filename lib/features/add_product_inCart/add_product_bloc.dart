@@ -68,6 +68,7 @@ class AddProductToCartBloc extends Bloc<CartEvent, AddProductToCartState> {
     emit(state.copyWith(addToCartState: const CommonState.loading()));
 
     try {
+      print('Thêm sản phẩm vào giỏ hàng bloc ');
       if (state.fullOptions.length != state.selectedValues.length) {
         emit(
           state.copyWith(
@@ -93,17 +94,19 @@ class AddProductToCartBloc extends Bloc<CartEvent, AddProductToCartState> {
       );
 
       if (exists == 1) {
+        print('Sản phẩm đã có trong giỏ hàng');
         emit(state.copyWith(addToCartState: const CommonState.success()));
         return;
       } else {
         print('Thêm sản phẩm vào giỏ hàng');
-        await addToCart.createCartItem(
+        final result = await addToCart.createCartItem(
           userId: userID,
           productId: event.productId,
           variantId: variantId,
           quantity: state.quantity,
           price: state.price ?? 0.0,
         );
+        print('Kết quả thêm sản phẩm: $result');
         emit(state.copyWith(addToCartState: const CommonState.success()));
       }
     } catch (e) {
@@ -119,9 +122,7 @@ class AddProductToCartBloc extends Bloc<CartEvent, AddProductToCartState> {
 
       emit(
         state.copyWith(
-          addToCartState: CommonState.error(
-            BusinessException(errorMessage), // hoặc Exception(errorMessage)
-          ),
+          addToCartState: CommonState.error(BusinessException(errorMessage)),
         ),
       );
     }

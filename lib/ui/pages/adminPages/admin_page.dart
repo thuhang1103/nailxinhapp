@@ -3,6 +3,12 @@ import 'revenue_page.dart';
 import 'accounts_page.dart';
 import 'edit_page.dart';
 import 'management_page.dart';
+//bloc
+import 'package:flutter_bloc/flutter_bloc.dart';
+import '../../../feature_admin/manage_import/import_bloc.dart';
+import '../../../domain/usecases/import_usecase.dart';
+//get
+import '../../../core/dependency_injection/service_locator.dart';
 
 class AdminPage extends StatefulWidget {
   const AdminPage({super.key});
@@ -14,7 +20,15 @@ class AdminPage extends StatefulWidget {
 class _AdminPageState extends State<AdminPage> {
   int _selectedIndex = 0;
 
-  final List<Widget> _pages = [Management(), Edit(), Revenue(), Accounts()];
+  final List<Widget> _pages = [
+    Management(),
+    BlocProvider<ImportBloc>(
+      create: (_) => ImportBloc(importUseCase: sl<ImportUseCase>()),
+      child: Edit(),
+    ),
+    Revenue(),
+    Accounts(),
+  ];
 
   void _onItemTapped(int index) {
     setState(() {

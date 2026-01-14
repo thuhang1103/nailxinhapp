@@ -192,16 +192,20 @@ class FetchOrderBloc extends Bloc<FetchOrderEvent, FetchOrderState> {
         totalAmount: state.total,
         discountAmount: discountvalue,
       );
+      print('đã tạo bill $orderID');
+      if (state.usePoint == 1) {
+        await pointUseCase.resetPoint();
+      }
+      print('đã reset điểm');
 
       for (final item in state.cartitems ?? []) {
         final cartItem = item as CartItem;
         final productId = cartItem.productId ?? 0;
         final quantity = cartItem.quantity ?? 1;
         final price = cartItem.price;
-        print(
-          'Creating order detail for product $productId: quantity $quantity, price $price',
-        );
+
         try {
+          print('tạo orderdetail....');
           final detailId = await orderUseCase.createOrderDetail(
             orderId: orderID,
             productId: productId,
@@ -211,11 +215,12 @@ class FetchOrderBloc extends Bloc<FetchOrderEvent, FetchOrderState> {
             quantity: quantity,
             price: price,
           );
+          print('Created order detail id: $detailId for product $productId');
+          print(' cartitem id: ${cartItem.id}');
           final delete = await deleteCartItemUseCase.deleteCartItem(
             cartItemId: cartItem.id ?? 0,
           );
-
-          print('Created order detail id: $detailId for product $productId');
+          print('Deleted cart item id: $delete');
         } catch (e) {
           print('Error creating order detail for product $productId: $e');
           _uiEventsCtrl.add('Lỗi tạo order detail cho product');

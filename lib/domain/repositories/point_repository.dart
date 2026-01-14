@@ -7,4 +7,5 @@ abstract class PointRepository {
   Future<int> getPointsStatus();
   Future<bool> checkCanSpinToday();
   Future<int> spinLucky();
+  Future<void> resetPoint();
 }

@@ -30,4 +30,8 @@ class PointUseCase {
   Future<int> spinLucky() {
     return repository.spinLucky();
   }
+
+  Future<void> resetPoint() {
+    return repository.resetPoint();
+  }
 }

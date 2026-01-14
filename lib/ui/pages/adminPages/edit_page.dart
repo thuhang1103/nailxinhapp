@@ -1,7 +1,16 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:nailxinh/core/color/mycolor.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../widgets/button/button_gradient.dart';
+import '../../../../feature_admin/manage_import/import_bloc.dart';
+import '../../../../feature_admin/manage_import/import_event.dart';
+import '../../../../feature_admin/manage_import/imporrt_state.dart';
+import '../../../core/common_state.dart';
+import '../../../core/appException.dart';
+import 'package:go_router/go_router.dart';
+import '../../../routers/router_path.dart';
 
 class Edit extends StatefulWidget {
   const Edit({super.key});
@@ -110,12 +119,68 @@ class _EditState extends State<Edit> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    ButtonGradient(
-                      onPressed: () {
-                        // handle xác nhận
+                    BlocListener<ImportBloc, ImportState>(
+                      listener: (context, state) {
+                        // show snackbar on success / error and pop on success
+                        if (state.importState == const CommonState.success()) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                              content: Text('Tạo nhập kho thành công'),
+                            ),
+                          );
+                          context.pop();
+                        } else if (state.importState is Error) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text('Lỗi khi tạo nhập kho')),
+                          );
+                        }
                       },
-                      text: 'Xác nhận',
-                      gradient: MyColor.mainGradient2,
+                      child: ButtonGradient(
+                        onPressed: () {
+                          final note = _warehouseController.text.trim();
+                          final rawTotal = _totalController.text
+                              .trim()
+                              .replaceAll(',', '');
+                          final total = double.tryParse(rawTotal) ?? -1;
+
+                          DateTime? createdAt;
+                          final dateText = _dateController.text.trim();
+                          if (dateText.isNotEmpty) {
+                            // expecting dd/MM/yyyy
+                            try {
+                              final parts = dateText.split('/');
+                              if (parts.length == 3) {
+                                final d = int.parse(parts[0]);
+                                final m = int.parse(parts[1]);
+                                final y = int.parse(parts[2]);
+                                createdAt = DateTime(y, m, d);
+                              }
+                            } catch (_) {
+                              createdAt = null;
+                            }
+                          }
+
+                          if (total < 0) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(
+                                content: Text('Tổng tiền không hợp lệ'),
+                              ),
+                            );
+                            return;
+                          }
+
+                          // dispatch event
+                          context.read<ImportBloc>().add(
+                            CreateImportEvent(
+                              note: note,
+                              totalAmount: total,
+                              createdAt: createdAt,
+                            ),
+                          );
+                        },
+                        text: 'Xác nhận',
+                        gradient: MyColor.mainGradient2,
+                      ),
                     ),
                   ],
                 ),
@@ -184,7 +249,9 @@ class _EditState extends State<Edit> {
                   children: [
                     Expanded(
                       child: ButtonGradient(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(RoutePaths.productStockAd);
+                        },
                         text: 'Sp tồn kho',
                         gradient: MyColor.mainGradient2,
                       ),
@@ -192,7 +259,9 @@ class _EditState extends State<Edit> {
                     const SizedBox(width: 12),
                     Expanded(
                       child: ButtonGradient(
-                        onPressed: () {},
+                        onPressed: () {
+                          context.push(RoutePaths.productSoldOutAd);
+                        },
                         text: 'Sp hết hàng',
                         gradient: MyColor.mainGradient2,
                       ),

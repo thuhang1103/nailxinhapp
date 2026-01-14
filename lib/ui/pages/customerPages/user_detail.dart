@@ -318,7 +318,7 @@ class _UserDetailState extends State<UserDetail> {
                             child: ButtonGradient(
                               text: 'Lịch sử\nmua sắm',
                               onPressed: () {
-                                context.push(RoutePaths.getPointDaily);
+                                context.push(RoutePaths.completeCustomer);
                               },
                               width: double.infinity,
                               height: 84,

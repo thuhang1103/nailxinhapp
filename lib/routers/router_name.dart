@@ -103,4 +103,42 @@ class RouteNames {
   static const String cancelOrderDetailPage = 'cancelOrderDetailPage';
   //cancelOrderDetail
   static const String cancelOrderDetail = 'cancelOrderDetail';
+  //waitingCustomer
+  static const String waitingCustomer = 'waitingCustomer';
+  //confirmCustomer
+  static const String confirmCustomer = 'confirmCustomer';
+  //transportCustomer
+  static const String transportCustomer = 'transportCustomer';
+  //completeCustomer
+  static const String completeCustomer = 'completeCustomer';
+  //cancel customer
+  static const String cancelCustomer = 'cancelCustomer';
+  //OrderDetail_cs_Page
+  static const String orderDetailCsPage = 'orderDetailCsPage';
+  //spendingdetail
+  static const String spendingDetail = 'spendingDetail';
+  //getvoucherAD
+  static const String getVoucherAd = 'getVoucherAd';
+  //updateVoucherAD
+  static const String updateVoucherAd = 'updateVoucherAd';
+  //createVoucherAD
+  static const String createVoucherAd = 'createVoucherAd';
+  //productnailAD
+  static const String productNailAd = 'productNailAd';
+  //productnailboxAD
+  static const String productNailBoxAd = 'productNailBoxAd';
+  //productdevice
+  static const String productDeviceAd = 'productDeviceAd';
+  //product detailAD
+  static const String productDetailAd = 'productDetailAd';
+  //productnnew
+  static const String productNewAd = 'productNewAd';
+  //product trending
+  static const String productTrendingAd = 'productTrendingAd';
+  //product bestselt
+  static const String productBestSeltAd = 'productBestSeltAd';
+  //productStock
+  static const String productStockAd = 'productStockAd';
+  //product soldout
+  static const String productSoldOutAd = 'productSoldOutAd';
 }

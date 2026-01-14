@@ -133,7 +133,7 @@ class _OrderCompleteDetailPageState extends State<OrderCompleteDetailPage> {
                       ),
                     );
                   },
-                  child: const Text('Cập nhật trạng thái'),
+                  child: const Text('xác nhận đơn hoàn'),
                 ),
               ],
             );

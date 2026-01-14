@@ -13,6 +13,8 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 //router
 import 'package:go_router/go_router.dart';
 import '../../../routers/router_path.dart';
+import 'package:get_it/get_it.dart';
+import '../../../core/dependency_injection/service_locator.dart';
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -200,9 +202,8 @@ class _RegisterPageState extends State<RegisterPage> {
                           onPressed: (!isFormValid || isLoading)
                               ? null
                               : () async {
-                                  print('vào dược button ');
-                                  final checkUserExists = context
-                                      .read<CheckUserExistsUseCase>();
+                                  final checkUserExists =
+                                      sl<CheckUserExistsUseCase>();
                                   final emailExists = await checkUserExists
                                       .email(emailCtrl.text);
                                   if (emailExists) {

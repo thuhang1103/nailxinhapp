@@ -3,10 +3,7 @@ import 'package:nailxinh/core/color/mycolor.dart';
 import '../../widgets/categorybutton.dart';
 import '../../widgets/product_item.dart';
 import '../../widgets/searchBox/searchButton.dart';
-import '../search_pages/search_page.dart';
-import '../productPages/nail_page.dart';
-import '../productPages/nailbox_page.dart';
-import '../productPages/device_page.dart';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../blocs/bloc/storage_search_history/storage_search_history_bloc.dart';
 import '../../../blocs/bloc/storage_search_history/suggestion_history_bloc.dart';
@@ -32,6 +29,8 @@ import '../../../features/fetch_Voucher/fetch_voucher_state.dart';
 import '../../../domain/entities/vouchers.dart';
 
 import '../../widgets/voucher/voucher_container.dart';
+import '../../../blocs/bloc/auth_bloc.dart';
+import '../../../blocs/evens/auth_event.dart';
 
 class Shopping extends StatefulWidget {
   @override
@@ -98,16 +97,34 @@ class _ShoppingState extends State<Shopping> {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 12.0),
-            child: Container(
-              width: 36,
-              height: 36,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                image: DecorationImage(
-                  image: AssetImage(
-                    'assets/icons/5.png',
-                  ), // Đường dẫn ảnh đại diện
-                  fit: BoxFit.cover,
+            child: PopupMenuButton<String>(
+              onSelected: (value) {
+                if (value == 'logout') {
+                  context.read<AuthBloc>().add(LogoutRequested());
+                  print('Đăng xuất');
+                }
+              },
+              itemBuilder: (context) => [
+                const PopupMenuItem(
+                  value: 'logout',
+                  child: Row(
+                    children: [
+                      Icon(Icons.logout, size: 18),
+                      SizedBox(width: 8),
+                      Text('Đăng xuất'),
+                    ],
+                  ),
+                ),
+              ],
+              child: Container(
+                width: 36,
+                height: 36,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: AssetImage('assets/icons/5.png'),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             ),

@@ -31,6 +31,8 @@ import '../../widgets/produc_gallery.dart';
 import '../../widgets/page_view/page_error.dart';
 import '../../widgets/page_view/page_loading.dart';
 import '../../widgets/page_view/page_empty.dart';
+import '../../../blocs/bloc/auth_bloc.dart';
+import '../../../blocs/states/auth_state.dart';
 
 class ProductDetailPage extends StatefulWidget {
   final int productID;
@@ -291,10 +293,26 @@ class _ProductDetailPageState extends State<ProductDetailPage> {
               Expanded(
                 child: ButtonGradient(
                   onPressed: () {
-                    showAddToCartBottomSheet(
-                      context: context,
-                      productId: widget.productID,
-                    );
+                    // showAddToCartBottomSheet(
+                    //   context: context,
+                    //   productId: widget.productID,
+                    // );
+                    final authState = context.read<AuthBloc>().state;
+
+                    if (authState is Authenticated) {
+                      showAddToCartBottomSheet(
+                        context: context,
+                        productId: widget.productID,
+                      );
+                    } else {
+                      ScaffoldMessenger.of(context).showSnackBar(
+                        const SnackBar(
+                          content: Text(
+                            'Bạn cần đăng nhập để thêm vào giỏ hàng',
+                          ),
+                        ),
+                      );
+                    }
                   },
                   text: 'Thêm vào giỏ',
                   height: 48,

@@ -190,6 +190,9 @@ class OrderDataImpl implements OrderData {
       final payload = {
         'orderId': orderId,
         'productId': productId,
+        'productName': productName,
+        'variantName': variantName,
+        'imagePath': imagePath,
         'quantity': quantity,
         'price': price,
       };
